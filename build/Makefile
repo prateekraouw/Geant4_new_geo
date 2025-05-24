@@ -198,6 +198,30 @@ src/ActionInitialization.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/ActionInitialization.cc.s
 .PHONY : src/ActionInitialization.cc.s
 
+src/ChicaneConstruction.o: src/ChicaneConstruction.cc.o
+.PHONY : src/ChicaneConstruction.o
+
+# target to build an object file
+src/ChicaneConstruction.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/ChicaneConstruction.cc.o
+.PHONY : src/ChicaneConstruction.cc.o
+
+src/ChicaneConstruction.i: src/ChicaneConstruction.cc.i
+.PHONY : src/ChicaneConstruction.i
+
+# target to preprocess a source file
+src/ChicaneConstruction.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/ChicaneConstruction.cc.i
+.PHONY : src/ChicaneConstruction.cc.i
+
+src/ChicaneConstruction.s: src/ChicaneConstruction.cc.s
+.PHONY : src/ChicaneConstruction.s
+
+# target to generate assembly for a file
+src/ChicaneConstruction.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/ChicaneConstruction.cc.s
+.PHONY : src/ChicaneConstruction.cc.s
+
 src/DetectorConstruction.o: src/DetectorConstruction.cc.o
 .PHONY : src/DetectorConstruction.o
 
@@ -430,6 +454,9 @@ help:
 	@echo "... src/ActionInitialization.o"
 	@echo "... src/ActionInitialization.i"
 	@echo "... src/ActionInitialization.s"
+	@echo "... src/ChicaneConstruction.o"
+	@echo "... src/ChicaneConstruction.i"
+	@echo "... src/ChicaneConstruction.s"
 	@echo "... src/DetectorConstruction.o"
 	@echo "... src/DetectorConstruction.i"
 	@echo "... src/DetectorConstruction.s"

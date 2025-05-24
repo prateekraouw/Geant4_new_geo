@@ -212,6 +212,10 @@ CMakeFiles/tungsten_sim.dir/src/SteppingAction.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4UserEventAction.hh \
  /home/prateek/Downloads/simulation/include/DetectorConstruction.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VUserDetectorConstruction.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagneticField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Field.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.icc \
  /home/prateek/Downloads/simulation/include/RunAction.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4UserRunAction.hh \
  /usr/include/c++/11/fstream \

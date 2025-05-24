@@ -15,4 +15,10 @@
 /gun/energy 8 GeV  # Higher energy for better muon production
 
 # Run events
-/run/beamOn 50000
+/run/beamOn 10000
+
+
+
+#1. Implement concentric solenoids(same field strength 7T) with decreasing radius to collimate the beam
+#2. Cool the particles first with helium cloud before accelerating with rf cavity
+

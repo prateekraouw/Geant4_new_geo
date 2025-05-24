@@ -208,6 +208,10 @@ CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o: \
  /usr/local/include/CLHEP/Vector/ThreeVector.h \
  /usr/local/include/CLHEP/Vector/defs.h \
  /usr/local/include/CLHEP/Vector/ThreeVector.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagneticField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Field.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4RunManager.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Event.hh \
  /usr/include/c++/11/set /usr/include/c++/11/bits/stl_set.h \
@@ -510,8 +514,6 @@ CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VisAttributes.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.hh \
  /home/prateek/Downloads/simulation/include/ElectricFieldSetup.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagneticField.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Field.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4UniformMagField.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagneticField.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Mag_UsualEqRhs.hh \
@@ -533,8 +535,20 @@ CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldUtils.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorStepper.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VIntegrationDriver.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ChordFinder.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorStepper.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ChordFinder.icc
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ChordFinder.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TransportationManager.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SafetyHelper.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TransportationManager.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorDriver.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorDriver.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ClassicalRK4.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagErrorStepper.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagErrorStepper.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Polycone.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VCSGfaceted.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PolyconeSide.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VCSGface.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PolyconeHistorical.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Polycone.icc

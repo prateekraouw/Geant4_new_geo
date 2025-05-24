@@ -1,6 +1,7 @@
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
 #include "ActionInitialization.hh"
+#include "ChicaneConstruction.hh"
 
 #include "G4RunManagerFactory.hh"
 #include "G4UImanager.hh"
@@ -10,11 +11,14 @@
 
 int main(int argc, char** argv)
 {
+  G4Random::setTheEngine(new CLHEP::RanecuEngine);
+
   // Construct the default run manager
   auto* runManager = G4RunManagerFactory::CreateRunManager();
 
   // Set mandatory initialization classes
-  runManager->SetUserInitialization(new DetectorConstruction());
+  
+  runManager->SetUserInitialization(new ChicaneConstruction());
   runManager->SetUserInitialization(new PhysicsList());
   runManager->SetUserInitialization(new ActionInitialization());
 
