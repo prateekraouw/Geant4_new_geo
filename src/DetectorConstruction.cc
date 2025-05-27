@@ -21,19 +21,39 @@
 DetectorConstruction::DetectorConstruction()
 : G4VUserDetectorConstruction(),
   fScoringVolume(nullptr),
+  fWorldLogical(nullptr),
   fDetector1Volume(nullptr),
   fDetector2Volume(nullptr),
   fDetector3Volume(nullptr),
-  fDetector4Volume(nullptr)
+  fDetector4Volume(nullptr),
+  fMagnet1Volume(nullptr),
+  fMagnet2Volume(nullptr),
+  fMagnet3Volume(nullptr),
+  fMagnet4Volume(nullptr),
+  fMagField1(nullptr),
+  fMagField2(nullptr),
+  fMagField3(nullptr),
+  fMagField4(nullptr),
+  fFieldManager1(nullptr),
+  fFieldManager2(nullptr),
+  fFieldManager3(nullptr),
+  fFieldManager4(nullptr)
 {
+  // Initialize chicane parameters
+  fMagnetLength = 20*cm;
+  fMagnetWidth = 50*cm;
+  fMagnetHeight = 50*cm;
+  fMagnetSeparation = 5*cm;
+  fFieldStrength = 0.5*tesla;
 }
 
 DetectorConstruction::~DetectorConstruction()
 {
-  delete fChicaneMagField1;
-  delete fChicaneMagField2;
-  delete fChicaneMagField3;
-  delete fChicaneMagField4;
+  // Clean up chicane magnetic fields
+  delete fMagField1;
+  delete fMagField2;
+  delete fMagField3;
+  delete fMagField4;
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
@@ -45,7 +65,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
   
   // Tungsten material
-  G4Material* tungsten_mat = nist->FindOrBuildMaterial("G4_W");
+  G4Material* graphite_mat = nist->FindOrBuildMaterial("G4_GRAPHITE");
   
   // Scintillator material for detectors (plastic scintillator)
   G4Material* scintillator_mat = nist->FindOrBuildMaterial("G4_Ar");
@@ -68,29 +88,25 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   // Detector parameters - circular discs with 30 cm diameter and 1 cm thickness
   G4double detector_radius = 75*cm;  // 30 cm diameter
   G4double detector_thickness = 0.1*cm;
-  
-  // Detector positions (distance from the end of the tungsten block)
-  G4double detector1_position = tungsten_z/2 + 60*cm;  // 10 cm from tungsten
-  G4double detector2_position = tungsten_z/2 + 700*cm; // m from the block
-  G4double detector3_position = 420*cm;
-  G4double detector4_position = 630*cm;
 
-  G4double helium_start = 100*cm;
-  G4double helium_end = 110*cm;
+  // Detector positions (distance from the end of the tungsten block)
+  G4double detector1_position = 300*cm;  // 10 cm from tungsten
+  G4double detector2_position = 543*cm; // m from the block
+  G4double detector3_position = 923*cm;
+  G4double detector4_position = 1035*cm;
+
+  G4double helium_start = 545*cm;
+  G4double helium_end = 555*cm;
   G4double helium_thickness = helium_end - helium_start; // 10 cm
-  G4double helium_radius = 80*cm; // Make it wide enough to interact with particles
+  G4double helium_radius = 75*cm; // Make it wide enough to interact with particles
 
   // World volume - cylindrical
 G4double world_radius = 0.5*world_size;  // Radius matching the box half-width
 G4double world_length = 20*world_size;   // Length matching the box z-dimension
 
-G4double rfcavity_radius = 100*cm;  // Same as detector radius for simplicity
+G4double rfcavity_radius = 30*cm;  // Same as detector radius for simplicity
 G4double rfcavity_length = 20*cm;   // 20 cm long as requested
-G4double rfcavity_position = 150*cm;  
-
-
-
-
+G4double rfcavity_position = 1250*cm;  
 
 G4Tubs* solidWorld = 
   new G4Tubs("World",
@@ -102,6 +118,7 @@ G4Tubs* solidWorld =
   
 G4LogicalVolume* logicWorld = 
   new G4LogicalVolume(solidWorld, world_mat, "World");
+fWorldLogical = logicWorld;  // Store it as member variable
   
 G4VPhysicalVolume* physWorld = 
   new G4PVPlacement(nullptr,               // no rotation
@@ -114,11 +131,11 @@ G4VPhysicalVolume* physWorld =
                     true);                 // checking overlaps
 
   // Tungsten block
-  G4Box* solidTungsten = 
-    new G4Box("Tungsten", 0.5*tungsten_x, 0.5*tungsten_y, 0.5*tungsten_z);
+  G4Box* solidGraphite = 
+    new G4Box("Graphite", 0.5*tungsten_x, 0.5*tungsten_y, 0.5*tungsten_z);
   
   G4LogicalVolume* logicTungsten = 
-    new G4LogicalVolume(solidTungsten, tungsten_mat, "Tungsten");
+    new G4LogicalVolume(solidGraphite, graphite_mat, "Graphite");
 
   G4RotationMatrix* rotation = new G4RotationMatrix();
   rotation->rotateX(-20*deg);
@@ -156,7 +173,6 @@ G4Tubs* solidHelium =
                     0,                     // copy number
                     true);                 // checking overlaps
 
-
   // Create circular detectors (discs)
   G4Tubs* solidDetector1 = 
     new G4Tubs("Detector1", 
@@ -164,94 +180,102 @@ G4Tubs* solidHelium =
               detector_radius,        // outer radius
               0.5*detector_thickness, // half-length in z
               0*deg,                  // start angle
-              360*deg);              // spanning angle             // spanning angle
+              360*deg);               // spanning angle
   
-  // Detector 1 (2 cm from tungsten)
+  // Detector 1 - create logical volume
   G4LogicalVolume* logicDetector1 = 
     new G4LogicalVolume(solidDetector1, scintillator_mat, "Detector1");
-  
+    
+  // Place Detector 1 and store position
+  G4ThreeVector detector1Pos = G4ThreeVector(0, 0, detector1_position);
   new G4PVPlacement(nullptr,                // no rotation
-                    G4ThreeVector(0, 0, detector1_position), // position
+                    detector1Pos,           // position
                     logicDetector1,         // its logical volume
                     "Detector1",            // its name
                     logicWorld,             // its mother volume
                     false,                  // no boolean operation
                     0,                      // copy number
-                    false);                  // checking overlaps
-  
+                    false);                 // checking overlaps
+  fDetector1Position = detector1Pos;
+
+  // Detector 2 - create solid and logical volume
   G4Tubs* solidDetector2 = 
     new G4Tubs("Detector2", 
               0*cm,                   // inner radius
-              detector_radius,        // outer radius
+              75*cm,        // outer radius
               0.5*detector_thickness, // half-length in z
               0*deg,                  // start angle
-              360*deg);              // spanning angle             // spanning angle
-  G4ThreeVector detector1Pos = G4ThreeVector(0, 0, detector1_position);
-  new G4PVPlacement(nullptr, detector1Pos, logicDetector1, "Detector1", logicWorld, false, 0, false);
-  fDetector1Position = detector1Pos;
+              360*deg);               // spanning angle
 
-
-  // Detector 2 (10 m from tungsten)
   G4LogicalVolume* logicDetector2 = 
     new G4LogicalVolume(solidDetector2, scintillator_mat, "Detector2");
-  
+    
+  // Place Detector 2 and store position
+  G4ThreeVector detector2Pos = G4ThreeVector(0, 0, detector2_position);
   new G4PVPlacement(nullptr,                // no rotation
-                    G4ThreeVector(0, 0, detector2_position), // position
+                    detector2Pos,           // position
                     logicDetector2,         // its logical volume
                     "Detector2",            // its name
                     logicWorld,             // its mother volume
                     false,                  // no boolean operation
                     0,                      // copy number
-                    false);                  // checking overlaps
-  
-  
-
-  G4ThreeVector detector2Pos = G4ThreeVector(0, 0, detector2_position);
-  new G4PVPlacement(nullptr, detector2Pos, logicDetector2, "Detector2", logicWorld, false, 0, false);
+                    false);                 // checking overlaps
   fDetector2Position = detector2Pos;
 
-
-    // Detector 3 (at 375 cm mark)
+  // Detector 3 - create solid and logical volume
   G4Tubs* solidDetector3 = 
     new G4Tubs("Detector3", 
               0*cm,                   // inner radius
-              detector_radius,        // outer radius
+              10*cm,       // outer radius
               0.5*detector_thickness, // half-length in z
               0*deg,                  // start angle
               360*deg);               // spanning angle
               
   G4LogicalVolume* logicDetector3 = 
     new G4LogicalVolume(solidDetector3, scintillator_mat, "Detector3");
-  
+    
+  // Place Detector 3 and store position
   G4ThreeVector detector3Pos = G4ThreeVector(0, 0, detector3_position);
-  new G4PVPlacement(nullptr, detector3Pos, logicDetector3, "Detector3", logicWorld, false, 0, true);
+  new G4PVPlacement(nullptr,                // no rotation
+                    detector3Pos,           // position
+                    logicDetector3,         // its logical volume
+                    "Detector3",            // its name
+                    logicWorld,             // its mother volume
+                    false,                  // no boolean operation
+                    0,                      // copy number
+                    false);                  // checking overlaps
   fDetector3Position = detector3Pos;
 
-
-  // Detector 3 (at 500 cm mark)
+  // Detector 4 - create solid and logical volume (note: smaller radius of 30cm)
   G4Tubs* solidDetector4 = 
     new G4Tubs("Detector4", 
               0*cm,                   // inner radius
-              30*cm,        // outer radius
+              10*cm,                  // outer radius (smaller than others)
               0.5*detector_thickness, // half-length in z
               0*deg,                  // start angle
               360*deg);               // spanning angle
               
   G4LogicalVolume* logicDetector4 = 
     new G4LogicalVolume(solidDetector4, scintillator_mat, "Detector4");
-  
+    
+  // Place Detector 4 and store position
   G4ThreeVector detector4Pos = G4ThreeVector(0, 0, detector4_position);
-  new G4PVPlacement(nullptr, detector4Pos, logicDetector4, "Detector4", logicWorld, false, 0, true);
+  new G4PVPlacement(nullptr,                // no rotation
+                    detector4Pos,           // position
+                    logicDetector4,         // its logical volume
+                    "Detector4",            // its name
+                    logicWorld,             // its mother volume
+                    false,                  // no boolean operation
+                    0,                      // copy number
+                    false);                  // checking overlaps
   fDetector4Position = detector4Pos;
-
-
 
   // Visualize the ParticleGun as a block
   G4Box* gunBox = new G4Box("GunBox", 2*cm, 2*cm, 3*cm); // 2x2x2 cm block
 
   G4LogicalVolume* gunLog = new G4LogicalVolume(
     gunBox,             // its solid
-    tungsten_mat,       // material
+    graphite_mat,       // material
     "GunLogical"        // name
   );
 
@@ -259,7 +283,7 @@ G4Tubs* solidHelium =
   gunRot->rotateX(-20.*deg);  // Align with beam direction
 
   // Position 5 cm before tungsten (as per ParticleGun)
-  G4ThreeVector gunPos = G4ThreeVector(0, 12.*cm, -40.*cm);
+  G4ThreeVector gunPos = G4ThreeVector(0, 5.*cm, -40.*cm);
   new G4PVPlacement(
     gunRot,             // rotation
     gunPos,             // position
@@ -283,15 +307,13 @@ G4LogicalVolume* logicRFCavity =
   new G4LogicalVolume(solidRFCavity, rfcavity_mat, "RFCavity");
 
 G4ThreeVector rfcavityPos = G4ThreeVector(0, 0, rfcavity_position);
-new G4PVPlacement(nullptr, rfcavityPos, logicRFCavity, "RFCavity", logicWorld, false, 0, true);
+new G4PVPlacement(nullptr, rfcavityPos, logicRFCavity, "RFCavity", logicWorld, false, 0, false);
 
-
-
-G4double field_start = -40*cm;
-G4double helium_z = 340*cm;  // Use the start of the helium cloud
+G4double field_start = -30*cm;
+G4double helium_z = 570*cm;  // Use the start of the helium cloud
 
 // Calculate total length of the solenoid
-G4double total_length = helium_z - field_start - 10*cm;  // Leave 10cm buffer on each side
+G4double total_length = helium_z - field_start;  // Leave 10cm buffer on each side
 
 // Number of segments to create the tapered shape
 const G4int numZPlanes = 16;  // 7 segments + 1 (need n+1 points for n segments)
@@ -306,7 +328,7 @@ for (G4int i = 0; i < numZPlanes; i++) {
 G4double rInner[numZPlanes];
 G4double rOuter[numZPlanes];
 G4double max_radius = 80*cm;
-G4double min_radius = 20*cm;
+G4double min_radius = 80*cm;
 G4double radius_step = (max_radius - min_radius) / 16;  // For 7 segments
 
 for (G4int i = 0; i < numZPlanes; i++) {
@@ -342,27 +364,27 @@ new G4PVPlacement(nullptr,               // no rotation
                   true);                  // checking overlaps
 
 
-G4double field_start2 = 425*cm;
-G4double z2 = 625*cm;  // Use the start of the helium cloud
+G4double field_start2 = 535*cm;
+G4double z2 = 950*cm;  // Use the start of the helium cloud
 
 // Calculate total length of the solenoid
-G4double total_length2 = z2 - field_start2 - 10*cm;  // Leave 10cm buffer on each side
+G4double total_length2 = z2 - field_start2;  // Leave 10cm buffer on each side
 
 // Number of segments to create the tapered shape
-const G4int numZPlanes2 = 8;  // 7 segments + 1 (need n+1 points for n segments)
+const G4int numZPlanes2 = 11;  // 7 segments + 1 (need n+1 points for n segments)
 
 // Define the z-positions of each plane
 G4double zPlane2[numZPlanes2];
 for (G4int i = 0; i < numZPlanes2; i++) {
-    zPlane2[i] = field_start2 + 10*cm + i * (total_length2 / 8);
+    zPlane2[i] = field_start2 + 10*cm + i * (total_length2 / 11);
 }
 
 // Define the inner and outer radii at each z-position
 G4double rInner2[numZPlanes2];
 G4double rOuter2[numZPlanes2];
-G4double max_radius2 = 40*cm;
-G4double min_radius2 = 5*cm;
-G4double radius_step2 = (max_radius2 - min_radius2) / 8;  // For 7 segments
+G4double max_radius2 = 80*cm;
+G4double min_radius2 = 10*cm;
+G4double radius_step2 = (max_radius2 - min_radius2) / 11;  // For 7 segments
 
 for (G4int i = 0; i < numZPlanes2; i++) {
     rInner2[i] = 0*cm;  // No inner hole
@@ -398,22 +420,25 @@ new G4PVPlacement(nullptr,               // no rotation
   G4VisAttributes* tungsten_vis_att = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5)); // Grey
   logicTungsten->SetVisAttributes(tungsten_vis_att);
   
-  G4VisAttributes* detector1_vis_att = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0)); // Blue
+  // Detector 1 visualization - Blue
+  G4VisAttributes* detector1_vis_att = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0)); // Blue
   detector1_vis_att->SetVisibility(true);
   logicDetector1->SetVisAttributes(detector1_vis_att);
 
-  G4VisAttributes* detector2_vis_att = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0)); // Blue
-  detector1_vis_att->SetVisibility(true);
-  logicDetector1->SetVisAttributes(detector2_vis_att);
+  // Detector 2 visualization - Blue
+  G4VisAttributes* detector2_vis_att = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0)); // Blue
+  detector2_vis_att->SetVisibility(true);
+  logicDetector2->SetVisAttributes(detector2_vis_att);
 
-
-  G4VisAttributes* detector3_vis_att = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0)); // Red for detector 3
+  // Detector 3 visualization - Red
+  G4VisAttributes* detector3_vis_att = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0)); // Red
   detector3_vis_att->SetVisibility(true);
   logicDetector3->SetVisAttributes(detector3_vis_att);
 
-   G4VisAttributes* detector4_vis_att = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0)); // Red for detector 3
-  detector3_vis_att->SetVisibility(true);
-  logicDetector3->SetVisAttributes(detector4_vis_att);
+  // Detector 4 visualization - Red
+  G4VisAttributes* detector4_vis_att = new G4VisAttributes(G4Colour::Blue()); // Blue
+  detector4_vis_att->SetVisibility(true);
+  logicDetector4->SetVisAttributes(detector4_vis_att);
   
   // Helium cloud visualization - light blue and semi-transparent
   G4VisAttributes* helium_vis_att = new G4VisAttributes(G4Colour(0.6, 0.8, 1.0, 0.3)); // Light blue, semi-transparent
@@ -444,7 +469,6 @@ new G4PVPlacement(nullptr,               // no rotation
   field_vis_att2->SetForceSolid(true);
   logicMagField2->SetVisAttributes(field_vis_att2);
 
-
   // Make the world volume transparent
   G4VisAttributes* world_vis_att = new G4VisAttributes(G4Colour(1.5, 1.5, 1.5, 1.0)); // Transparent
   world_vis_att->SetVisibility(true);
@@ -462,93 +486,232 @@ new G4PVPlacement(nullptr,               // no rotation
   fMagFieldVolumes.push_back(logicMagField);
   fMagFieldVolumes.push_back(logicMagField2);
 
+  // Create chicane magnets
+  CreateChicaneMagnets();
+
   return physWorld;
 }
 
+void DetectorConstruction::CreateChicaneMagnets()
+{
+  G4NistManager* nist = G4NistManager::Instance();
+  G4Material* magnet_mat = nist->FindOrBuildMaterial("G4_AIR");
+  
+  // Calculate chicane position - place it after detector 2
+  G4double chicane_start_z = 930*cm;
+  
+  // Create all four chicane magnets
+  for (int i = 0; i < 4; i++) {
+    G4double magnet_z = chicane_start_z + i * (fMagnetLength + fMagnetSeparation) + fMagnetLength/2.0;
+    
+    // Create magnet solid
+    G4Box* solidMagnet = new G4Box("ChicaneMagnet" + std::to_string(i+1),
+                                   0.5*fMagnetWidth,
+                                   0.5*fMagnetHeight,
+                                   0.5*fMagnetLength);
+    
+    // Create logical volume
+    G4LogicalVolume* magnetVolume = new G4LogicalVolume(solidMagnet, magnet_mat, "ChicaneMagnet" + std::to_string(i+1));
+    
+    // Place magnet
+    new G4PVPlacement(nullptr,
+                      G4ThreeVector(0, 0, magnet_z),
+                      magnetVolume,
+                      "ChicaneMagnet" + std::to_string(i+1),
+                      fWorldLogical,  // Use the member variable instead of logicWorld
+                      false,
+                      i,
+                      false);
+    
+    // Store magnet volumes
+    switch(i) {
+      case 0: fMagnet1Volume = magnetVolume; break;
+      case 1: fMagnet2Volume = magnetVolume; break;
+      case 2: fMagnet3Volume = magnetVolume; break;
+      case 3: fMagnet4Volume = magnetVolume; break;
+    }
+    
+    // Set visualization attributes
+    G4VisAttributes* magnet_vis_att;
+    if (i == 0 || i == 3) {
+      // Magnets 1 and 4: +X field (Red)
+      magnet_vis_att = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0, 0.6));
+    } else {
+      // Magnets 2 and 3: -X field (Blue)
+      magnet_vis_att = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0, 0.6));
+    }
+    magnet_vis_att->SetVisibility(true);
+    magnet_vis_att->SetForceSolid(true);
+    magnetVolume->SetVisAttributes(magnet_vis_att);
+  }
+  
+  G4cout << "Chicane magnets created successfully" << G4endl;
+}
 
+void DetectorConstruction::SetupChicaneFields()
+{
+  if (!fMagnet1Volume || !fMagnet2Volume || !fMagnet3Volume || !fMagnet4Volume) {
+    G4cerr << "Error: Chicane magnet volumes not created!" << G4endl;
+    return;
+  }
+  
+  // Setup each magnet field individually
+  for (int i = 0; i < 4; i++) {
+    G4ThreeVector fieldValue;
+    G4LogicalVolume* magnetVolume;
+    G4MagneticField** magField;
+    G4FieldManager** fieldManager;
+    
+    // Determine field direction and get references
+    switch(i) {
+      case 0: // Magnet 1: +X field
+        fieldValue = G4ThreeVector(+fFieldStrength, 0.0, 0.0);
+        magnetVolume = fMagnet1Volume;
+        magField = &fMagField1;
+        fieldManager = &fFieldManager1;
+        break;
+      case 1: // Magnet 2: -X field
+        fieldValue = G4ThreeVector(-fFieldStrength, 0.0, 0.0);
+        magnetVolume = fMagnet2Volume;
+        magField = &fMagField2;
+        fieldManager = &fFieldManager2;
+        break;
+      case 2: // Magnet 3: -X field
+        fieldValue = G4ThreeVector(-fFieldStrength, 0.0, 0.0);
+        magnetVolume = fMagnet3Volume;
+        magField = &fMagField3;
+        fieldManager = &fFieldManager3;
+        break;
+      case 3: // Magnet 4: +X field
+        fieldValue = G4ThreeVector(+fFieldStrength, 0.0, 0.0);
+        magnetVolume = fMagnet4Volume;
+        magField = &fMagField4;
+        fieldManager = &fFieldManager4;
+        break;
+    }
+    
+    // Create magnetic field
+    *magField = new UniformMagField(fieldValue);
+    
+    // Create field manager
+    *fieldManager = new G4FieldManager(*magField);
+    
+    // Create equation of motion
+    G4Mag_UsualEqRhs* equation = new G4Mag_UsualEqRhs(*magField);
+    
+    // Create stepper
+    G4ClassicalRK4* stepper = new G4ClassicalRK4(equation);
+    
+    // Create chord finder
+    G4double minStep = 0.005*mm;
+    G4MagInt_Driver* driver = new G4MagInt_Driver(minStep, stepper, stepper->GetNumberOfVariables());
+    G4ChordFinder* chordFinder = new G4ChordFinder(driver);
+    
+    // Set field manager parameters
+    (*fieldManager)->SetChordFinder(chordFinder);
+    (*fieldManager)->SetDetectorField(*magField);
+    (*fieldManager)->SetDeltaOneStep(0.001*mm);
+    (*fieldManager)->SetDeltaIntersection(0.001*mm);
+    
+    // Apply field manager to magnet
+    magnetVolume->SetFieldManager(*fieldManager, true);
+  }
+  
+  G4cout << "\n-----------------------------------------------------------" << G4endl;
+  G4cout << " Chicane Magnetic Fields Setup Complete!" << G4endl;
+  G4cout << " Field strength: " << fFieldStrength/tesla << " Tesla" << G4endl;
+  G4cout << " Field pattern: +X, -X, -X, +X (standard chicane)" << G4endl;
+  G4cout << "-----------------------------------------------------------\n" << G4endl;
+}
 
 void DetectorConstruction::ConstructSDandField()
 {
     if (fMagFieldVolumes.empty()) {
-    G4cerr << "Error: No magnetic field volumes created!" << G4endl;
-    return;
-  }
+        G4cerr << "Error: No magnetic field volumes created!" << G4endl;
+        return;
+    }
 
-  if (fMagFieldVolumes.size() < 2) {
+    if (fMagFieldVolumes.size() < 2) {
         G4cerr << "Error: Expected at least two magnetic field volumes!" << G4endl;
         return;
     }
   
-  // We have just one volume (the polycone solenoid) in the vector
-  G4LogicalVolume* solenoidVolume = fMagFieldVolumes[0];
+    // First solenoid setup
+    G4LogicalVolume* solenoidVolume1 = fMagFieldVolumes[0];
   
-  // Create a 7 Tesla magnetic field in the Z direction
-  G4ThreeVector fieldValue = G4ThreeVector(0.0, 0.0, 7.0*tesla);
-  G4MagneticField* magField = new UniformMagField(fieldValue);
-  fMagFields.push_back(magField);
+    // Create a 7 Tesla magnetic field in the Z direction for first solenoid
+    G4ThreeVector fieldValue1 = G4ThreeVector(0.0, 0.0, 7.0*tesla);
+    G4MagneticField* magField1 = new UniformMagField(fieldValue1);
+    fMagFields.push_back(magField1);
   
-  // Create a local field manager
-  G4FieldManager* localFieldManager = new G4FieldManager(magField);
-  fLocalFieldManagers.push_back(localFieldManager);
+    // Create a local field manager for first solenoid
+    G4FieldManager* localFieldManager1 = new G4FieldManager(magField1);
+    fLocalFieldManagers.push_back(localFieldManager1);
   
-  // Create equation of motion for this field
-  G4Mag_UsualEqRhs* equation = new G4Mag_UsualEqRhs(magField);
+    // Create equation of motion for first field
+    G4Mag_UsualEqRhs* equation1 = new G4Mag_UsualEqRhs(magField1);
   
-  // Create stepper with higher precision for accurate field tracking
-  G4ClassicalRK4* stepper = new G4ClassicalRK4(equation);
+    // Create stepper with higher precision for accurate field tracking
+    G4ClassicalRK4* stepper1 = new G4ClassicalRK4(equation1);
   
-  // Create the chord finder with appropriate step size
-  G4double minStep = 0.005*CLHEP::mm;
-  G4MagInt_Driver* driver = new G4MagInt_Driver(minStep, stepper, stepper->GetNumberOfVariables());
-  G4ChordFinder* chordFinder = new G4ChordFinder(driver);
+    // Create the chord finder with appropriate step size
+    G4double minStep1 = 0.005*CLHEP::mm;
+    G4MagInt_Driver* driver1 = new G4MagInt_Driver(minStep1, stepper1, stepper1->GetNumberOfVariables());
+    G4ChordFinder* chordFinder1 = new G4ChordFinder(driver1);
   
-  // Set field manager parameters
-  localFieldManager->SetChordFinder(chordFinder);
-  localFieldManager->SetDetectorField(magField);
-  localFieldManager->SetDeltaOneStep(0.001*CLHEP::mm);
-  localFieldManager->SetDeltaIntersection(0.001*CLHEP::mm);
+    // Set field manager parameters for first solenoid
+    localFieldManager1->SetChordFinder(chordFinder1);
+    localFieldManager1->SetDetectorField(magField1);
+    localFieldManager1->SetDeltaOneStep(0.001*CLHEP::mm);
+    localFieldManager1->SetDeltaIntersection(0.001*CLHEP::mm);
   
-  // Apply field manager to the solenoid logical volume
-  solenoidVolume->SetFieldManager(localFieldManager, true);
+    // Apply field manager to the first solenoid logical volume
+    solenoidVolume1->SetFieldManager(localFieldManager1, true);
   
-  G4cout << "\n-----------------------------------------------------------" << G4endl;
-  G4cout << " Magnetic Field of 7 Tesla applied to continuous solenoid" << G4endl;
-  G4cout << " Field value: (0, 0, 7) Tesla" << G4endl;
-  G4cout << " Solenoid tapers from radius 100 cm to 50 cm" << G4endl;
-  G4cout << "-----------------------------------------------------------\n" << G4endl;
+    G4cout << "\n-----------------------------------------------------------" << G4endl;
+    G4cout << " First Magnetic Field of 7 Tesla applied to first solenoid" << G4endl;
+    G4cout << " Field value: (0, 0, 7) Tesla" << G4endl;
+    G4cout << " First Solenoid tapers from radius 80 cm to 20 cm" << G4endl;
+    G4cout << "-----------------------------------------------------------\n" << G4endl;
 
-  // Get the second solenoid logical volume
-  G4LogicalVolume* solenoidVolume2 = fMagFieldVolumes[1];
+    // Second solenoid setup
+    G4LogicalVolume* solenoidVolume2 = fMagFieldVolumes[1];
 
-  // Create a local field manager
-  G4FieldManager* localFieldManager2 = new G4FieldManager(magField);
-  fLocalFieldManagers.push_back(localFieldManager);
+    // Create a separate 7 Tesla magnetic field for the second solenoid
+    G4ThreeVector fieldValue2 = G4ThreeVector(0.0, 0.0, 7.0*tesla);
+    G4MagneticField* magField2 = new UniformMagField(fieldValue2);
+    fMagFields.push_back(magField2);
 
-  // Equation of motion
-  G4Mag_UsualEqRhs* equation2 = new G4Mag_UsualEqRhs(magField);
+    // Create a separate local field manager for second solenoid
+    G4FieldManager* localFieldManager2 = new G4FieldManager(magField2);
+    fLocalFieldManagers.push_back(localFieldManager2);
 
-  // Stepper
-  G4ClassicalRK4* stepper2 = new G4ClassicalRK4(equation2);
+    // Create separate equation of motion for second field
+    G4Mag_UsualEqRhs* equation2 = new G4Mag_UsualEqRhs(magField2);
 
-  // Chord finder
-  G4double minStep2 = 0.005*CLHEP::mm;
-  G4MagInt_Driver* driver2 = new G4MagInt_Driver(minStep2, stepper2, stepper2->GetNumberOfVariables());
-  G4ChordFinder* chordFinder2 = new G4ChordFinder(driver2);
+    // Create separate stepper for second field
+    G4ClassicalRK4* stepper2 = new G4ClassicalRK4(equation2);
 
-  // Set parameters on field manager
-  localFieldManager2->SetChordFinder(chordFinder2);
-  localFieldManager2->SetDetectorField(magField);
-  localFieldManager2->SetDeltaOneStep(0.001*CLHEP::mm);
-  localFieldManager2->SetDeltaIntersection(0.001*CLHEP::mm);
+    // Create separate chord finder for second field
+    G4double minStep2 = 0.005*CLHEP::mm;
+    G4MagInt_Driver* driver2 = new G4MagInt_Driver(minStep2, stepper2, stepper2->GetNumberOfVariables());
+    G4ChordFinder* chordFinder2 = new G4ChordFinder(driver2);
 
-  // Apply this field manager to the second solenoid volume
-  solenoidVolume2->SetFieldManager(localFieldManager2, true);
+    // Set parameters on second field manager
+    localFieldManager2->SetChordFinder(chordFinder2);
+    localFieldManager2->SetDetectorField(magField2);
+    localFieldManager2->SetDeltaOneStep(0.001*CLHEP::mm);
+    localFieldManager2->SetDeltaIntersection(0.001*CLHEP::mm);
 
-  G4cout << "\n-----------------------------------------------------------" << G4endl;
-  G4cout << " Second Magnetic Field of 7 Tesla applied to second solenoid" << G4endl;
-  G4cout << " Field value: (0, 0, 7) Tesla" << G4endl;
-  G4cout << " Second Solenoid tapers from radius 30 cm to 5 cm" << G4endl;
-  G4cout << "-----------------------------------------------------------\n" << G4endl;
+    // Apply this field manager to the second solenoid volume
+    solenoidVolume2->SetFieldManager(localFieldManager2, true);
 
+    G4cout << "\n-----------------------------------------------------------" << G4endl;
+    G4cout << " Second Magnetic Field of 7 Tesla applied to second solenoid" << G4endl;
+    G4cout << " Field value: (0, 0, 7) Tesla" << G4endl;
+    G4cout << " Second Solenoid tapers from radius 40 cm to 5 cm" << G4endl;
+    G4cout << "-----------------------------------------------------------\n" << G4endl;
 
+    // Setup chicane magnetic fields
+    SetupChicaneFields();
 }

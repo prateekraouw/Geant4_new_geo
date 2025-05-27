@@ -99,7 +99,7 @@ void ChicaneConstruction::CreateMagnet1()
   
   // Calculate chicane position - place it after detector 2
   // Assuming detector 2 is around 300 cm from origin based on your previous code
-  G4double chicane_start_z = 318*cm;  // Start chicane at 350 cm
+  G4double chicane_start_z = 550*cm;  // Start chicane at 350 cm
   G4double start_z = chicane_start_z;
   
   // Magnet 1 position
@@ -142,7 +142,7 @@ void ChicaneConstruction::CreateMagnet2()
   G4Material* magnet_mat = nist->FindOrBuildMaterial("G4_AIR");
   
   // Calculate chicane position
-  G4double chicane_start_z = 318*cm;
+  G4double chicane_start_z = 550*cm;
   G4double start_z = chicane_start_z;
   
   // Magnet 2 position
@@ -185,7 +185,7 @@ void ChicaneConstruction::CreateMagnet3()
   G4Material* magnet_mat = nist->FindOrBuildMaterial("G4_AIR");
   
   // Calculate chicane position
-  G4double chicane_start_z = 318*cm;
+  G4double chicane_start_z = 550*cm;
   G4double start_z = chicane_start_z;
   
   // Magnet 3 position
@@ -228,7 +228,7 @@ void ChicaneConstruction::CreateMagnet4()
   G4Material* magnet_mat = nist->FindOrBuildMaterial("G4_AIR");
   
   // Calculate chicane position
-  G4double chicane_start_z = 318*cm;
+  G4double chicane_start_z = 550*cm;
   G4double start_z = chicane_start_z;
   
   // Magnet 4 position

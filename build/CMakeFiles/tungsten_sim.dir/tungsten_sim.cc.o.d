@@ -97,6 +97,12 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /usr/include/c++/11/x86_64-redhat-linux/bits/gthr.h \
  /usr/include/c++/11/x86_64-redhat-linux/bits/gthr-default.h \
  /usr/include/pthread.h /usr/include/sched.h /usr/include/bits/sched.h \
+ /usr/include/linux/sched/types.h /usr/include/linux/types.h \
+ /usr/include/asm/types.h /usr/include/asm-generic/types.h \
+ /usr/include/asm-generic/int-ll64.h /usr/include/asm/bitsperlong.h \
+ /usr/include/asm-generic/bitsperlong.h /usr/include/linux/posix_types.h \
+ /usr/include/linux/stddef.h /usr/include/asm/posix_types.h \
+ /usr/include/asm/posix_types_64.h /usr/include/asm-generic/posix_types.h \
  /usr/include/bits/types/struct_sched_param.h /usr/include/bits/cpu-set.h \
  /usr/include/time.h /usr/include/bits/time.h /usr/include/bits/timex.h \
  /usr/include/bits/types/struct_tm.h \
@@ -259,60 +265,6 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Region.icc \
  /home/prateek/Downloads/simulation/include/ActionInitialization.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VUserActionInitialization.hh \
- /home/prateek/Downloads/simulation/include/ChicaneConstruction.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4LogicalVolume.hh \
- /usr/include/c++/11/memory \
- /usr/include/c++/11/bits/stl_raw_storage_iter.h \
- /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
- /usr/include/c++/11/bits/shared_ptr_atomic.h \
- /usr/include/c++/11/backward/auto_ptr.h \
- /usr/include/c++/11/pstl/glue_memory_defs.h \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/geomdefs.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4RotationMatrix.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ThreeVector.hh \
- /usr/local/include/CLHEP/Vector/Rotation.h \
- /usr/local/include/CLHEP/Vector/RotationInterfaces.h \
- /usr/local/include/CLHEP/Vector/LorentzVector.h \
- /usr/local/include/CLHEP/Vector/LorentzVector.icc \
- /usr/local/include/CLHEP/Vector/ZMxpv.h \
- /usr/local/include/CLHEP/Vector/AxisAngle.h \
- /usr/local/include/CLHEP/Vector/AxisAngle.icc \
- /usr/local/include/CLHEP/Vector/RotationInterfaces.icc \
- /usr/local/include/CLHEP/Vector/RotationX.h \
- /usr/local/include/CLHEP/Vector/RotationX.icc \
- /usr/local/include/CLHEP/Vector/RotationY.h \
- /usr/local/include/CLHEP/Vector/RotationY.icc \
- /usr/local/include/CLHEP/Vector/RotationZ.h \
- /usr/local/include/CLHEP/Vector/RotationZ.icc \
- /usr/local/include/CLHEP/Vector/Rotation.icc \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.icc \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4LogicalVolume.icc \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Box.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4GeomTypes.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4GeomConfig.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4CSGSolid.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VSolid.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VSolid.icc \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Polyhedron.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/HepPolyhedron.h \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TwoVector.hh \
- /usr/local/include/CLHEP/Vector/TwoVector.h \
- /usr/local/include/CLHEP/Vector/TwoVector.icc \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Point3D.hh \
- /usr/local/include/CLHEP/Geometry/Point3D.h \
- /usr/local/include/CLHEP/Geometry/defs.h \
- /usr/local/include/CLHEP/Geometry/BasicVector3D.h \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Normal3D.hh \
- /usr/local/include/CLHEP/Geometry/Normal3D.h \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Transform3D.hh \
- /usr/local/include/CLHEP/Geometry/Transform3D.h \
- /usr/local/include/CLHEP/Geometry/Transform3D.icc \
- /usr/local/include/CLHEP/Geometry/Vector3D.h \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Visible.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Visible.icc \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Box.icc \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SystemOfUnits.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4RunManagerFactory.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MTRunManager.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MTBarrier.hh \
@@ -330,6 +282,7 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AllocatorPool.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PrimaryVertex.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PrimaryParticle.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ThreeVector.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4HCofThisEvent.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VHitsCollection.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4DCofThisEvent.hh \
@@ -349,6 +302,32 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Track.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/trkdefs.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4LogicalVolume.hh \
+ /usr/include/c++/11/memory \
+ /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
+ /usr/include/c++/11/bits/shared_ptr_atomic.h \
+ /usr/include/c++/11/backward/auto_ptr.h \
+ /usr/include/c++/11/pstl/glue_memory_defs.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/geomdefs.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4RotationMatrix.hh \
+ /usr/local/include/CLHEP/Vector/Rotation.h \
+ /usr/local/include/CLHEP/Vector/RotationInterfaces.h \
+ /usr/local/include/CLHEP/Vector/LorentzVector.h \
+ /usr/local/include/CLHEP/Vector/LorentzVector.icc \
+ /usr/local/include/CLHEP/Vector/ZMxpv.h \
+ /usr/local/include/CLHEP/Vector/AxisAngle.h \
+ /usr/local/include/CLHEP/Vector/AxisAngle.icc \
+ /usr/local/include/CLHEP/Vector/RotationInterfaces.icc \
+ /usr/local/include/CLHEP/Vector/RotationX.h \
+ /usr/local/include/CLHEP/Vector/RotationX.icc \
+ /usr/local/include/CLHEP/Vector/RotationY.h \
+ /usr/local/include/CLHEP/Vector/RotationY.icc \
+ /usr/local/include/CLHEP/Vector/RotationZ.h \
+ /usr/local/include/CLHEP/Vector/RotationZ.icc \
+ /usr/local/include/CLHEP/Vector/Rotation.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4LogicalVolume.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4DynamicParticle.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElectronOccupancy.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Log.hh \
@@ -362,6 +341,14 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationHistory.hh \
  /usr/include/assert.h \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AffineTransform.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Transform3D.hh \
+ /usr/local/include/CLHEP/Geometry/Transform3D.h \
+ /usr/local/include/CLHEP/Geometry/defs.h \
+ /usr/local/include/CLHEP/Geometry/Transform3D.icc \
+ /usr/local/include/CLHEP/Geometry/Point3D.h \
+ /usr/local/include/CLHEP/Geometry/BasicVector3D.h \
+ /usr/local/include/CLHEP/Geometry/Vector3D.h \
+ /usr/local/include/CLHEP/Geometry/Normal3D.h \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AffineTransform.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationLevel.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationLevelRep.hh \
@@ -411,6 +398,8 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Navigator.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NormalNavigation.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VSolid.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VSolid.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AuxiliaryNavServices.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AuxiliaryNavServices.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NormalNavigation.icc \
@@ -570,6 +559,7 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VGraphicsSystem.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ModelingParameters.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VisExtent.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Point3D.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VisAttributes.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/graphics_reps_defs.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Colour.hh \
@@ -593,11 +583,23 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Plane3D.hh \
  /usr/local/include/CLHEP/Geometry/Plane3D.h \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VMarker.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Visible.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Visible.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VMarker.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ViewParameters.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PhysicalVolumeModel.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PseudoScene.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Box.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4GeomTypes.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4GeomConfig.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4CSGSolid.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Polyhedron.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/HepPolyhedron.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TwoVector.hh \
+ /usr/local/include/CLHEP/Vector/TwoVector.h \
+ /usr/local/include/CLHEP/Vector/TwoVector.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Normal3D.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Box.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Cons.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Cons.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Orb.hh \

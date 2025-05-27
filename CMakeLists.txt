@@ -21,7 +21,6 @@ set(SOURCES
     src/SteppingAction.cc
     src/ElectricFieldSetup.cc
     src/RFCavityField.cc
-    src/ChicaneConstruction.cc
 )
 
 # Add the executable with explicit source files

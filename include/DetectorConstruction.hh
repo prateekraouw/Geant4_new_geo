@@ -31,9 +31,13 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4ThreeVector GetDetector3Position() const { return fDetector3Position; }
     G4ThreeVector GetDetector4Position() const { return fDetector4Position; }
 
+    void CreateChicaneMagnets();
+    void SetupChicaneFields();
+
     
     
   private:
+    G4LogicalVolume* fWorldLogical;
     G4LogicalVolume* fScoringVolume;
     G4LogicalVolume* fDetector1Volume;
     G4LogicalVolume* fDetector2Volume;
@@ -56,34 +60,30 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4ThreeVector fDetector3Position;
     G4ThreeVector fDetector4Position;
 
-    G4LogicalVolume* fChicaneMagnet1Volume;
-    G4LogicalVolume* fChicaneMagnet2Volume;
-    G4LogicalVolume* fChicaneMagnet3Volume;
-    G4LogicalVolume* fChicaneMagnet4Volume;
-  
-  // Individual magnetic fields
-    G4MagneticField* fChicaneMagField1;
-    G4MagneticField* fChicaneMagField2;
-    G4MagneticField* fChicaneMagField3;
-    G4MagneticField* fChicaneMagField4;
-  
-  // Individual field managers
-    G4FieldManager* fChicaneFieldManager1;
-    G4FieldManager* fChicaneFieldManager2;
-    G4FieldManager* fChicaneFieldManager3;
-    G4FieldManager* fChicaneFieldManager4;
-  
-  // Methods to create individual magnets
-    void CreateChicaneMagnet1(G4double start_z);
-    void CreateChicaneMagnet2(G4double start_z);
-    void CreateChicaneMagnet3(G4double start_z);
-    void CreateChicaneMagnet4(G4double start_z);
-  
-  // Methods to setup individual fields
-    void SetupChicaneMagnet1Field();
-    void SetupChicaneMagnet2Field();
-    void SetupChicaneMagnet3Field();
-    void SetupChicaneMagnet4Field();
+    // Chicane magnet volumes
+    G4LogicalVolume* fMagnet1Volume;
+    G4LogicalVolume* fMagnet2Volume;
+    G4LogicalVolume* fMagnet3Volume;
+    G4LogicalVolume* fMagnet4Volume;
+    
+    // Chicane magnetic fields
+    G4MagneticField* fMagField1;
+    G4MagneticField* fMagField2;
+    G4MagneticField* fMagField3;
+    G4MagneticField* fMagField4;
+    
+    // Chicane field managers
+    G4FieldManager* fFieldManager1;
+    G4FieldManager* fFieldManager2;
+    G4FieldManager* fFieldManager3;
+    G4FieldManager* fFieldManager4;
+    
+    // Chicane parameters
+    G4double fMagnetLength;
+    G4double fMagnetWidth;
+    G4double fMagnetHeight;
+    G4double fMagnetSeparation;
+    G4double fFieldStrength;
     
 };
 

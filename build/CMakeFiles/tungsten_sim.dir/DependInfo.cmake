@@ -9,7 +9,6 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/prateek/Downloads/simulation/src/ActionInitialization.cc" "CMakeFiles/tungsten_sim.dir/src/ActionInitialization.cc.o" "gcc" "CMakeFiles/tungsten_sim.dir/src/ActionInitialization.cc.o.d"
-  "/home/prateek/Downloads/simulation/src/ChicaneConstruction.cc" "CMakeFiles/tungsten_sim.dir/src/ChicaneConstruction.cc.o" "gcc" "CMakeFiles/tungsten_sim.dir/src/ChicaneConstruction.cc.o.d"
   "/home/prateek/Downloads/simulation/src/DetectorConstruction.cc" "CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o" "gcc" "CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o.d"
   "/home/prateek/Downloads/simulation/src/ElectricFieldSetup.cc" "CMakeFiles/tungsten_sim.dir/src/ElectricFieldSetup.cc.o" "gcc" "CMakeFiles/tungsten_sim.dir/src/ElectricFieldSetup.cc.o.d"
   "/home/prateek/Downloads/simulation/src/EventAction.cc" "CMakeFiles/tungsten_sim.dir/src/EventAction.cc.o" "gcc" "CMakeFiles/tungsten_sim.dir/src/EventAction.cc.o.d"
