@@ -270,6 +270,30 @@ src/EventAction.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/EventAction.cc.s
 .PHONY : src/EventAction.cc.s
 
+src/MomentumChicane.o: src/MomentumChicane.cc.o
+.PHONY : src/MomentumChicane.o
+
+# target to build an object file
+src/MomentumChicane.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o
+.PHONY : src/MomentumChicane.cc.o
+
+src/MomentumChicane.i: src/MomentumChicane.cc.i
+.PHONY : src/MomentumChicane.i
+
+# target to preprocess a source file
+src/MomentumChicane.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.i
+.PHONY : src/MomentumChicane.cc.i
+
+src/MomentumChicane.s: src/MomentumChicane.cc.s
+.PHONY : src/MomentumChicane.s
+
+# target to generate assembly for a file
+src/MomentumChicane.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.s
+.PHONY : src/MomentumChicane.cc.s
+
 src/PhysicsList.o: src/PhysicsList.cc.o
 .PHONY : src/PhysicsList.o
 
@@ -366,6 +390,30 @@ src/RunAction.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/RunAction.cc.s
 .PHONY : src/RunAction.cc.s
 
+src/SolenoidSystem.o: src/SolenoidSystem.cc.o
+.PHONY : src/SolenoidSystem.o
+
+# target to build an object file
+src/SolenoidSystem.cc.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o
+.PHONY : src/SolenoidSystem.cc.o
+
+src/SolenoidSystem.i: src/SolenoidSystem.cc.i
+.PHONY : src/SolenoidSystem.i
+
+# target to preprocess a source file
+src/SolenoidSystem.cc.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.i
+.PHONY : src/SolenoidSystem.cc.i
+
+src/SolenoidSystem.s: src/SolenoidSystem.cc.s
+.PHONY : src/SolenoidSystem.s
+
+# target to generate assembly for a file
+src/SolenoidSystem.cc.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tungsten_sim.dir/build.make CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.s
+.PHONY : src/SolenoidSystem.cc.s
+
 src/SteppingAction.o: src/SteppingAction.cc.o
 .PHONY : src/SteppingAction.o
 
@@ -439,6 +487,9 @@ help:
 	@echo "... src/EventAction.o"
 	@echo "... src/EventAction.i"
 	@echo "... src/EventAction.s"
+	@echo "... src/MomentumChicane.o"
+	@echo "... src/MomentumChicane.i"
+	@echo "... src/MomentumChicane.s"
 	@echo "... src/PhysicsList.o"
 	@echo "... src/PhysicsList.i"
 	@echo "... src/PhysicsList.s"
@@ -451,6 +502,9 @@ help:
 	@echo "... src/RunAction.o"
 	@echo "... src/RunAction.i"
 	@echo "... src/RunAction.s"
+	@echo "... src/SolenoidSystem.o"
+	@echo "... src/SolenoidSystem.i"
+	@echo "... src/SolenoidSystem.s"
 	@echo "... src/SteppingAction.o"
 	@echo "... src/SteppingAction.i"
 	@echo "... src/SteppingAction.s"

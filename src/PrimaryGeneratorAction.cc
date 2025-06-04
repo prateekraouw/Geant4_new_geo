@@ -30,12 +30,12 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   // Set beam direction along the z-axis (towards the tungsten block)
-  G4double angle = -20.*deg;
+  G4double angle = 0.*deg;
   G4ThreeVector dir(0., std::sin(angle), std::cos(angle));
   fParticleGun->SetParticleMomentumDirection(dir);
   
   // Position the beam 1 cm before the tungsten block
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 12.*cm, -40.*cm));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0.*cm, -40.*cm));
 
   // Generate the primary vertex
   fParticleGun->GeneratePrimaryVertex(anEvent);

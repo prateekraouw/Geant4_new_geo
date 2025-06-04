@@ -100,6 +100,12 @@ CMakeFiles/tungsten_sim.dir/src/ActionInitialization.cc.o: \
  /usr/include/c++/11/x86_64-redhat-linux/bits/gthr.h \
  /usr/include/c++/11/x86_64-redhat-linux/bits/gthr-default.h \
  /usr/include/pthread.h /usr/include/sched.h /usr/include/bits/sched.h \
+ /usr/include/linux/sched/types.h /usr/include/linux/types.h \
+ /usr/include/asm/types.h /usr/include/asm-generic/types.h \
+ /usr/include/asm-generic/int-ll64.h /usr/include/asm/bitsperlong.h \
+ /usr/include/asm-generic/bitsperlong.h /usr/include/linux/posix_types.h \
+ /usr/include/linux/stddef.h /usr/include/asm/posix_types.h \
+ /usr/include/asm/posix_types_64.h /usr/include/asm-generic/posix_types.h \
  /usr/include/bits/types/struct_sched_param.h /usr/include/bits/cpu-set.h \
  /usr/include/time.h /usr/include/bits/time.h /usr/include/bits/timex.h \
  /usr/include/bits/types/struct_tm.h \
@@ -219,4 +225,158 @@ CMakeFiles/tungsten_sim.dir/src/ActionInitialization.cc.o: \
  /home/prateek/Downloads/simulation/include/EventAction.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4UserEventAction.hh \
  /home/prateek/Downloads/simulation/include/SteppingAction.hh \
- /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4UserSteppingAction.hh
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4UserSteppingAction.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Track.hh \
+ /usr/local/include/CLHEP/Units/PhysicalConstants.h \
+ /usr/local/include/CLHEP/Units/defs.h \
+ /usr/local/include/CLHEP/Units/SystemOfUnits.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/trkdefs.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ThreeVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4LogicalVolume.hh \
+ /usr/include/c++/11/memory \
+ /usr/include/c++/11/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/11/bits/align.h /usr/include/c++/11/bit \
+ /usr/include/c++/11/bits/shared_ptr.h \
+ /usr/include/c++/11/bits/shared_ptr_base.h \
+ /usr/include/c++/11/bits/allocated_ptr.h \
+ /usr/include/c++/11/ext/concurrence.h \
+ /usr/include/c++/11/bits/shared_ptr_atomic.h \
+ /usr/include/c++/11/bits/atomic_base.h \
+ /usr/include/c++/11/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/11/backward/auto_ptr.h \
+ /usr/include/c++/11/pstl/glue_memory_defs.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Region.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4GeomSplitter.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/geomwdefs.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AutoLock.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Threading.hh \
+ /usr/include/c++/11/condition_variable /usr/include/c++/11/future \
+ /usr/include/c++/11/atomic /usr/include/c++/11/bits/atomic_futex.h \
+ /usr/include/c++/11/bits/std_thread.h /usr/include/c++/11/thread \
+ /usr/include/c++/11/bits/this_thread_sleep.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Region.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/geomdefs.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4RotationMatrix.hh \
+ /usr/local/include/CLHEP/Vector/Rotation.h \
+ /usr/local/include/CLHEP/Vector/RotationInterfaces.h \
+ /usr/local/include/CLHEP/Vector/LorentzVector.h \
+ /usr/local/include/CLHEP/Vector/LorentzVector.icc \
+ /usr/local/include/CLHEP/Vector/ZMxpv.h \
+ /usr/local/include/CLHEP/Vector/AxisAngle.h \
+ /usr/local/include/CLHEP/Vector/AxisAngle.icc \
+ /usr/local/include/CLHEP/Vector/RotationInterfaces.icc \
+ /usr/local/include/CLHEP/Vector/RotationX.h \
+ /usr/local/include/CLHEP/Vector/RotationX.icc \
+ /usr/local/include/CLHEP/Vector/RotationY.h \
+ /usr/local/include/CLHEP/Vector/RotationY.icc \
+ /usr/local/include/CLHEP/Vector/RotationZ.h \
+ /usr/local/include/CLHEP/Vector/RotationZ.icc \
+ /usr/local/include/CLHEP/Vector/Rotation.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4LogicalVolume.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Allocator.hh \
+ /usr/include/c++/11/cstddef \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AllocatorPool.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4DynamicParticle.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElectronOccupancy.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/pwdefs.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Log.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4LorentzVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ParticleDefinition.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PDefManager.hh \
+ /usr/include/c++/11/stdlib.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ParticleDefinition.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ParticleMomentum.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4DynamicParticle.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TrackStatus.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TouchableHandle.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VTouchable.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TouchableHistory.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationHistory.hh \
+ /usr/include/assert.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AffineTransform.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Transform3D.hh \
+ /usr/local/include/CLHEP/Geometry/Transform3D.h \
+ /usr/local/include/CLHEP/Geometry/defs.h \
+ /usr/local/include/CLHEP/Geometry/Transform3D.icc \
+ /usr/local/include/CLHEP/Geometry/Point3D.h \
+ /usr/local/include/CLHEP/Geometry/BasicVector3D.h \
+ /usr/local/include/CLHEP/Geometry/Vector3D.h \
+ /usr/local/include/CLHEP/Geometry/Normal3D.h \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AffineTransform.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationLevel.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationLevelRep.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationLevelRep.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationLevel.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationHistoryPool.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationHistory.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TouchableHistory.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ReferenceCountedHandle.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VUserTrackInformation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PhysicsModelCatalog.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Material.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Element.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElementTable.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElementVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4IonisParamElm.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Isotope.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4IsotopeVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4IonisParamMat.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4DensityEffectCalculator.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MaterialPropertiesTable.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MaterialPropertiesIndex.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MaterialPropertyVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PhysicsFreeVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PhysicsVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PhysicsVectorType.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4PhysicsVector.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MaterialTable.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SandiaTable.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4OrderedTable.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4DataVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4DataVector.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Track.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Step.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4StepPoint.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SteppingControl.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4StepStatus.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4StepPoint.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TrackVector.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Step.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Track.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4FieldManager.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagneticField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Field.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TransportationManager.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Navigator.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NormalNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VSolid.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VSolid.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AuxiliaryNavServices.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4AuxiliaryNavServices.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NormalNavigation.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VoxelNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4NavigationLogger.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4BlockingList.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4BlockingList.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SmartVoxelProxy.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SmartVoxelProxy.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SmartVoxelNode.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SmartVoxelNode.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SmartVoxelHeader.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SmartVoxelHeader.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VoxelNavigation.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ParameterisedNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPVParameterisation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VVolumeMaterialScanner.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ParameterisedNavigation.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ReplicaNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ReplicaNavigation.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4RegularNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VExternalNavigation.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4Navigator.icc \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SafetyHelper.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4TransportationManager.icc

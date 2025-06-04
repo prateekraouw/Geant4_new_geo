@@ -35,6 +35,8 @@ class RunAction : public G4UserRunAction
                        const G4ThreeVector& momentum,
                        G4double totalEnergy);
     void Close6DVectorFile();
+
+    void SaveMagneticFieldAlongZ();
                     
   private:
     std::map<G4String, int> fSecondaryParticles;
@@ -43,5 +45,6 @@ class RunAction : public G4UserRunAction
     
     // File stream for 6D vector output
     std::ofstream file6DVector;
+
     };
 #endif

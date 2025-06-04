@@ -5,6 +5,7 @@
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4UnitsTable.hh"
+#include <fstream> 
 
 RunAction::RunAction()
 : G4UserRunAction()
@@ -70,6 +71,8 @@ void RunAction::EndOfRunAction(const G4Run* run)
     file6DVector.flush();
     G4cout << "6D vector data flushed to disk" << G4endl;
   }
+
+  //SaveMagneticFieldAlongZ();
 }
 
 void RunAction::RecordParticleToExcel(const G4String& name, 
@@ -135,3 +138,7 @@ void RunAction::Close6DVectorFile()
     G4cout << "Closed 6D vector file" << G4endl;
   }
 }
+
+ // For file handling
+
+// Function to save the magnetic field data along the Z-axis to a CSV file
