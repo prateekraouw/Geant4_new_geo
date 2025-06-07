@@ -8,7 +8,10 @@
 #include "G4SystemOfUnits.hh"
 #include "G4VisAttributes.hh"
 #include "G4VPhysicalVolume.hh"
+<<<<<<< HEAD
 #include "ElectricFieldSetup.hh"
+=======
+>>>>>>> 1b23b60 (removed token)
 #include "G4TransportationManager.hh"
 #include "G4MagIntegratorDriver.hh"
 #include "G4ChordFinder.hh"
@@ -134,8 +137,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                                     "World", nullptr, false, 0, true);
 
     // ========== TUNGSTEN TARGET ==========
+<<<<<<< HEAD
     G4double tungsten_x = 5*cm;
     G4double tungsten_y = 5*cm; 
+=======
+    G4double tungsten_x = 10*cm;
+    G4double tungsten_y = 10*cm; 
+>>>>>>> 1b23b60 (removed token)
     G4double tungsten_z = 75*cm;
     
     G4Box* solidGraphite = new G4Box("Graphite", 0.5*tungsten_x, 0.5*tungsten_y, 0.5*tungsten_z);

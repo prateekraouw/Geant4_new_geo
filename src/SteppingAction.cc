@@ -8,7 +8,10 @@
 #include "G4Track.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4SystemOfUnits.hh"
+<<<<<<< HEAD
 // NEW: Additional includes for field logging
+=======
+>>>>>>> 1b23b60 (removed token)
 #include "G4FieldManager.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
@@ -33,12 +36,15 @@ SteppingAction::SteppingAction(EventAction* eventAction)
 
 SteppingAction::~SteppingAction()
 {
+<<<<<<< HEAD
   // NEW: Close field logging file
   if (fLogFile.is_open()) {
     fLogFile.close();
     G4cout << "Magnetic field logging file closed: " << fLogFileName << G4endl;
   }
 
+=======
+>>>>>>> 1b23b60 (removed token)
   // Your existing destructor code unchanged
   // Print out the particle count at the end, filtering for muons and pions only
   G4cout << "=== Muons and Pions Generated ===" << G4endl;
@@ -87,6 +93,7 @@ SteppingAction::~SteppingAction()
   G4cout << "==========================================" << G4endl;
 }
 
+<<<<<<< HEAD
 // NEW: Initialize field logging file
 void SteppingAction::InitializeFieldLogFile()
 {
@@ -190,6 +197,11 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     }
   }
 
+=======
+
+void SteppingAction::UserSteppingAction(const G4Step* step)
+{
+>>>>>>> 1b23b60 (removed token)
   // ========================================================================
   // ALL YOUR EXISTING CODE BELOW REMAINS COMPLETELY UNCHANGED
   // ========================================================================
@@ -222,6 +234,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   G4String particleName = particle->GetParticleName();
   G4double energy = track->GetKineticEnergy();
 
+<<<<<<< HEAD
   G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
     
     // Check if a magnetic field is assigned
@@ -266,6 +279,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
             }
         }
     }
+=======
+>>>>>>> 1b23b60 (removed token)
   
   // Check for pion decay specifically
   G4String processName = "Unknown";
@@ -303,6 +318,9 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   G4LogicalVolume* volume 
     = step->GetPreStepPoint()->GetTouchableHandle()
       ->GetVolume()->GetLogicalVolume();
+  G4String volumeName = volume->GetName();
+  
+  
   
   // Check for muons and charged pions in detector 1
   if (step->IsFirstStepInVolume() && volume == fDetector1Volume) {
@@ -535,6 +553,166 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
     }
   }
+  
+  // COMPREHENSIVE SOLENOID DETECTION for 23 solenoids
+  static std::set<G4String> allSolenoidVolumes;
+      static bool discoveryPhase = true;
+      static G4int discoverySteps = 0;
+      
+      // Discovery phase: find all volumes with magnetic fields
+      if (discoveryPhase) {
+          discoverySteps++;
+          
+          // Check if this volume has a magnetic field
+          G4FieldManager* fieldMgr = volume->GetFieldManager();
+          if (!fieldMgr) {
+              fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+          }
+          
+          bool hasField = false;
+          if (fieldMgr) {
+              const G4Field* field = fieldMgr->GetDetectorField();
+              if (field) {
+                  const G4MagneticField* magField = dynamic_cast<const G4MagneticField*>(field);
+                  if (magField) {
+                      // Test if field is non-zero at current position
+                      G4ThreeVector position = step->GetTrack()->GetPosition();
+                      G4double point[4] = {position.x(), position.y(), position.z(), 0.0};
+                      G4double fieldValue[3];
+                      magField->GetFieldValue(point, fieldValue);
+                      
+                      G4double fieldMagnitude = sqrt(fieldValue[0]*fieldValue[0] + 
+                                                   fieldValue[1]*fieldValue[1] + 
+                                                   fieldValue[2]*fieldValue[2]);
+                      
+                      if (fieldMagnitude > 1e-10) {  // Non-zero field
+                          hasField = true;
+                          
+                          if (allSolenoidVolumes.find(volumeName) == allSolenoidVolumes.end()) {
+                              allSolenoidVolumes.insert(volumeName);
+                              G4cout << "SOLENOID " << allSolenoidVolumes.size() 
+                                     << " DISCOVERED: '" << volumeName 
+                                     << "' (|B|=" << fieldMagnitude/tesla << "T)" << G4endl;
+                          }
+                      }
+                  }
+              }
+          }
+          
+          // End discovery phase after sufficient steps or when we find 23+ solenoids
+          if (discoverySteps > 5000 || allSolenoidVolumes.size() >= 23) {
+              discoveryPhase = false;
+              G4cout << "\n=== DISCOVERY COMPLETE ===" << G4endl;
+              G4cout << "Found " << allSolenoidVolumes.size() << " magnetic volumes:" << G4endl;
+              G4int counter = 1;
+              for (const auto& vol : allSolenoidVolumes) {
+                  G4cout << "  " << counter << ". " << vol << G4endl;
+                  counter++;
+              }
+              G4cout << "========================\n" << G4endl;
+          }
+      }
+      
+      // Check if current volume is one of our discovered solenoids
+      bool inSolenoid = (allSolenoidVolumes.find(volumeName) != allSolenoidVolumes.end());
+      
+      // LOGGING PHASE - Log all 23 solenoids
+      static bool csvCreated = false;
+      static std::map<G4String, G4int> volumeCounters;
+      static G4int totalLoggedPoints = 0;
+      
+      if (inSolenoid) {
+          // Initialize counter for this volume
+          if (volumeCounters.find(volumeName) == volumeCounters.end()) {
+              volumeCounters[volumeName] = 0;
+          }
+          volumeCounters[volumeName]++;
+          
+          // Create CSV header once
+          if (!csvCreated) {
+              std::ofstream csvFile("all_23_solenoids.csv", std::ios::out);
+              if (csvFile.is_open()) {
+                  csvFile << "x,y,z,bx,by,bz,particle,volume\n";
+                  csvFile.close();
+                  csvCreated = true;
+                  G4cout << "Created all_23_solenoids.csv for logging all " 
+                         << allSolenoidVolumes.size() << " solenoids" << G4endl;
+              }
+          }
+          
+          // Log every 5th step in each volume independently
+          if (volumeCounters[volumeName] % 5 == 0) {
+              G4Track* track = step->GetTrack();
+              G4String particleName = track->GetDefinition()->GetParticleName();
+              
+              // Get field manager
+              G4FieldManager* fieldMgr = volume->GetFieldManager();
+              if (!fieldMgr) {
+                  fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
+              }
+              
+              if (fieldMgr) {
+                  const G4Field* field = fieldMgr->GetDetectorField();
+                  if (field) {
+                      const G4MagneticField* magField = dynamic_cast<const G4MagneticField*>(field);
+                      if (magField) {
+                          // Get position and field
+                          G4ThreeVector position = track->GetPosition();
+                          G4double point[4] = {position.x(), position.y(), position.z(), 0.0};
+                          G4double fieldValue[3];
+                          magField->GetFieldValue(point, fieldValue);
+                          
+                          // Convert to mm and Tesla
+                          G4double x = position.x() / mm;
+                          G4double y = position.y() / mm;
+                          G4double z = position.z() / mm;
+                          G4double bx = fieldValue[0] / tesla;
+                          G4double by = fieldValue[1] / tesla;
+                          G4double bz = fieldValue[2] / tesla;
+                          
+                          // Write to CSV
+                          std::ofstream csvFile("all_23_solenoids.csv", std::ios::app);
+                          if (csvFile.is_open()) {
+                              csvFile << std::fixed << std::setprecision(6)
+                                     << x << "," << y << "," << z << ","
+                                     << bx << "," << by << "," << bz << ","
+                                     << particleName << "," << volumeName << "\n";
+                              csvFile.close();
+                              totalLoggedPoints++;
+                          }
+                      }
+                  }
+              }
+          }
+      }
+      
+      // Periodic status report showing all 23 solenoids
+      static G4int lastReportStep = 0;
+      static G4int globalStepCounter = 0;
+      globalStepCounter++;
+      
+      if (globalStepCounter % 1000 == 0 && globalStepCounter != lastReportStep) {
+          lastReportStep = globalStepCounter;
+          
+          if (!discoveryPhase && allSolenoidVolumes.size() > 0) {
+              G4cout << "\n=== STATUS: All " << allSolenoidVolumes.size() 
+                     << " Solenoids (Step " << globalStepCounter << ") ===" << G4endl;
+              
+              G4int activeVolumes = 0;
+              for (const auto& vol : allSolenoidVolumes) {
+                  if (volumeCounters.find(vol) != volumeCounters.end() && volumeCounters[vol] > 0) {
+                      G4cout << "  " << vol << ": " << volumeCounters[vol] << " steps" << G4endl;
+                      activeVolumes++;
+                  } else {
+                      G4cout << "  " << vol << ": not yet visited" << G4endl;
+                  }
+              }
+              G4cout << "Active volumes: " << activeVolumes << "/" << allSolenoidVolumes.size() << G4endl;
+              G4cout << "Total logged points: " << totalLoggedPoints << G4endl;
+              G4cout << "==========================================\n" << G4endl;
+          }
+      }
+
 
   // Check if we are in scoring volume for energy deposition
   if (volume == fScoringVolume) {

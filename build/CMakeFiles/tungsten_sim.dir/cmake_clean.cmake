@@ -3,8 +3,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/tungsten_sim.dir/src/ActionInitialization.cc.o.d"
   "CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o"
   "CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o.d"
-  "CMakeFiles/tungsten_sim.dir/src/ElectricFieldSetup.cc.o"
-  "CMakeFiles/tungsten_sim.dir/src/ElectricFieldSetup.cc.o.d"
   "CMakeFiles/tungsten_sim.dir/src/EventAction.cc.o"
   "CMakeFiles/tungsten_sim.dir/src/EventAction.cc.o.d"
   "CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o"

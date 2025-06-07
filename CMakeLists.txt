@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 project(TungstenProtonSimulation)
 
-# Find Geant4 package
+# Find Geant4 package (NOT g4bl!)
 find_package(Geant4 REQUIRED ui_all vis_all)
 
 # Geant4 include directories and compile definitions
@@ -19,7 +19,6 @@ set(SOURCES
     src/RunAction.cc
     src/EventAction.cc
     src/SteppingAction.cc
-    src/ElectricFieldSetup.cc
     src/RFCavityField.cc
     src/SolenoidSystem.cc
     src/MomentumChicane.cc
@@ -27,6 +26,8 @@ set(SOURCES
 
 # Add the executable with explicit source files
 add_executable(tungsten_sim tungsten_sim.cc ${SOURCES})
+
+# Link against Geant4 libraries
 target_link_libraries(tungsten_sim ${Geant4_LIBRARIES})
 
 # Install the executable

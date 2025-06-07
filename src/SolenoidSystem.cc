@@ -301,7 +301,11 @@ void SolenoidSystem::CreateFieldManagers()
     G4cout << "Turns: " << params.NR << "×" << params.NZ << " = " << (params.NR*params.NZ) << G4endl;
     
     // Create and track magnetic field
+<<<<<<< HEAD
     G4ThreeVector fieldVector(0.0, 0.0, fieldStrength);
+=======
+    G4ThreeVector fieldVector(0.0, 0.0, fieldStrength );
+>>>>>>> 1b23b60 (removed token)
     G4UniformMagField* magField = new G4UniformMagField(fieldVector);
     fMagneticFields.push_back(magField);
     
@@ -338,9 +342,15 @@ void SolenoidSystem::CreateFieldManagers()
     // Verify field application
     G4FieldManager* appliedManager = solenoidVolume->GetFieldManager();
     if (appliedManager) {
+<<<<<<< HEAD
         G4cout << "✅ " << fieldStrength/tesla << " T field applied to volume" << G4endl;
     } else {
         G4cout << "❌ WARNING: Field manager not applied!" << G4endl;
+=======
+        G4cout << " fieldStrength/tesla "<< " T field applied to volume" << G4endl;
+    } else {
+        G4cout <<  "WARNING: Field manager not applied!" << G4endl;
+>>>>>>> 1b23b60 (removed token)
     }
     
     G4cout << "========== Field Manager Created ==========" << G4endl;
