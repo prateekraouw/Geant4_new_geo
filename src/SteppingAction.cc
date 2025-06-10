@@ -8,10 +8,6 @@
 #include "G4Track.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4SystemOfUnits.hh"
-<<<<<<< HEAD
-// NEW: Additional includes for field logging
-=======
->>>>>>> 1b23b60 (removed token)
 #include "G4FieldManager.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
@@ -25,26 +21,11 @@ SteppingAction::SteppingAction(EventAction* eventAction)
   fDetector2Volume(nullptr),
   fDetector3Volume(nullptr),
   fDetector4Volume(nullptr),
-  fRFCavityVolume(nullptr),
-  // NEW: Initialize field logging members
-  fLogField(false),  // Enable by default
-  fLogFileName("magnetic_field_continuous.csv"),
-  fFieldStepCounter(0),
-  fLogInterval(1),  // Log every step for continuous tracking
-  fFileInitialized(false)
+  fRFCavityVolume(nullptr)
 {}
 
 SteppingAction::~SteppingAction()
 {
-<<<<<<< HEAD
-  // NEW: Close field logging file
-  if (fLogFile.is_open()) {
-    fLogFile.close();
-    G4cout << "Magnetic field logging file closed: " << fLogFileName << G4endl;
-  }
-
-=======
->>>>>>> 1b23b60 (removed token)
   // Your existing destructor code unchanged
   // Print out the particle count at the end, filtering for muons and pions only
   G4cout << "=== Muons and Pions Generated ===" << G4endl;
@@ -93,115 +74,9 @@ SteppingAction::~SteppingAction()
   G4cout << "==========================================" << G4endl;
 }
 
-<<<<<<< HEAD
-// NEW: Initialize field logging file
-void SteppingAction::InitializeFieldLogFile()
-{
-  if (fFileInitialized) return;
-  
-  fLogFile.open(fLogFileName, std::ios::out);
-  if (fLogFile.is_open()) {
-    // Write simplified CSV header - only position and field
-    fLogFile << "X_mm,Y_mm,Z_mm,Bx_T,By_T,Bz_T,B_magnitude_T\n";
-    fFileInitialized = true;
-    G4cout << "Magnetic field logging initialized: " << fLogFileName << G4endl;
-  } else {
-    G4cout << "ERROR: Cannot open field log file: " << fLogFileName << G4endl;
-    fLogField = false;
-  }
-}
-
-// NEW: Log magnetic field at position - simplified version
-void SteppingAction::LogFieldAtPosition(const G4ThreeVector& position, G4int trackID, G4int stepNumber, G4Track* track)
-{
-  if (!fLogFile.is_open()) return;
-  
-  // Get magnetic field at current position
-  G4ThreeVector bField = GetMagneticFieldAtPosition(position, track);
-  
-  // Calculate field magnitude
-  G4double bMagnitude = bField.mag();
-  
-  // Write only position and field to CSV file
-  fLogFile << std::fixed << std::setprecision(4)
-           << position.x()/mm << ","
-           << position.y()/mm << ","
-           << position.z()/mm << ","
-           << std::setprecision(8)  // High precision for field values
-           << bField.x()/tesla << ","
-           << bField.y()/tesla << ","
-           << bField.z()/tesla << ","
-           << bMagnitude/tesla << "\n";
-  
-  // Flush frequently for continuous monitoring
-  if (stepNumber % 100 == 0) {
-    fLogFile.flush();
-  }
-}
-
-// NEW: Get magnetic field at position
-G4ThreeVector SteppingAction::GetMagneticFieldAtPosition(const G4ThreeVector& position, G4Track* track)
-{
-  // Get the field manager for current volume
-  G4FieldManager* fieldManager = G4TransportationManager::GetTransportationManager()
-                                  ->GetFieldManager();
-  
-  if (!fieldManager) {
-    // Try to get local field manager
-    if (track && track->GetVolume()) {
-      G4LogicalVolume* logVol = track->GetVolume()->GetLogicalVolume();
-      fieldManager = logVol->GetFieldManager();
-    }
-  }
-  
-  if (!fieldManager) {
-    return G4ThreeVector(0, 0, 0);
-  }
-  
-  const G4Field* field = fieldManager->GetDetectorField();
-  if (!field) {
-    return G4ThreeVector(0, 0, 0);
-  }
-  
-  // Cast to magnetic field
-  const G4MagneticField* magField = dynamic_cast<const G4MagneticField*>(field);
-  if (!magField) {
-    return G4ThreeVector(0, 0, 0);
-  }
-  
-  // Get field value at position
-  G4double point[4] = {position.x(), position.y(), position.z(), 0.0};
-  G4double bField[3] = {0.0, 0.0, 0.0};
-  
-  magField->GetFieldValue(point, bField);
-  
-  return G4ThreeVector(bField[0], bField[1], bField[2]);
-}
 
 void SteppingAction::UserSteppingAction(const G4Step* step)
 {
-  // NEW: Initialize field logging on first call
-  if (fLogField && !fFileInitialized) {
-    InitializeFieldLogFile();
-  }
-  
-  // NEW: Continuous magnetic field logging
-  if (fLogField && fFileInitialized) {
-    fFieldStepCounter++;
-    
-    // Log every step for continuous tracking
-    if (fFieldStepCounter % fLogInterval == 0) {
-      G4Track* track = step->GetTrack();
-      G4ThreeVector position = step->GetPostStepPoint()->GetPosition();
-      LogFieldAtPosition(position, track->GetTrackID(), fFieldStepCounter, track);
-    }
-  }
-
-=======
-
-void SteppingAction::UserSteppingAction(const G4Step* step)
-{
->>>>>>> 1b23b60 (removed token)
   // ========================================================================
   // ALL YOUR EXISTING CODE BELOW REMAINS COMPLETELY UNCHANGED
   // ========================================================================
@@ -234,53 +109,6 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   G4String particleName = particle->GetParticleName();
   G4double energy = track->GetKineticEnergy();
 
-<<<<<<< HEAD
-  G4FieldManager* fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
-    
-    // Check if a magnetic field is assigned
-    if (fieldMgr) {
-        const G4Field* field = fieldMgr->GetDetectorField();  // Get the field as const G4Field
-        if (field) {
-            // Cast the field to G4MagneticField
-            const G4MagneticField* magField = dynamic_cast<const G4MagneticField*>(field);
-            if (magField) {
-                // Get the magnetic field at the current point (step position)
-                G4double point[4] = {track->GetPosition().x(), track->GetPosition().y(), track->GetPosition().z(), 0.0};
-                G4double fieldValue[3];  // Array to store the field values (fx, fy, fz)
-
-                magField->GetFieldValue(point, fieldValue);  // Get the field values in the array
-
-                // Create a stringstream to format the output as CSV
-                std::stringstream ss;
-
-                // Get the position and field values
-                G4double x = track->GetPosition().x();
-                G4double y = track->GetPosition().y();
-                G4double z = track->GetPosition().z();
-                G4double fx = fieldValue[0];  // x component of the field (always 0)
-                G4double fy = fieldValue[1];  // y component of the field (always 0)
-                G4double fz = fieldValue[2];  // z component of the field
-
-                // Write the values to the stringstream in CSV format
-                ss << x << "," << y << "," << z << "," << fx << "," << fy << "," << fz << "\n";
-
-                // Open the CSV file in append mode
-                std::ofstream outFile("magnetic_field.csv", std::ios_base::app);  // Open in append mode to add to the file
-
-                // Check if the file was successfully opened
-                if (!outFile.is_open()) {
-                    G4cerr << "Error: Could not open CSV file for writing!" << G4endl;
-                } else {
-                    // Write the formatted values to the file
-                    outFile << ss.str();
-                    outFile.close();  // Close the file after writing
-                    G4cout << "Data written to magnetic_field.csv successfully." << G4endl;
-                }
-            }
-        }
-    }
-=======
->>>>>>> 1b23b60 (removed token)
   
   // Check for pion decay specifically
   G4String processName = "Unknown";
@@ -644,7 +472,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           if (volumeCounters[volumeName] % 5 == 0) {
               G4Track* track = step->GetTrack();
               G4String particleName = track->GetDefinition()->GetParticleName();
-              
+              if (particleName == "mu+" || particleName == "mu-" || particleName=="pi+" || particleName == "pi-"){
               // Get field manager
               G4FieldManager* fieldMgr = volume->GetFieldManager();
               if (!fieldMgr) {
@@ -684,6 +512,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
                   }
               }
           }
+        }
       }
       
       // Periodic status report showing all 23 solenoids

@@ -223,34 +223,6 @@ CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/prateek/Geant4_new_geo/src/MomentumChicane.cc -o CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.s
 
-CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o: CMakeFiles/tungsten_sim.dir/flags.make
-CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o: /home/prateek/Downloads/simulation/src/SolenoidSystem.cc
-CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o: CMakeFiles/tungsten_sim.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/prateek/Downloads/simulation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o -MF CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o.d -o CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o -c /home/prateek/Downloads/simulation/src/SolenoidSystem.cc
-
-CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/prateek/Downloads/simulation/src/SolenoidSystem.cc > CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.i
-
-CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/prateek/Downloads/simulation/src/SolenoidSystem.cc -o CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.s
-
-CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o: CMakeFiles/tungsten_sim.dir/flags.make
-CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o: /home/prateek/Downloads/simulation/src/MomentumChicane.cc
-CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o: CMakeFiles/tungsten_sim.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/prateek/Downloads/simulation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o -MF CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o.d -o CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o -c /home/prateek/Downloads/simulation/src/MomentumChicane.cc
-
-CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/prateek/Downloads/simulation/src/MomentumChicane.cc > CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.i
-
-CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/prateek/Downloads/simulation/src/MomentumChicane.cc -o CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.s
-
 # Object files for target tungsten_sim
 tungsten_sim_OBJECTS = \
 "CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o" \
@@ -261,10 +233,6 @@ tungsten_sim_OBJECTS = \
 "CMakeFiles/tungsten_sim.dir/src/RunAction.cc.o" \
 "CMakeFiles/tungsten_sim.dir/src/EventAction.cc.o" \
 "CMakeFiles/tungsten_sim.dir/src/SteppingAction.cc.o" \
-<<<<<<< HEAD
-"CMakeFiles/tungsten_sim.dir/src/ElectricFieldSetup.cc.o" \
-=======
->>>>>>> 1b23b60 (removed token)
 "CMakeFiles/tungsten_sim.dir/src/RFCavityField.cc.o" \
 "CMakeFiles/tungsten_sim.dir/src/SolenoidSystem.cc.o" \
 "CMakeFiles/tungsten_sim.dir/src/MomentumChicane.cc.o"
@@ -322,11 +290,7 @@ tungsten_sim: /home/prateek/geant4-v11.3.2/geant4-install/lib/libG4global.so
 tungsten_sim: /home/prateek/geant4-v11.3.2/geant4-install/lib/libG4ptl.so.3.0.0
 tungsten_sim: /usr/local/lib/libCLHEP-2.4.7.1.so
 tungsten_sim: CMakeFiles/tungsten_sim.dir/link.txt
-<<<<<<< HEAD
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/prateek/Downloads/simulation/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable tungsten_sim"
-=======
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/prateek/Geant4_new_geo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable tungsten_sim"
->>>>>>> 1b23b60 (removed token)
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/tungsten_sim.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

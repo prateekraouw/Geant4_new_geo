@@ -21,11 +21,33 @@ struct SolenoidParameters {
     G4int NZ;         // Number of turns axially  
     G4double current; // Current [A] - current through windings
 };
+// Forward declaration
+class SolenoidSystem;
+
+class SolenoidFringeField : public G4MagneticField
+{
+private:
+    G4double fBz0;           // Central field strength
+    G4double fRadius;        // Solenoid radius
+    G4double fLength;        // Solenoid length
+    G4double fZCenter;       // Z position of solenoid center
+    
+public:
+    SolenoidFringeField(G4double Bz0, G4double radius, G4double length, G4double zCenter);
+    
+    void GetFieldValue(const G4double point[4], G4double* field) const override;
+    
+private:
+    G4double FringeFieldFactor(G4double z) const;
+    void CalculateFringeField(G4double rho, G4double z, G4double* field) const;
+};
+
+
 
 class SolenoidSystem
 {
 public:
-    SolenoidSystem();
+SolenoidSystem();
     ~SolenoidSystem();
     
     // Main function - takes direct physical parameters for single solenoid
@@ -45,13 +67,13 @@ public:
     void PrintSystemInfo() const;
 
 private:
-    // Materials
+// Materials
     G4Material* fAirMaterial;
     G4Material* fCopperMaterial;
     G4Material* fInsulatorMaterial;
     
     // Vectors to track field-related objects for proper cleanup
-    std::vector<G4UniformMagField*> fMagneticFields;
+    std::vector<G4MagneticField*> fMagneticFields;  // Changed to base class
     std::vector<G4FieldManager*> fFieldManagers;
     std::vector<G4Mag_UsualEqRhs*> fEquations;
     std::vector<G4ClassicalRK4*> fSteppers;
@@ -82,7 +104,7 @@ private:
     void SetAirSolenoidVisualization(G4LogicalVolume* solenoidLogical, 
                                    G4int solenoidID, G4double radius);
     
-    // Field manager creation (unchanged)
+    // Field manager creation
     void CreateFieldManagers();
 };
 
