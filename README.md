@@ -28,7 +28,7 @@ It is intended for use in high-energy physics simulations, especially muon or pr
 
 1. Source Geant4 environment:
    ```bash
-    source /path/to/geant4-install/bin/geant4.sh
+    source /path/to/geant4-install/bin/geant4make.sh
    ```
    ```bash
    mkdir build
