@@ -11,6 +11,7 @@ It is intended for use in high-energy physics simulations, especially muon or pr
 ---
 
 ## 📁 Project Structure
+```
 ├── **build**
 │   ├── 6D_vector.csv
 │   ├── all_23_solenoids.csv
@@ -122,7 +123,7 @@ It is intended for use in high-energy physics simulations, especially muon or pr
 │   └── SteppingAction.cc
 ├── **tungsten_sim.cc**
 └── **vis.mac**
-
+```
 ---
 
 ## ⚙️ Prerequisites
