@@ -16,7 +16,7 @@ class ElectricFieldSetup;
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
 public:
-    DetectorConstruction();
+    DetectorConstruction(G4double g1 = 0.0, G4double g2 = 0.0);
     ~DetectorConstruction() override;
     G4VPhysicalVolume* Construct() override;
     void ConstructSDandField() override;
@@ -115,6 +115,8 @@ private:
     G4ThreeVector fDetector2Position;
     G4ThreeVector fDetector3Position;
     G4ThreeVector fDetector4Position;
+    
+    G4double fGap1, fGap2;
 
     // New methods
     void CreateInitialSolenoid(G4double start, G4double len);

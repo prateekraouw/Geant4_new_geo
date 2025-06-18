@@ -15,31 +15,31 @@
 #include "G4MagneticField.hh"
 #include "G4Mag_UsualEqRhs.hh"
 
-DetectorConstruction::DetectorConstruction()
+DetectorConstruction::DetectorConstruction(G4double g1, G4double g2)
 : G4VUserDetectorConstruction(),
   fSolenoidSystem1(nullptr),
   fSolenoidSystem2(nullptr),
   fSolenoidSystem3(nullptr),
-      fSolenoidSystem4(nullptr),
-      fSolenoidSystem5(nullptr),
-      fSolenoidSystem6(nullptr),
-      fSolenoidSystem7(nullptr),
-      fSolenoidSystem8(nullptr),
-      fSolenoidSystem9(nullptr),
-      fSolenoidSystem10(nullptr),
-      fSolenoidSystem11(nullptr),
-      fSolenoidSystem12(nullptr),
-      fSolenoidSystem13(nullptr),
-      fSolenoidSystem14(nullptr),
-      fSolenoidSystem15(nullptr),
-      fSolenoidSystem16(nullptr),
-      fSolenoidSystem17(nullptr),
-      fSolenoidSystem18(nullptr),
-      fSolenoidSystem19(nullptr),
-      fSolenoidSystem20(nullptr),
-      fSolenoidSystem21(nullptr),
-      fSolenoidSystem22(nullptr),
-      fSolenoidSystem23(nullptr),
+  fSolenoidSystem4(nullptr),
+  fSolenoidSystem5(nullptr),
+  fSolenoidSystem6(nullptr),
+  fSolenoidSystem7(nullptr),
+  fSolenoidSystem8(nullptr),
+  fSolenoidSystem9(nullptr),
+  fSolenoidSystem10(nullptr),
+  fSolenoidSystem11(nullptr),
+  fSolenoidSystem12(nullptr),
+  fSolenoidSystem13(nullptr),
+  fSolenoidSystem14(nullptr),
+  fSolenoidSystem15(nullptr),
+  fSolenoidSystem16(nullptr),
+  fSolenoidSystem17(nullptr),
+  fSolenoidSystem18(nullptr),
+  fSolenoidSystem19(nullptr),
+  fSolenoidSystem20(nullptr),
+  fSolenoidSystem21(nullptr),
+  fSolenoidSystem22(nullptr),
+  fSolenoidSystem23(nullptr),
   fMomentumChicane(nullptr),
   fScoringVolume(nullptr),
   fWorldLogical(nullptr),
@@ -47,6 +47,8 @@ DetectorConstruction::DetectorConstruction()
   fDetector2Volume(nullptr),
   fDetector3Volume(nullptr),
   fDetector4Volume(nullptr),
+  fGap1(g1),
+  fGap2(g2),
   fPrimaryCollimatorVolume(nullptr),
   fSecondaryCollimatorVolume(nullptr),
   fInitialSolenoidVolume(nullptr),           // Add this
@@ -143,315 +145,295 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4RotationMatrix* rotation = new G4RotationMatrix();
     rotation->rotateX(0*deg);
     
-    new G4PVPlacement(rotation, G4ThreeVector(0, 0, 0), logicTungsten, "Tungsten",
+    new G4PVPlacement(rotation, G4ThreeVector(0, 0, -0.8*m), logicTungsten, "Tungsten",
                      logicWorld, false, 0, true);
 
     // ========== PARTICLE GUN VISUALIZATION ==========
-    G4Box* gunBox = new G4Box("GunBox", 2*cm, 2*cm, 3*cm);
+    G4Box* gunBox = new G4Box("GunBox", 2*cm, 2*cm, 40*cm);
     G4LogicalVolume* gunLog = new G4LogicalVolume(gunBox, graphite_mat, "GunLogical");
     G4RotationMatrix* gunRot = new G4RotationMatrix();
-    gunRot->rotateX(-20.*deg);
-    G4ThreeVector gunPos = G4ThreeVector(0, 12.*cm, -40.*cm);
+    gunRot->rotateX(0.*deg);
+    G4ThreeVector gunPos = G4ThreeVector(0, 0.*m, -2.0*m);
     new G4PVPlacement(gunRot, gunPos, gunLog, "GunBlock", logicWorld, false, 0, true);
 
 
-    G4cout << "\nCreating Solenoid 1..." << G4endl;
+    G4cout << "Creating Solenoid 1..." << G4endl;
     fSolenoidSystem1->CreateRampUpSolenoids(
-        0.970*m,          // Rc - Coil radius
-        -1.185*m,         // Zc - Center position  
-        0.540*m,          // DR - Radial extent
-        0.830*m,          // DZ - Axial extent
-        13,               // NR - Radial turns
-        20,               // NZ - Axial turns
-        55*ampere, // Current (55 kA)
-        fWorldLogical
+        0.970*m,           // Rc - Coil radius
+        -1.185*m,          // Zc - Center z-position
+        0.540*m,           // DR - Radial extent
+        0.830*m,           // DZ - Axial extent
+        13,                // NR - Radial turns
+        20,                // NZ - Axial turns
+        55.0*ampere,      // I - Current
+        fWorldLogical      // World logical volume
     );
     
-    // Solenoid 2: {0.970, -0.335, 0.540, 0.830, 13, 20, 55}
     G4cout << "Creating Solenoid 2..." << G4endl;
     fSolenoidSystem2->CreateRampUpSolenoids(
-        0.970*m,          // Rc
-        -0.335*m,         // Zc
-        0.540*m,          // DR
-        0.830*m,          // DZ
-        13,               // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.970*m,
+        -0.335*m,
+        0.540*m,
+        0.830*m,
+        13,
+        20,
+        55.0*ampere,
         fWorldLogical
     );
     
-    // Solenoid 3: {0.970, 0.515, 0.540, 0.830, 13, 20, 55}
     G4cout << "Creating Solenoid 3..." << G4endl;
     fSolenoidSystem3->CreateRampUpSolenoids(
-        0.970*m,          // Rc
-        0.515*m,          // Zc
-        0.540*m,          // DR
-        0.830*m,          // DZ
-        13,               // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.970*m,
+        0.515*m,
+        0.540*m,
+        0.830*m,
+        13,
+        20,
+        55.0*ampere,
         fWorldLogical
     );
     
-    // Solenoid 4: {0.887, 1.365, 0.374, 0.830, 9, 20, 55}
     G4cout << "Creating Solenoid 4..." << G4endl;
     fSolenoidSystem4->CreateRampUpSolenoids(
-        0.887*m,          // Rc
-        1.365*m,          // Zc
-        0.374*m,          // DR
-        0.830*m,          // DZ
-        9,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.887*m,
+        1.365*m,
+        0.374*m,
+        0.830*m,
+        9,
+        20,
+        55.0*ampere,
         fWorldLogical
     );
     
-    // Solenoid 5: {0.825, 2.215, 0.249, 0.830, 6, 20, 55}
     G4cout << "Creating Solenoid 5..." << G4endl;
     fSolenoidSystem5->CreateRampUpSolenoids(
-        0.825*m,          // Rc
-        2.215*m,          // Zc
-        0.249*m,          // DR
-        0.830*m,          // DZ
-        6,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.825*m,
+        2.215*m,
+        0.249*m,
+        0.830*m,
+        6,
+        20,
+        55.0*ampere,
         fWorldLogical
     );
     
-    // Solenoid 6: {0.783, 3.065, 0.166, 0.830, 4, 20, 55}
     G4cout << "Creating Solenoid 6..." << G4endl;
     fSolenoidSystem6->CreateRampUpSolenoids(
-        0.783*m,          // Rc
-        3.065*m,          // Zc
-        0.166*m,          // DR
-        0.830*m,          // DZ
-        4,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.783*m,
+        3.065*m,
+        0.166*m,
+        0.830*m,
+        4,
+        20,
+        55.0*ampere,
         fWorldLogical
     );
     
-    // Solenoid 7: {0.825, 3.708, 0.249, 0.415, 6, 10, 55}
-    G4cout << "Creating Solenoid 7..." << G4endl;
+    // Solenoid 7
     fSolenoidSystem7->CreateRampUpSolenoids(
-        0.825*m,          // Rc
-        3.708*m,          // Zc
-        0.249*m,          // DR
-        0.415*m,          // DZ
-        6,                // NR
-        10,               // NZ
-        55*ampere, // Current
+        0.825 * m,    // Rc - Coil radius
+        3.708 * m,    // Zc - Center position
+        0.249 * m,    // DR - Radial extent
+        0.415 * m,    // DZ - Axial extent
+        6,            // NR - Radial turns
+        10,           // NZ - Axial turns
+        55.0 * ampere, // I - Current
         fWorldLogical
     );
     
-    // Solenoid 8: {0.804, 5.103, 0.208, 0.415, 5, 10, 55}
-    G4cout << "Creating Solenoid 8..." << G4endl;
+    // Solenoid 8
     fSolenoidSystem8->CreateRampUpSolenoids(
-        0.804*m,          // Rc
-        5.103*m,          // Zc
-        0.208*m,          // DR
-        0.415*m,          // DZ
-        5,                // NR
-        10,               // NZ
-        55*ampere, // Current
+        0.804 * m,
+        4.703 * m,    // Adjusted Zc
+        0.208 * m,
+        0.415 * m,
+        5,
+        10,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 9: {0.742, 5.745, 0.083, 0.830, 2, 20, 55}
-    G4cout << "Creating Solenoid 9..." << G4endl;
+    // Solenoid 9
     fSolenoidSystem9->CreateRampUpSolenoids(
-        0.742*m,          // Rc
-        5.745*m,          // Zc
-        0.083*m,          // DR
-        0.830*m,          // DZ
-        2,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.742 * m,
+        5.345 * m,
+        0.083 * m,
+        0.830 * m,
+        2,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 10: {0.742, 6.595, 0.083, 0.830, 2, 20, 55}
-    G4cout << "Creating Solenoid 10..." << G4endl;
+    // Solenoid 10
     fSolenoidSystem10->CreateRampUpSolenoids(
-        0.742*m,          // Rc
-        6.595*m,          // Zc
-        0.083*m,          // DR
-        0.830*m,          // DZ
-        2,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.742 * m,
+        6.195 * m,
+        0.083 * m,
+        0.830 * m,
+        2,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 11: {0.742, 7.445, 0.083, 0.830, 2, 20, 55}
-    G4cout << "Creating Solenoid 11..." << G4endl;
+    // Solenoid 11
     fSolenoidSystem11->CreateRampUpSolenoids(
-        0.742*m,          // Rc
-        7.445*m,          // Zc
-        0.083*m,          // DR
-        0.830*m,          // DZ
-        2,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.742 * m,
+        7.045 * m,
+        0.083 * m,
+        0.830 * m,
+        2,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 12: {0.721, 8.295, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 12..." << G4endl;
+    // Solenoid 12
     fSolenoidSystem12->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        8.295*m,          // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        7.895 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 13: {0.721, 9.145, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 13..." << G4endl;
+    // Solenoid 13
     fSolenoidSystem13->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        9.145*m,          // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        8.745 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 14: {0.721, 9.995, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 14..." << G4endl;
+    // Solenoid 14
     fSolenoidSystem14->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        9.995*m,          // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        9.595 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 15: {0.742, 10.638, 0.083, 0.415, 2, 10, 55}
-    G4cout << "Creating Solenoid 15..." << G4endl;
+    // Solenoid 15
     fSolenoidSystem15->CreateRampUpSolenoids(
-        0.742*m,          // Rc
-        10.638*m,         // Zc
-        0.083*m,          // DR
-        0.415*m,          // DZ
-        2,                // NR
-        10,               // NZ
-        55*ampere, // Current
+        0.742 * m,
+        10.238 * m,
+        0.083 * m,
+        0.415 * m,
+        2,
+        10,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 16: {0.721, 12.033, 0.042, 0.415, 1, 10, 55}
-    G4cout << "Creating Solenoid 16..." << G4endl;
+    // Solenoid 16
     fSolenoidSystem16->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        12.033*m,         // Zc
-        0.042*m,          // DR
-        0.415*m,          // DZ
-        1,                // NR
-        10,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        11.233 * m,    // Adjusted Zc
+        0.042 * m,
+        0.415 * m,
+        1,
+        10,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 17: {0.721, 12.675, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 17..." << G4endl;
+    // Solenoid 17
     fSolenoidSystem17->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        12.675*m,         // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        11.875 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 18: {0.721, 13.525, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 18..." << G4endl;
+    // Solenoid 18
     fSolenoidSystem18->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        13.525*m,         // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        12.725 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 19: {0.721, 14.375, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 19..." << G4endl;
+    // Solenoid 19
     fSolenoidSystem19->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        14.375*m,         // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        13.575 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 20: {0.721, 15.225, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 20..." << G4endl;
+    // Solenoid 20
     fSolenoidSystem20->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        15.225*m,         // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        14.425 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 21: {0.721, 16.075, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 21..." << G4endl;
+    // Solenoid 21
     fSolenoidSystem21->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        16.075*m,         // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        15.275 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 22: {0.721, 16.925, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 22..." << G4endl;
+    // Solenoid 22
     fSolenoidSystem22->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        16.925*m,         // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        16.125 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
     
-    // Solenoid 23: {0.721, 17.775, 0.042, 0.830, 1, 20, 55}
-    G4cout << "Creating Solenoid 23..." << G4endl;
+    // Solenoid 23
     fSolenoidSystem23->CreateRampUpSolenoids(
-        0.721*m,          // Rc
-        17.775*m,         // Zc
-        0.042*m,          // DR
-        0.830*m,          // DZ
-        1,                // NR
-        20,               // NZ
-        55*ampere, // Current
+        0.721 * m,
+        16.975 * m,
+        0.042 * m,
+        0.830 * m,
+        1,
+        20,
+        55.0 * ampere,
         fWorldLogical
     );
+
+
     // ========== MOMENTUM CHICANE ==========
     /*fMomentumChicane->ConfigureChicane(
         1900*cm,     // Start Z (early in beamline)
@@ -475,7 +457,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     new G4PVPlacement(nullptr, fDetector1Position, logicDetector1, "Detector1", logicWorld, false, 0, false);
 
     // Detector 2: After momentum chicane, before solenoid 
-    G4double detector2_position = 11*meter;
+    G4double detector2_position = 10.5*meter;
     G4Tubs* solidDetector2 = new G4Tubs("Detector2", 0*cm, 75*cm, 0.5*detector_thickness, 0*deg, 360*deg);
     G4LogicalVolume* logicDetector2 = new G4LogicalVolume(solidDetector2, scintillator_mat, "Detector2");
     fDetector2Volume = logicDetector2;
@@ -483,7 +465,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     new G4PVPlacement(nullptr, fDetector2Position, logicDetector2, "Detector2", logicWorld, false, 0, false);
 
     // Detector 3: after solenoid to avoid overlap
-    G4double detector3_position = 18.5*meter;  //  923cm
+    G4double detector3_position = 17.5*meter;  //  923cm
     G4Tubs* solidDetector3 = new G4Tubs("Detector3", 0*cm, 75*cm, 0.5*detector_thickness, 0*deg, 360*deg);
     G4LogicalVolume* logicDetector3 = new G4LogicalVolume(solidDetector3, scintillator_mat, "Detector3");
     fDetector3Volume = logicDetector3;

@@ -95,10 +95,10 @@ void SolenoidFringeField::GetFieldValue(const G4double point[4], G4double* field
     CalculateFringeField(rho, zRel, field);
     
     // Apply cylindrical symmetry for radial components
-    if (rho > 0) {
+     if (rho > 0) {
         field[0] = field[0] * x / rho;  // Br * cos(phi)
         field[1] = field[0] * y / rho;  // Br * sin(phi)
-    }
+        }
 }
 
 // Calculate magnetic field from physical solenoid parameters
@@ -351,7 +351,7 @@ void SolenoidFringeField::CalculateFringeField(G4double rho, G4double z, G4doubl
         
         G4double dBz_dz = fBz0 * (fringeFactorPlus - fringeFactorMinus) / (2.0 * deltaZ);
         field[0] = -0.5 * rho * dBz_dz; // Radial component magnitude
-    }
+        }  
 }
 
 void SolenoidSystem::CreateFieldManagers()

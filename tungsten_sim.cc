@@ -7,6 +7,9 @@
 #include "G4UIExecutive.hh"
 #include "Randomize.hh"
 
+
+
+
 int main(int argc, char** argv){
   // Remove this line to actually run the simulation
   // if(true)return 0;
@@ -18,7 +21,13 @@ int main(int argc, char** argv){
   
   // Set mandatory initialization classes
   // Use DetectorConstruction instead of ChicaneConstruction
-  runManager->SetUserInitialization(new DetectorConstruction());
+  if (argc >= 4) {
+      double gap1 = std::stod(argv[2]);
+      double gap2 = std::stod(argv[3]);
+      runManager->SetUserInitialization(new DetectorConstruction(gap1, gap2));
+  } else {
+      runManager->SetUserInitialization(new DetectorConstruction());
+  }
   runManager->SetUserInitialization(new PhysicsList());
   runManager->SetUserInitialization(new ActionInitialization());
   
