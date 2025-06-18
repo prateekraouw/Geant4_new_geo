@@ -42,11 +42,11 @@ It is intended for use in high-energy physics simulations, especially muon or pr
    ```bash
    make -j$(nproc)
    ```
-   ## run in GUI mode
+## run in GUI mode
   ```bash
   ./tungstem_sim 
   ```
-   ## run in command line mode
+## run in command line mode
   ```bash
   ./tungstem_sim run.mac 
   ```
