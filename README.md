@@ -53,11 +53,11 @@ It is intended for use in high-energy physics simulations, especially muon or pr
   
 ## Analysis
 I. A Jupyter-Notebook plot.ipynb exists in the `build` directory.
-  i. It has all the code build in for field and space-phase analysis
-
+- i. It has all the code build in for field and space-phase analysis
+ 
 ## Data for Analysis ( in `build` Directory)
 1.6D_vector.csv 
-  i. for space-phase Analysis
+- i. for space-phase Analysis
 
 2. all_23_solenoids.csv 
-  ii. for solenoid field analysis
+- ii. for solenoid field analysis
