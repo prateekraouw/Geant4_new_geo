@@ -30,19 +30,25 @@ It is intended for use in high-energy physics simulations, especially muon or pr
    ```bash
     source /path/to/geant4-install/bin/geant4.sh
    ```
-   ```mkdir build
+   ```bash
+   mkdir build
    ```
-   ```cd build
+   ```bash
+   cd build
    ```
-   ```cmake ..
+   ```bash
+   cmake ..
     ```
-   ```make -j$(nproc)
+   ```bash
+   make -j$(nproc)
    ```
    ## run in GUI mode
-  ```./tungstem_sim 
+  ```bash
+  ./tungstem_sim 
   ```
    ## run in command line mode
-  ```./tungstem_sim run.mac 
+  ```bash
+  ./tungstem_sim run.mac 
   ```
   
 ## Analysis
