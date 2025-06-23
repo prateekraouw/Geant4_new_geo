@@ -165,7 +165,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830*m,           // DZ - Axial extent
         13,                // NR - Radial turns
         20,                // NZ - Axial turns
-        55.0*ampere,      // I - Current
+        56.5*ampere,      // I - Current
         fWorldLogical      // World logical volume
     );
     
@@ -177,7 +177,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830*m,
         13,
         20,
-        55.0*ampere,
+        56.5*ampere,
         fWorldLogical
     );
     
@@ -189,7 +189,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830*m,
         13,
         20,
-        55.0*ampere,
+        56.5*ampere,
         fWorldLogical
     );
     
@@ -201,7 +201,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830*m,
         9,
         20,
-        55.0*ampere,
+        56.5*ampere,
         fWorldLogical
     );
     
@@ -213,7 +213,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830*m,
         6,
         20,
-        55.0*ampere,
+        56.5*ampere,
         fWorldLogical
     );
     
@@ -225,7 +225,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830*m,
         4,
         20,
-        55.0*ampere,
+        56.5*ampere,
         fWorldLogical
     );
     
@@ -237,7 +237,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.415 * m,    // DZ - Axial extent
         6,            // NR - Radial turns
         10,           // NZ - Axial turns
-        55.0 * ampere, // I - Current
+        56.5 * ampere, // I - Current
         fWorldLogical
     );
     
@@ -249,7 +249,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.415 * m,
         5,
         10,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -261,7 +261,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         2,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -273,7 +273,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         2,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -285,7 +285,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         2,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -297,7 +297,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -309,7 +309,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -321,7 +321,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -333,7 +333,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.415 * m,
         2,
         10,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -345,7 +345,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.415 * m,
         1,
         10,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -357,7 +357,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -369,7 +369,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -381,7 +381,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -393,7 +393,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -405,7 +405,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -417,7 +417,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
     
@@ -429,7 +429,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         0.830 * m,
         1,
         20,
-        55.0 * ampere,
+        56.5 * ampere,
         fWorldLogical
     );
 
@@ -758,7 +758,7 @@ void DetectorConstruction::CreateCollimationSystem()
     CreateSecondaryCollimator();
     
     G4cout << "\n========== Collimation System Created ==========" << G4endl;
-    G4cout << "Primary collimator: Z = 455cm, aperture = 25cm" << G4endl;
+    G4cout << "Primary collimator: Z = 456.5cm, aperture = 25cm" << G4endl;
     G4cout << "Secondary collimator: Z = 480cm, aperture = 15cm" << G4endl;
     G4cout << "===============================================\n" << G4endl;
 }
@@ -768,7 +768,7 @@ void DetectorConstruction::CreatePrimaryCollimator()
     G4NistManager* nist = G4NistManager::Instance();
     G4Material* tungsten_mat = nist->FindOrBuildMaterial("G4_W");
     
-    G4double collimator1_z = 1955*cm;
+    G4double collimator1_z = 1956.5*cm;
     G4double collimator_thickness = 5*cm;
     G4double aperture_radius = 25*cm;
     G4double outer_radius = 80*cm;
@@ -842,13 +842,13 @@ void DetectorConstruction::AnalyzeCompleteSystem()
     
     G4cout << "\n========== Final System Overview ==========" << G4endl;
     G4cout << "Target → Momentum Chicane → Collimation → Solenoid → Detection" << G4endl;
-    G4cout << "0cm → 100-340cm → 455-485cm → 535-1035cm → 1055-1100cm" << G4endl;
+    G4cout << "0cm → 100-340cm → 456.5-485cm → 535-1035cm → 1056.5-1100cm" << G4endl;
     G4cout << "Momentum selection: 2% resolution" << G4endl;
     G4cout << "Solenoid focusing: 25 segments, 7T field" << G4endl;
     G4cout << "Expected final beam: 1.0-1.1 mm radius" << G4endl;
     G4cout << "Expected transmission: ~25%" << G4endl;
     G4cout << "Beta function: ~1.5-1.7 mm" << G4endl;
-    G4cout << "Final beamline length: ~1155cm (compact design)" << G4endl;
+    G4cout << "Final beamline length: ~1156.5cm (compact design)" << G4endl;
     G4cout << "==========================================\n" << G4endl;
     
     G4cout << "####################################################" << G4endl;

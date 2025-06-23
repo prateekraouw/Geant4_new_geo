@@ -405,6 +405,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
                   if (magField) {
                       // Test if field is non-zero at current position
                       G4ThreeVector position = step->GetTrack()->GetPosition();
+                      G4double energy = step->GetPreStepPoint()->GetTotalEnergy();
                       G4double point[4] = {position.x(), position.y(), position.z(), 0.0};
                       G4double fieldValue[3];
                       magField->GetFieldValue(point, fieldValue);
@@ -460,7 +461,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           if (!csvCreated) {
               std::ofstream csvFile("all_23_solenoids.csv", std::ios::out);
               if (csvFile.is_open()) {
-                  csvFile << "x,y,z,bx,by,bz,particle,volume\n";
+                  csvFile << "x,y,z,bx,by,bz,particle,energy,volume\n";
                   csvFile.close();
                   csvCreated = true;
                   G4cout << "Created all_23_solenoids.csv for logging all " 
@@ -472,6 +473,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           if (volumeCounters[volumeName] % 5 == 0) {
               G4Track* track = step->GetTrack();
               G4String particleName = track->GetDefinition()->GetParticleName();
+              G4double energy = step->GetPreStepPoint()->GetTotalEnergy();
               if (particleName == "mu+" || particleName == "mu-" || particleName=="pi+" || particleName == "pi-"){
               // Get field manager
               G4FieldManager* fieldMgr = volume->GetFieldManager();
@@ -504,7 +506,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
                               csvFile << std::fixed << std::setprecision(6)
                                      << x << "," << y << "," << z << ","
                                      << bx << "," << by << "," << bz << ","
-                                     << particleName << "," << volumeName << "\n";
+                                     << particleName<<","<<energy << "," << volumeName << "\n";
                               csvFile.close();
                               totalLoggedPoints++;
                           }
