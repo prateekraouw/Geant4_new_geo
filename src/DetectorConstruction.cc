@@ -17,6 +17,7 @@
 
 DetectorConstruction::DetectorConstruction(G4double g1, G4double g2)
 : G4VUserDetectorConstruction(),
+  fTungstenApertureVolume(nullptr),
   fSolenoidSystem1(nullptr),
   fSolenoidSystem2(nullptr),
   fSolenoidSystem3(nullptr),
@@ -80,6 +81,7 @@ DetectorConstruction::DetectorConstruction(G4double g1, G4double g2)
     fSolenoidSystem22 = new SolenoidSystem();
     fSolenoidSystem23 = new SolenoidSystem();
     fMomentumChicane = new MomentumChicane();
+    
 }
 
 DetectorConstruction::~DetectorConstruction()
@@ -119,6 +121,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4NistManager* nist = G4NistManager::Instance();
     G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
     G4Material* graphite_mat = nist->FindOrBuildMaterial("G4_GRAPHITE");
+    G4Material* tungsten_mat = nist->FindOrBuildMaterial("G4_W");
     G4Material* scintillator_mat = nist->FindOrBuildMaterial("G4_Ar");
     G4Material* rfcavity_mat = nist->FindOrBuildMaterial("G4_Galactic");
 
@@ -137,7 +140,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     // ========== TUNGSTEN TARGET ==========
     G4double tungsten_x = 10*cm;
     G4double tungsten_y = 10*cm; 
-    G4double tungsten_z = 75*cm;
+    G4double tungsten_z = 40*cm;
     
     G4Box* solidGraphite = new G4Box("Graphite", 0.5*tungsten_x, 0.5*tungsten_y, 0.5*tungsten_z);
     G4LogicalVolume* logicTungsten = new G4LogicalVolume(solidGraphite, graphite_mat, "Graphite");
@@ -445,6 +448,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     );
     fMomentumChicane->BuildChicane(fWorldLogical);
     */
+    
+    // ========= Tungsten Aperture ====
+    G4double tungstenAperture_position = 10*meter;
+    G4Tubs* tungstenAperture = new G4Tubs("TungstenAperture", 5*cm, 120*cm, 2*cm, 0*deg, 360*deg);
+    G4LogicalVolume* logicTungstenAperture = new G4LogicalVolume(tungstenAperture, tungsten_mat, "TungstenAperture");
+    fTungstenApertureVolume = logicTungstenAperture;
+    fTungstenAperturePosition = G4ThreeVector(0, 0, tungstenAperture_position);
+    new G4PVPlacement(nullptr, fTungstenAperturePosition, logicTungstenAperture, "TungstenAperture", logicWorld, false, 0, false);
+    
+    
     // ========== DETECTORS ==========
     G4double detector_thickness = 0.1*cm;
 
@@ -498,6 +511,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     // ========== VISUALIZATION (keep original + new) ==========
     G4VisAttributes* tungsten_vis_att = new G4VisAttributes(G4Colour(0.5, 0.5, 0.5));
     logicTungsten->SetVisAttributes(tungsten_vis_att);
+    
+    G4VisAttributes* tungstenAperture_vis_att = new G4VisAttributes(G4Color::Yellow());
+    tungstenAperture_vis_att->SetVisibility(true);
+    logicTungstenAperture->SetVisAttributes(tungstenAperture_vis_att);
     
     G4VisAttributes* detector1_vis_att = new G4VisAttributes(G4Colour(1.0, 0.0, 0.0));
     detector1_vis_att->SetVisibility(true);

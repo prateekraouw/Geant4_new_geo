@@ -97,6 +97,7 @@ private:
     // Original members (unchanged)
     G4LogicalVolume* fWorldLogical;
     G4LogicalVolume* fScoringVolume;
+    G4LogicalVolume* fTungstenApertureVolume;
     G4LogicalVolume* fDetector1Volume;
     G4LogicalVolume* fDetector2Volume;
     G4LogicalVolume* fDetector3Volume;
@@ -111,6 +112,7 @@ private:
     G4LogicalVolume* fSecondaryCollimatorVolume;
     
     // Original detector positions
+    G4ThreeVector fTungstenAperturePosition;
     G4ThreeVector fDetector1Position;
     G4ThreeVector fDetector2Position;
     G4ThreeVector fDetector3Position;
