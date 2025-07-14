@@ -12,6 +12,7 @@
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
 #include <iomanip>
+#include <memory>
 
 SteppingAction::SteppingAction(EventAction* eventAction)
 : G4UserSteppingAction(),
@@ -154,8 +155,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector1Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum();
-    G4double totalEnergy = step->GetPreStepPoint()->GetTotalEnergy();
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV ;
+    G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
       // Count muons
@@ -194,8 +195,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector2Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum();
-    G4double totalEnergy = step->GetPreStepPoint()->GetTotalEnergy();
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
       // Count muons at Detector 2
@@ -236,8 +237,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector3Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum();
-    G4double totalEnergy = step->GetPreStepPoint()->GetTotalEnergy();
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
       // Count muons at Detector 3
@@ -278,8 +279,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fRFCavityVolume) {
     // Get position and momentum at cavity entrance
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum();
-    G4double totalEnergy = step->GetPreStepPoint()->GetTotalEnergy();
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     // Store initial properties for particles of interest
     if (particleName == "mu+" || particleName == "mu-" ||
@@ -344,8 +345,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector4Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum();
-    G4double totalEnergy = step->GetPreStepPoint()->GetTotalEnergy();
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
       // Count muons at Detector 4
@@ -414,17 +415,13 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
                                                    fieldValue[1]*fieldValue[1] +
                                                    fieldValue[2]*fieldValue[2]);
 
-                      if (fieldMagnitude > 1e-10) {  // Non-zero field
-                          hasField = true;
-
                           if (allSolenoidVolumes.find(volumeName) == allSolenoidVolumes.end()) {
                               allSolenoidVolumes.insert(volumeName);
                               G4cout << "SOLENOID " << allSolenoidVolumes.size()
                                      << " DISCOVERED: '" << volumeName
                                      << "' (|B|=" << fieldMagnitude/tesla << "T)" << G4endl;
                           }
-                      }
-                  }
+                          }
               }
           }
 

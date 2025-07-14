@@ -14,10 +14,10 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
   fParticleGun = new G4ParticleGun(nofParticles);
 
   // Define the beam as protons
-  G4ParticleDefinition* particleDefinition 
+  G4ParticleDefinition* particleDefinition
     = G4ParticleTable::GetParticleTable()->FindParticle("proton");
   fParticleGun->SetParticleDefinition(particleDefinition);
-  
+
   // Set initial energy of proton beam (100 MeV)
   fParticleGun->SetParticleEnergy(8.*GeV);
 }
@@ -30,10 +30,10 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
   // Set beam direction along the z-axis (towards the tungsten block)
-  G4double angle = 0.*deg;
+  G4double angle = 0.0*rad;
   G4ThreeVector dir(0., std::sin(angle), std::cos(angle));
   fParticleGun->SetParticleMomentumDirection(dir);
-  
+
   // Position the beam 1 cm before the tungsten block
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 0.*cm, -1.8*m));
 
