@@ -135,8 +135,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
             G4cout << "\n!!! PION DECAY DETECTED !!!" << G4endl;
             G4cout << particleName << " → " << secName << G4endl;
             G4cout << "Position: " << position/mm << " mm" << G4endl;
-            G4cout << "Parent Energy: " << energy/MeV << " MeV" << G4endl;
-            G4cout << "Muon Energy: " << secEnergy/MeV << " MeV" << G4endl;
+            G4cout << "Parent Energy: " << energy/GeV << " GeV" << G4endl;
+            G4cout << "Muon Energy: " << secEnergy/GeV << " GeV" << G4endl;
           }
         }
       }
@@ -155,7 +155,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector1Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV ;
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /GeV ;
     G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
@@ -171,7 +171,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! MUON DETECTED IN DETECTOR 1 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
     // Only count charged pions (pi+, pi-)
     else if (particleName == "pi+" || particleName == "pi-") {
@@ -187,7 +187,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! PION DETECTED IN DETECTOR 1 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
   }
 
@@ -195,7 +195,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector2Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /GeV;
     G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
@@ -212,7 +212,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! MUON DETECTED IN DETECTOR 2 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
     // Only count charged pions (pi+, pi-)
     else if (particleName == "pi+" || particleName == "pi-") {
@@ -229,7 +229,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! PION DETECTED IN DETECTOR 2 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
   }
 
@@ -237,7 +237,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector3Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /GeV;
     G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
@@ -254,7 +254,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! MUON DETECTED IN DETECTOR 3 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
     // Only count charged pions (pi+, pi-)
     else if (particleName == "pi+" || particleName == "pi-") {
@@ -271,7 +271,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! PION DETECTED IN DETECTOR 3 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
   }
 
@@ -279,7 +279,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fRFCavityVolume) {
     // Get position and momentum at cavity entrance
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /GeV;
     G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     // Store initial properties for particles of interest
@@ -299,8 +299,8 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! PARTICLE ENTERING RF CAVITY !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << totalEnergy/MeV << " MeV" << G4endl;
-      G4cout << "Momentum: " << momentum.mag()/MeV << " MeV/c" << G4endl;
+      G4cout << "Energy: " << totalEnergy/GeV << " GeV" << G4endl;
+      G4cout << "Momentum: " << momentum.mag()/GeV << " GeV/c" << G4endl;
     }
   }
 
@@ -328,11 +328,11 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
         G4cout << "\n!!! PARTICLE EXITING RF CAVITY !!!" << G4endl;
         G4cout << "Type: " << particleName << G4endl;
-        G4cout << "Initial Energy: " << initialEnergy/MeV << " MeV" << G4endl;
-        G4cout << "Final Energy: " << totalEnergy/MeV << " MeV" << G4endl;
-        G4cout << "Energy Gain: " << energyGain/MeV << " MeV" << G4endl;
-        G4cout << "Initial Momentum Z: " << initialMomentum.z()/MeV << " MeV/c" << G4endl;
-        G4cout << "Final Momentum Z: " << momentum.z()/MeV << " MeV/c" << G4endl;
+        G4cout << "Initial Energy: " << initialEnergy/GeV << " GeV" << G4endl;
+        G4cout << "Final Energy: " << totalEnergy/GeV << " GeV" << G4endl;
+        G4cout << "Energy Gain: " << energyGain/GeV << " GeV" << G4endl;
+        G4cout << "Initial Momentum Z: " << initialMomentum.z()/GeV << " GeV/c" << G4endl;
+        G4cout << "Final Momentum Z: " << momentum.z()/GeV << " GeV/c" << G4endl;
 
         // Clean up the tracking maps to avoid memory growth
         fRFCavityEntranceEnergy.erase(trackID);
@@ -345,7 +345,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
   if (step->IsFirstStepInVolume() && volume == fDetector4Volume) {
     // Get position and momentum for 6D vector
     G4ThreeVector position = step->GetPreStepPoint()->GetPosition();
-    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /MeV;
+    G4ThreeVector momentum = step->GetPreStepPoint()->GetMomentum() /GeV;
     G4double totalEnergy = step->GetTrack()->GetKineticEnergy();
 
     if (particleName == "mu+" || particleName == "mu-") {
@@ -362,7 +362,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! MUON DETECTED IN DETECTOR 4 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
     // Only count charged pions (pi+, pi-)
     else if (particleName == "pi+" || particleName == "pi-") {
@@ -379,7 +379,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       G4cout << "\n!!! PION DETECTED IN DETECTOR 4 !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
-      G4cout << "Energy: " << track->GetKineticEnergy()/MeV << " MeV" << G4endl;
+      G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
   }
 

@@ -125,6 +125,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
     G4Material* graphite_mat = nist->FindOrBuildMaterial("G4_GRAPHITE");
     G4Material* tungsten_mat = nist->FindOrBuildMaterial("G4_W");
+    G4Material* beryllium = nist->FindOrBuildMaterial("G4_Be");
     G4Material* scintillator_mat = nist->FindOrBuildMaterial("G4_Ar");
     G4Material* rfcavity_mat = nist->FindOrBuildMaterial("G4_Galactic");
 
@@ -163,11 +164,30 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     new G4PVPlacement(gunRot, gunPos, gunLog, "GunBlock", logicWorld, false, 0, true);
 
     // ============ Tungsten transport bore ===========
-    G4double startPos = -1.2*m;
+    G4double startPos = -1.1*m;
     G4double endPos = 17.58*m;
+    G4double R_start = 7.5*cm;
+    G4double R_end = 30*cm;
+    G4double length = 0.01*m;
     G4double bore_length = endPos - startPos;
     G4double boreCenter = (startPos + endPos) / 2;
+    G4double k = std::log(R_end/R_start);
+    int bore_number = 0;
     
+    for(G4double z = startPos+length/2; z <= endPos; z +=length) {
+        G4double s = z-startPos;
+        G4double R_inner = R_start*std::exp(k*std::pow(s/bore_length, 0.25));
+        G4Tubs* bore = new G4Tubs("Bore"+std::to_string(bore_number), R_inner, 70*cm, length, 0*deg, 360*deg);
+        G4LogicalVolume* logicBore = new G4LogicalVolume(bore, beryllium, "Bore"+std::to_string(bore_number));
+        G4ThreeVector fBore_position = G4ThreeVector(0, 0, z);
+        new G4PVPlacement(nullptr, fBore_position, logicBore, "Bore"+std::to_string(bore_number), logicWorld, false, 0, false);
+        G4VisAttributes* tungstenBore = new G4VisAttributes(G4Color(0.5,0.5,0.5,1.0)); //Grey
+        tungstenBore->SetVisibility(true);
+        logicBore->SetVisAttributes(tungstenBore);
+        bore_number++;
+    }
+    
+    /* 
     G4Cons* bore = new G4Cons("Bore", 
                             7.5*cm, // start inner radius
                             70*cm, // start outer radius
@@ -181,7 +201,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4ThreeVector fBore_position = G4ThreeVector(0, 0, boreCenter);
     new G4PVPlacement(nullptr, fBore_position, logicBore, "Bore", logicWorld, false, 0, false);
     
-    /* 
     G4double bore_1_position = 1.5*meter;
     G4Tubs* bore_1 = new G4Tubs("Bore_1", 10*cm, 70*cm, 3.0*m, 0*deg, 360*deg);
     G4LogicalVolume* logicBore_1 = new G4LogicalVolume(bore_1, tungsten_mat, "Bore_1");
@@ -247,7 +266,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         1.665*m,    // Zc (shifted +0.3m)
         0.374*m,
         0.830*m,
-        10,
+        8,
         20,
         52*ampere,
         fWorldLogical
@@ -283,7 +302,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         4.008*m,    // Zc (shifted +0.3m)
         0.249*m,
         0.415*m,
-        5,           // NR
+        4,           // NR
         10,          // NZ
         52*ampere,
         fWorldLogical
@@ -295,7 +314,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         4.903*m,    // Zc (shifted +0.3m from 4.603)
         0.208*m,
         0.415*m,
-        5,           // NR
+        4,           // NR
         10,          // NZ
         52*ampere,
         fWorldLogical
@@ -319,8 +338,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         6.395*m,    // Zc (shifted +0.3m)
         0.083*m,
         0.830*m,
-        3,
-        20,
+        2,           // NR
+        20,          // NZ
         52*ampere,
         fWorldLogical
     );
@@ -331,7 +350,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         7.245*m,    // Zc (shifted +0.3m)
         0.083*m,
         0.830*m,
-        3,
+        2,
         20,
         52*ampere,
         fWorldLogical
@@ -548,7 +567,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     // ========== RF CAVITY  ==========
     G4double rfcavity_radius = 30*cm;
     G4double rfcavity_length = 20*cm;
-    G4double rfcavity_position = 2000*cm;  // Positioned after detectors
+    G4double rfcavity_position = -5*m;  // Positioned after detectors
 
     G4Tubs* solidRFCavity = new G4Tubs("RFCavity", 0*cm, rfcavity_radius, 0.5*rfcavity_length, 0*deg, 360*deg);
     G4LogicalVolume* logicRFCavity = new G4LogicalVolume(solidRFCavity, rfcavity_mat, "RFCavity");
@@ -561,10 +580,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     logicTungsten->SetVisAttributes(tungsten_vis_att);
     
     
+    /*
     G4VisAttributes* tungstenBore = new G4VisAttributes(G4Color(0.5,0.5,0.5,1.0)); //Grey
     tungstenBore->SetVisibility(true);
     logicBore->SetVisAttributes(tungstenBore);
-    
+    */
     /* 
     G4VisAttributes* tungstenBore_2 = new G4VisAttributes(G4Color(0.5,0.5,0.5,1.0)); //Grey
     tungstenBore_2->SetVisibility(true);
