@@ -413,7 +413,7 @@ void SolenoidSystem::CreateFieldManagers()
     fEquations.push_back(equation);
 
     // Create and track stepper
-    G4ClassicalRK4* stepper = new G4ClassicalRK4(equation);
+    G4ClassicalRK4* stepper = new G4ClassicalRK4(equation, 8);
     fSteppers.push_back(stepper);
 
     // Optimized precision for fringe field tracking

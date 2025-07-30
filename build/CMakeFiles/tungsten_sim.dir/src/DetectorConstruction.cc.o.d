@@ -343,6 +343,11 @@ CMakeFiles/tungsten_sim.dir/src/DetectorConstruction.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorDriver.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ChordFinder.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ChordFinder.icc \
+ /home/prateek/Geant4_new_geo/include/RFCavityField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElectroMagneticField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4EqMagElectricField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElectroMagneticField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorStepper.hh \
  /home/prateek/Geant4_new_geo/include/MomentumChicane.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SystemOfUnits.hh \

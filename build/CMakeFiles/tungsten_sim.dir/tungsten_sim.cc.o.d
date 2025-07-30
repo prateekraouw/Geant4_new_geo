@@ -342,6 +342,11 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorDriver.icc \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ChordFinder.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ChordFinder.icc \
+ /home/prateek/Geant4_new_geo/include/RFCavityField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElectroMagneticField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4EqMagElectricField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ElectroMagneticField.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4MagIntegratorStepper.hh \
  /home/prateek/Geant4_new_geo/include/MomentumChicane.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VPhysicalVolume.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4SystemOfUnits.hh \
@@ -722,9 +727,14 @@ CMakeFiles/tungsten_sim.dir/tungsten_sim.cc.o: \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4VRML2File.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4GMocrenFile.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ToolsSGOffscreen.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4OpenGLImmediateX.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4OpenGLStoredX.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4OpenGLImmediateQt.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4OpenGLQt.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4OpenGLStoredQt.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4RayTracerX.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ToolsSGX11GLES.hh \
+ /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ToolsSGX11ZB.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ToolsSGQtGLES.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4ToolsSGQtZB.hh \
  /home/prateek/geant4-v11.3.2/geant4-install/include/Geant4/G4UImanager.hh \

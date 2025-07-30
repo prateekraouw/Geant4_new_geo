@@ -78,10 +78,6 @@ SteppingAction::~SteppingAction()
 
 void SteppingAction::UserSteppingAction(const G4Step* step)
 {
-  // ========================================================================
-  // ALL YOUR EXISTING CODE BELOW REMAINS COMPLETELY UNCHANGED
-  // ========================================================================
-
   // Initialize volumes if not already done
   if (!fScoringVolume || !fDetector1Volume || !fDetector2Volume || !fDetector3Volume || !fDetector4Volume || !fRFCavityVolume) {
     const DetectorConstruction* detectorConstruction
@@ -94,10 +90,12 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     fDetector4Volume = detectorConstruction->GetDetector4Volume();
     fRFCavityVolume = detectorConstruction->GetRFCavityVolume();
 
+    /* 
     G4cout << "Detector 1 position: " << detectorConstruction->GetDetector1Position()/cm << " cm" << G4endl;
     G4cout << "Detector 2 position: " << detectorConstruction->GetDetector2Position()/cm << " cm" << G4endl;
     G4cout << "Detector 3 position: " << detectorConstruction->GetDetector3Position()/cm << " cm" << G4endl;
     G4cout << "Detector 4 position: " << detectorConstruction->GetDetector4Position()/cm << " cm" << G4endl;
+    */
   }
 
   // Get the RunAction - using const_cast to handle the constness issue
