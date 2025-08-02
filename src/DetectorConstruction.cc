@@ -573,9 +573,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     );
     
     // ========== RF CAVITY  ==========
+   /* 
     new RFCavityField(logicWorld, 4.35*m, 150*hertz); // frequency passed as hertz, but caluulated as MHz
     new RFCavityField(logicWorld, 10.77*m, 150*hertz);
-
+    */
     // ========== DETECTORS ==========
     G4double detector_thickness = 0.1*cm;
 

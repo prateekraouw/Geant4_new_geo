@@ -20,7 +20,6 @@ set(SOURCES
     src/RunAction.cc
     src/EventAction.cc
     src/SteppingAction.cc
-    src/RFCavityField.cc
     src/SolenoidSystem.cc
     src/MomentumChicane.cc
 )

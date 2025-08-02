@@ -11,7 +11,7 @@
 namespace {
     constexpr G4double kRadius         = 20*cm;
     constexpr G4double kOuterRadius    = 90*cm;
-    constexpr G4double kLength         = 40*cm;
+    constexpr G4double kLength         = 30*cm;
     constexpr G4double kAmplitudeConst = 11.3*1e6*(volt);
     constexpr G4double kWinThickness   = 2*mm;
     constexpr G4double kWinRadius      = 60*cm;
@@ -122,8 +122,8 @@ void RFCavityField::BuildField()
 
     // Field manager
     fFieldMgr = new G4FieldManager(this);
-    fFieldMgr->SetMinimumEpsilonStep(0.01*mm);
     fFieldMgr->SetChordFinder(chord);
+    fFieldMgr->SetMinimumEpsilonStep(0.01*mm);
 
     // Attach to vacuum bore only
     fInnerLV->SetFieldManager(fFieldMgr, true);

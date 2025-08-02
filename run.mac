@@ -14,5 +14,6 @@
 /gun/particle proton
 /gun/energy 8 GeV  # Higher energy for better muon production
 
+
 # Run events
 /run/beamOn 10000
