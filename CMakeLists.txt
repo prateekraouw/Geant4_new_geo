@@ -3,6 +3,7 @@ project(TungstenProtonSimulation)
 
 # Find Geant4 package (NOT g4bl!)
 find_package(Geant4 REQUIRED ui_all vis_all)
+find_package(Threads REQUIRED)
 
 # Geant4 include directories and compile definitions
 include(${Geant4_USE_FILE})
@@ -28,7 +29,7 @@ set(SOURCES
 add_executable(tungsten_sim tungsten_sim.cc ${SOURCES})
 
 # Link against Geant4 libraries
-target_link_libraries(tungsten_sim ${Geant4_LIBRARIES})
+target_link_libraries(tungsten_sim ${Geant4_LIBRARIES} Threads::Threads)
 
 # Install the executable
 install(TARGETS tungsten_sim DESTINATION bin)

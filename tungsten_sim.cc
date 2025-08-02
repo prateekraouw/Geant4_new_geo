@@ -1,3 +1,4 @@
+#include "G4MTRunManager.hh"
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
 #include "ActionInitialization.hh"
@@ -7,9 +8,6 @@
 #include "G4UIExecutive.hh"
 #include "Randomize.hh"
 
-
-
-
 int main(int argc, char** argv){
   // Remove this line to actually run the simulation
   // if(true)return 0;
@@ -17,14 +15,15 @@ int main(int argc, char** argv){
   G4Random::setTheEngine(new CLHEP::RanecuEngine);
   
   // Construct the default run manager
-  auto* runManager = G4RunManagerFactory::CreateRunManager();
+  auto* runManager = new G4MTRunManager;
+  runManager->SetNumberOfThreads(7);
   
   // Set mandatory initialization classes
   // Use DetectorConstruction instead of ChicaneConstruction
   if (argc >= 4) {
       double gap1 = std::stod(argv[2]);
       double gap2 = std::stod(argv[3]);
-      runManager->SetUserInitialization(new DetectorConstruction(gap1, gap2));
+      runManager->SetUserInitialization(new DetectorConstruction());
   } else {
       runManager->SetUserInitialization(new DetectorConstruction());
   }

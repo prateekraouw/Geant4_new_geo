@@ -178,11 +178,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4ThreeVector gunPos = G4ThreeVector(0, 0.*m, -2.0*m);
     new G4PVPlacement(gunRot, gunPos, gunLog, "GunBlock", logicWorld, false, 0, true);
 
-    // ============ Tungsten transport bore ===========
-    
+    // ============ Tungsten transport bore =========== 
     G4double startPos = -1.1*m;
     G4double endPos = 17.58*m;
-    G4double R_start = 7.5*cm;
+    G4double R_start = 10*cm;
     G4double R_end = 30*cm;
     G4double length = 0.01*m;
     G4double bore_length = endPos - startPos;
@@ -203,12 +202,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         logicBore->SetVisAttributes(Bore);
         bore_number++;
     }
+    
     /* 
     G4double startPos = -1.1*m;
     G4double endPos = 17.58*m;
-    G4double R_start = 7.5*cm;
-    G4double R_end = 30*cm;
-    G4double length = 0.01*m;
     G4double bore_length = endPos - startPos;
     G4double boreCenter = (startPos + endPos) / 2;
     
@@ -224,6 +221,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     fBore = logicBore;
     G4ThreeVector fBore_position = G4ThreeVector(0, 0, boreCenter);
     new G4PVPlacement(nullptr, fBore_position, logicBore, "Bore", logicWorld, false, 0, false);
+    */
     /* 
     G4double bore_1_position = 1.5*meter;
     G4Tubs* bore_1 = new G4Tubs("Bore_1", 10*cm, 70*cm, 3.0*m, 0*deg, 360*deg);
@@ -525,13 +523,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     );
     
     // ========== RF CAVITY  ==========
-    new RFCavityField(logicWorld, 4.22*m, 90*hertz); // frequency passed as hertz, but caluulated as MHz
-    new RFCavityField(logicWorld, 4.47*m, 90*hertz);
-    new RFCavityField(logicWorld, 4.72*m, 90*hertz);
-    new RFCavityField(logicWorld, 10.78*m, 50*hertz);
-    new RFCavityField(logicWorld, 11.03*m, 50*hertz);
-    new RFCavityField(logicWorld, 11.28*m, 50*hertz);
-
+    new RFCavityField(logicWorld, 4.3*m, 70*hertz); // frequency passed as hertz, but caluulated as MHz
+    new RFCavityField(logicWorld, 10.85*m, 90*hertz);
 
     // ========== DETECTORS ==========
     G4double detector_thickness = 0.1*cm;

@@ -10,11 +10,11 @@
 
 namespace {
     constexpr G4double kRadius         = 20*cm;
-    constexpr G4double kOuterRadius    = 70*cm;
-    constexpr G4double kLength         = 25*cm;
-    constexpr G4double kAmplitudeConst = 9.5*1e6*(volt);
-    constexpr G4double kWinThickness   = 0.5*mm;
-    constexpr G4double kWinRadius      = 20*cm;
+    constexpr G4double kOuterRadius    = 90*cm;
+    constexpr G4double kLength         = 45*cm;
+    constexpr G4double kAmplitudeConst = 11.3*1e6*(volt);
+    constexpr G4double kWinThickness   = 2*mm;
+    constexpr G4double kWinRadius      = 60*cm;
     constexpr G4double kMinStep        = 0.01*mm;
 }
 
@@ -39,6 +39,25 @@ RFCavityField::~RFCavityField()
     for (int i = (int)fSteppers.size()-1;     i >= 0; --i) delete fSteppers[i];
     for (int i = (int)fEquations.size()-1;    i >= 0; --i) delete fEquations[i];
 }
+
+void RFCavityField::GetFieldValue(const G4double Point[4], G4double* field) const
+{
+    G4double time     = Point[3];
+    G4double omega    = fFrequency * twopi* 1e6;
+    G4double strength = kAmplitudeConst * std::sin(omega*time + fPhase);
+    
+    G4cout<<"#############################################################"<<G4endl;
+    G4cout<<"                                                           "<<G4endl;
+    G4cout<< "Creating a RF Cavity with strength " << strength  << " V/m" << G4endl;
+    G4cout<<"                                                           "<<G4endl;
+    G4cout<<"#############################################################"<<G4endl;
+
+    field[0] = 0;
+    field[1] = 0;
+    field[2] = strength;
+    field[3] = field[4] = field[5] = 0;
+}
+
 
 void RFCavityField::BuildGeometry()
 {
@@ -115,20 +134,3 @@ void RFCavityField::BuildField()
     fInnerLV->SetFieldManager(fFieldMgr, true);
 }
 
-void RFCavityField::GetFieldValue(const G4double Point[4], G4double* field) const
-{
-    G4double time     = Point[3];
-    G4double omega    = fFrequency * twopi* 1e6;
-    G4double strength = kAmplitudeConst * std::sin(omega*time + fPhase);
-    
-    G4cout<<"#############################################################"<<G4endl;
-    G4cout<<"                                                           "<<G4endl;
-    G4cout<< "Creating a RF Cavity with strength " << strength  << " V/m" << G4endl;
-    G4cout<<"                                                           "<<G4endl;
-    G4cout<<"#############################################################"<<G4endl;
-
-    field[0] = 0;
-    field[1] = 0;
-    field[2] = strength;
-    field[3] = field[4] = field[5] = 0;
-}

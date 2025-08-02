@@ -5,8 +5,18 @@
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4UnitsTable.hh"
-#include <fstream> 
+#include "G4AutoLock.hh"
+#include "G4Threading.hh"    // defines G4Mutex, G4MUTEX_INITIALIZER     // still needed for G4AutoLock
+#include <fstream>
+#include <string>
 
+
+namespace {
+  // one mutex for all 6D-vector writes
+  G4Mutex vectorMutex = G4MUTEX_INITIALIZER;
+  // only write header once
+  bool   vectorHeaderWritten = false;
+}
 RunAction::RunAction()
 : G4UserRunAction()
 {
@@ -99,7 +109,7 @@ void RunAction::Open6DVectorFile()
   std::string filename = "6D_vector.csv";
   
   // Open the file in write mode (overwrite if exists)
-  file6DVector.open(filename, std::ios::out);
+  file6DVector.open(filename, std::ios::out | std::ios::app);
   
   // Add header to the CSV file
   if (file6DVector.is_open()) {
@@ -117,18 +127,35 @@ void RunAction::Record6DVector(G4int detectorID,
                               const G4ThreeVector& momentum,
                               G4double totalEnergy)
 {
-  if (file6DVector.is_open()) {
-    file6DVector << detectorID << ","
-                << particleName << ","
-                << position.x()/cm << ","
-                << momentum.x()/MeV << ","
-                << position.y()/cm << ","
-                << momentum.y()/MeV << ","
-                << position.z()/cm << ","
-                << momentum.z()/MeV << ","
-                << totalEnergy/MeV << std::endl;
+    {
+      // Make sure the file is open
+      if (!file6DVector.is_open()) return;
+    
+      G4AutoLock lock(&vectorMutex);
+    
+      // Header: only once
+      if (!vectorHeaderWritten) {
+        file6DVector
+          << "Detector,ParticleType,"
+             "x[cm],px[MeV/c],"
+             "y[cm],py[MeV/c],"
+             "z[cm],pz[MeV/c],"
+             "TotalEnergy[MeV]\n";
+        vectorHeaderWritten = true;
+      }
+      if (file6DVector.is_open()) {
+          file6DVector << detectorID << ","
+                    << particleName << ","
+                    << position.x()/cm << ","
+                    << momentum.x()/MeV << ","
+                    << position.y()/cm << ","
+                    << momentum.y()/MeV << ","
+                    << position.z()/cm << ","
+                    << momentum.z()/MeV << ","
+                    << totalEnergy/MeV << std::endl;
+      }
+    }
   }
-}
 
 // Function to close 6D vector file
 void RunAction::Close6DVectorFile()

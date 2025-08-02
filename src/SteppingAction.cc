@@ -11,8 +11,20 @@
 #include "G4FieldManager.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
+#include "G4AutoLock.hh"
+#include "G4Threading.hh" 
+#include <fstream>
 #include <iomanip>
 #include <memory>
+
+namespace {
+  // one mutex to serialize ALL solenoid‐logging
+  G4Mutex solenoidMutex = G4MUTEX_INITIALIZER;
+
+  // open once, before any threads start
+  std::ofstream solenoidFile("all_23_solenoids.csv");
+  bool solenoidHeaderWritten = false;
+}
 
 SteppingAction::SteppingAction(EventAction* eventAction)
 : G4UserSteppingAction(),
@@ -453,15 +465,15 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
           volumeCounters[volumeName]++;
 
           // Create CSV header once
-          if (!csvCreated) {
-              std::ofstream csvFile("all_23_solenoids.csv", std::ios::out);
-              if (csvFile.is_open()) {
-                  csvFile << "x,y,z,bx,by,bz,particle,energy,volume\n";
-                  csvFile.close();
-                  csvCreated = true;
-                  G4cout << "Created all_23_solenoids.csv for logging all "
-                         << allSolenoidVolumes.size() << " solenoids" << G4endl;
-              }
+      {
+          // lock for header+line write
+          G4AutoLock lock(&solenoidMutex);
+      
+          // header
+          if (!solenoidHeaderWritten) {
+            solenoidFile << "x,y,z,bx,by,bz,particle,energy,volume\n";
+            solenoidHeaderWritten = true;
+          }
           }
 
           // Log every 5th step in each volume independently
@@ -496,15 +508,13 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
                           G4double bz = fieldValue[2] / tesla;
 
                           // Write to CSV
-                          std::ofstream csvFile("all_23_solenoids.csv", std::ios::app);
-                          if (csvFile.is_open()) {
-                              csvFile << std::fixed << std::setprecision(6)
-                                     << x << "," << y << "," << z << ","
-                                     << bx << "," << by << "," << bz << ","
-                                     << particleName<<","<<energy << "," << volumeName << "\n";
-                              csvFile.close();
-                              totalLoggedPoints++;
-                          }
+                      {
+                          G4AutoLock lock(&solenoidMutex);
+                          solenoidFile << x << "," << y << "," << z << "," 
+                          << bx << "," << by << "," << bz << "," 
+                          << particleName << "," << energy / GeV << "," << volumeName << "\n";
+                      }
+                       totalLoggedPoints++;
                       }
                   }
               }

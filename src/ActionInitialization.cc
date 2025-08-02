@@ -32,7 +32,4 @@ void ActionInitialization::Build() const
   // Create and set SteppingAction
   SteppingAction* steppingAction = new SteppingAction(eventAction);
   SetUserAction(steppingAction);
-  
-  // Connect stepping action to event action
-  //eventAction->SetSteppingAction(steppingAction);
 }
