@@ -11,7 +11,7 @@
 namespace {
     constexpr G4double kRadius         = 20*cm;
     constexpr G4double kOuterRadius    = 90*cm;
-    constexpr G4double kLength         = 45*cm;
+    constexpr G4double kLength         = 40*cm;
     constexpr G4double kAmplitudeConst = 11.3*1e6*(volt);
     constexpr G4double kWinThickness   = 2*mm;
     constexpr G4double kWinRadius      = 60*cm;
@@ -45,12 +45,6 @@ void RFCavityField::GetFieldValue(const G4double Point[4], G4double* field) cons
     G4double time     = Point[3];
     G4double omega    = fFrequency * twopi* 1e6;
     G4double strength = kAmplitudeConst * std::sin(omega*time + fPhase);
-    
-    G4cout<<"#############################################################"<<G4endl;
-    G4cout<<"                                                           "<<G4endl;
-    G4cout<< "Creating a RF Cavity with strength " << strength  << " V/m" << G4endl;
-    G4cout<<"                                                           "<<G4endl;
-    G4cout<<"#############################################################"<<G4endl;
 
     field[0] = 0;
     field[1] = 0;
@@ -77,8 +71,8 @@ void RFCavityField::BuildGeometry()
     fInnerLV = new G4LogicalVolume(innerSolid,
                                    G4NistManager::Instance()->FindOrBuildMaterial("G4_Galactic"),
                                    "RFInner");
-    new G4PVPlacement(nullptr, G4ThreeVector(0,0,0), fInnerLV,
-                      "RFInner", fShellLV, false, 0, true);
+    new G4PVPlacement(nullptr, G4ThreeVector(0,0,fZ0), fInnerLV,
+                      "RFInner", fMother, false, 0, true);
 
     // Beryllium windows
     auto winSolid = new G4Tubs("RFWindow", 0, kWinRadius, halfWin, 0, 360*deg);
@@ -128,6 +122,7 @@ void RFCavityField::BuildField()
 
     // Field manager
     fFieldMgr = new G4FieldManager(this);
+    fFieldMgr->SetMinimumEpsilonStep(0.01*mm);
     fFieldMgr->SetChordFinder(chord);
 
     // Attach to vacuum bore only

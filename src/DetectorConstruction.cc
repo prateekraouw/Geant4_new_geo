@@ -4,6 +4,7 @@
 #include "G4Box.hh"
 #include "G4Tubs.hh"
 #include "G4Cons.hh"
+#include "G4Polycone.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
@@ -183,12 +184,61 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4double endPos = 17.58*m;
     G4double R_start = 10*cm;
     G4double R_end = 30*cm;
-    G4double length = 0.01*m;
+    G4double length = 0.001*m;
     G4double bore_length = endPos - startPos;
     G4double boreCenter = (startPos + endPos) / 2;
     G4double k = std::log(R_end/R_start);
     int bore_number = 0;
     
+    int nPlanes = 200;
+    G4double dz = bore_length/(nPlanes-1);
+    std::vector<G4double> zPlanes, rInner, rOuter;
+    zPlanes.reserve(nPlanes);
+    rInner .reserve(nPlanes);
+    rOuter .reserve(nPlanes);
+    
+    for (int i=0; i<nPlanes; ++i) {
+      G4double z = startPos + i*dz;
+      G4double s = z - startPos;
+      G4double R = R_start * std::exp( k * std::pow(s/bore_length, 0.25) );
+      zPlanes.push_back(z);
+      rInner .push_back(R);
+      rOuter .push_back(70*cm);           // your fixed outer radius
+    }
+    
+    G4Polycone* taperedBore = new G4Polycone(
+      "TaperedBore",        // name
+      0.*deg,               // start angle
+      360.*deg,             // spanning angle
+      nPlanes,              // number of (z,Rin,Rout) planes
+      zPlanes.data(),       // array of z positions
+      rInner .data(),       // array of inner radii
+      rOuter .data()        // array of outer radii
+    );
+    
+    auto* logicBore = new G4LogicalVolume(
+      taperedBore,
+      tungstenCarbide,       // material
+      "TaperedBore"
+    );
+    new G4PVPlacement(
+      nullptr,               // no rotation
+      G4ThreeVector(),       // at origin
+      logicBore,
+      "TaperedBore",
+      logicWorld,
+      false,
+      0,
+      true
+    );
+    
+    auto visBore = new G4VisAttributes(G4Colour(0.5,0.5,0.5,1.0));
+    visBore->SetVisibility(true);
+    logicBore->SetVisAttributes(visBore);
+    
+    
+    
+    /* 
     for(G4double z = startPos+length/2; z <= endPos; z +=length) {
         G4double s = z-startPos;
         G4double R_inner = R_start*std::exp(k*std::pow(s/bore_length, 0.25));
@@ -202,7 +252,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         logicBore->SetVisAttributes(Bore);
         bore_number++;
     }
-    
+    */
     /* 
     G4double startPos = -1.1*m;
     G4double endPos = 17.58*m;
@@ -523,8 +573,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     );
     
     // ========== RF CAVITY  ==========
-    new RFCavityField(logicWorld, 4.3*m, 70*hertz); // frequency passed as hertz, but caluulated as MHz
-    new RFCavityField(logicWorld, 10.85*m, 90*hertz);
+    new RFCavityField(logicWorld, 4.35*m, 150*hertz); // frequency passed as hertz, but caluulated as MHz
+    new RFCavityField(logicWorld, 10.77*m, 150*hertz);
 
     // ========== DETECTORS ==========
     G4double detector_thickness = 0.1*cm;
