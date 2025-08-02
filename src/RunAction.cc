@@ -11,17 +11,10 @@
 #include <string>
 
 
-namespace {
-  // one mutex for all 6D-vector writes
-  G4Mutex vectorMutex = G4MUTEX_INITIALIZER;
-  // only write header once
-  bool   vectorHeaderWritten = false;
-}
+// Remove global mutex and header flag - each thread will have its own file
 RunAction::RunAction()
 : G4UserRunAction()
 {
-  // Open the 6D vector file
-  Open6DVectorFile();
 }
 
 RunAction::~RunAction()
@@ -36,26 +29,50 @@ RunAction::~RunAction()
 
 void RunAction::BeginOfRunAction(const G4Run* run)
 {
-  G4cout << "### Run " << run->GetRunID() << " start." << G4endl;
-  fSecondaryParticles.clear();
-  fParticleCounts.clear();
-  
-  // Open Excel file for particle data
-  G4String fileName = "particle_data" + std::to_string(run->GetRunID()) + ".csv";
-  fOutputFile.open(fileName);
-  
-  // Write CSV header with more information
+  G4int runID = run->GetRunID();
+  G4int tid   = G4Threading::G4GetThreadId();    // 0 = master, >0 = worker
+
+  // Debug output
+  G4cout << "=== DEBUG: BeginOfRunAction ===" << G4endl;
+  G4cout << "Run ID: " << runID << G4endl;
+  G4cout << "Thread ID: " << tid << G4endl;
+  G4cout << "Is Master Thread: " << (tid == 0 ? "YES" : "NO") << G4endl;
+  G4cout << "===============================" << G4endl;
+
+  //
+  //——— particle data file ———
+  //
+  std::string pfile = "particle_data_run"
+                    + std::to_string(runID)
+                    + "_t" + std::to_string(tid)
+                    + ".csv";
+  fOutputFile.open(pfile);
   if (fOutputFile.is_open()) {
-    fOutputFile << "ParticleType,Energy" << std::endl;
-    G4cout << "Recording particle data to file: " << fileName << G4endl;
+    fOutputFile << "ParticleType,Energy[MeV]\n";
+    G4cout << "Thread " << tid
+           << " writing particle data to " << pfile << G4endl;
   } else {
-    G4cerr << "ERROR: Could not open output file " << fileName << G4endl;
+    G4cerr << "ERROR: Thread " << tid << " could not open file: " << pfile << G4endl;
   }
-  
-  // If 6D vector file was closed, reopen it for this run
-  if (!file6DVector.is_open()) {
-    Open6DVectorFile();
-  }
+
+  //
+  //——— 6D vector file ———
+  std::ostringstream vfn;
+   vfn << "6D_vector_run" << runID << "_t" << tid << ".csv";
+   file6DVector.open(vfn.str(), std::ios::out);
+   if (file6DVector.is_open()) {
+     // write header for this thread's file
+     file6DVector << "Detector,ParticleType,"
+                  << "x[cm],px[MeV/c],"
+                  << "y[cm],py[MeV/c],"
+                  << "z[cm],pz[MeV/c],"
+                  << "TotalEnergy[MeV]\n";
+     G4cout << "[Thread " << tid << "] Opened 6D vector file: " 
+            << vfn.str() << G4endl;
+   } else {
+     G4cerr << "[Thread " << tid << "] ERROR: Could not open 6D vector file: "
+            << vfn.str() << G4endl;
+   }
 }
 
 void RunAction::EndOfRunAction(const G4Run* run)
@@ -102,24 +119,6 @@ void RunAction::RecordParticleToExcel(const G4String& name,
 
 
 
-// Function to open 6D vector file
-void RunAction::Open6DVectorFile()
-{
-  // Create a new file for 6D phase space data
-  std::string filename = "6D_vector.csv";
-  
-  // Open the file in write mode (overwrite if exists)
-  file6DVector.open(filename, std::ios::out | std::ios::app);
-  
-  // Add header to the CSV file
-  if (file6DVector.is_open()) {
-    file6DVector << "Detector,ParticleType,x[cm],px[MeV/c],y[cm],py[MeV/c],z[cm],pz[MeV/c],TotalEnergy[MeV]" << std::endl;
-    G4cout << "Opened 6D vector file: " << filename << G4endl;
-  } else {
-    G4cout << "ERROR: Could not open 6D vector file: " << filename << G4endl;
-  }
-}
-
 // Function to write 6D vector data for each particle
 void RunAction::Record6DVector(G4int detectorID, 
                               const G4String& particleName, 
@@ -127,33 +126,27 @@ void RunAction::Record6DVector(G4int detectorID,
                               const G4ThreeVector& momentum,
                               G4double totalEnergy)
 {
-    {
-      // Make sure the file is open
-      if (!file6DVector.is_open()) return;
+    G4int tid = G4Threading::G4GetThreadId();
     
-      G4AutoLock lock(&vectorMutex);
+    // Debug output
+    G4cout << "[Thread " << tid << "] Record6DVector called for detector " 
+           << detectorID << ", particle " << particleName << G4endl;
+    G4cout << "[Thread " << tid << "] File open: " << (file6DVector.is_open() ? "YES" : "NO") << G4endl;
     
-      // Header: only once
-      if (!vectorHeaderWritten) {
-        file6DVector
-          << "Detector,ParticleType,"
-             "x[cm],px[MeV/c],"
-             "y[cm],py[MeV/c],"
-             "z[cm],pz[MeV/c],"
-             "TotalEnergy[MeV]\n";
-        vectorHeaderWritten = true;
-      }
-      if (file6DVector.is_open()) {
-          file6DVector << detectorID << ","
-                    << particleName << ","
-                    << position.x()/cm << ","
-                    << momentum.x()/MeV << ","
-                    << position.y()/cm << ","
-                    << momentum.y()/MeV << ","
-                    << position.z()/cm << ","
-                    << momentum.z()/MeV << ","
-                    << totalEnergy/MeV << std::endl;
-      }
+    // Make sure the file is open - no mutex needed since each thread has its own file
+    if (file6DVector.is_open()) {
+        file6DVector << detectorID << ","
+                  << particleName << ","
+                  << position.x()/cm << ","
+                  << momentum.x()/MeV << ","
+                  << position.y()/cm << ","
+                  << momentum.y()/MeV << ","
+                  << position.z()/cm << ","
+                  << momentum.z()/MeV << ","
+                  << totalEnergy/MeV << std::endl;
+        G4cout << "[Thread " << tid << "] Data written successfully" << G4endl;
+    } else {
+        G4cerr << "[Thread " << tid << "] ERROR: File not open for writing!" << G4endl;
     }
   }
 

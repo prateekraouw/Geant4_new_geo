@@ -9,7 +9,10 @@
 #include "Randomize.hh"
 #include "G4GeometryTolerance.hh"
 #include "G4TransportationManager.hh"
-#include "G4GeometryManager.hh"
+#include "G4PropagatorInField.hh"
+#include "G4ChordFinder.hh"
+#include "G4FieldManager.hh"
+#include "G4SystemOfUnits.hh"
 #include "G4SystemOfUnits.hh"
 
 int main(int argc, char** argv){
@@ -20,7 +23,8 @@ int main(int argc, char** argv){
   
   // Construct the default run manager
   auto* runManager = new G4MTRunManager;
-  runManager->SetNumberOfThreads(12);
+  runManager->SetNumberOfThreads(5);
+  
   
   // Set mandatory initialization classes
   // Use DetectorConstruction instead of ChicaneConstruction
@@ -34,13 +38,6 @@ int main(int argc, char** argv){
   runManager->SetUserInitialization(new PhysicsList());
   runManager->SetUserInitialization(new ActionInitialization());
   
-  G4double world_size = 10000*cm;
-  G4double world_radius = 0.5*world_size;
-  G4double world_length = 20*world_size;  
-  G4GeometryManager::GetInstance()
-    ->SetWorldMaximumExtent(world_length);
-  // Initialize G4 kernel
-  runManager->Initialize();
   
   // Initialize visualization
   G4VisManager* visManager = new G4VisExecutive();

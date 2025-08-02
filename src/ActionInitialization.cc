@@ -18,12 +18,11 @@ void ActionInitialization::BuildForMaster() const
 
 void ActionInitialization::Build() const
 {
+  // Create and set RunAction for each worker thread (must be first)
+  SetUserAction(new RunAction());
+  
   // Set primary generator
   SetUserAction(new PrimaryGeneratorAction());
-  
-  // Create and set RunAction
-  RunAction* runAction = new RunAction();
-  SetUserAction(runAction);
   
   // Create and set EventAction
   EventAction* eventAction = new EventAction();

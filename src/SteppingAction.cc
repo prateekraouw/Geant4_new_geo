@@ -17,14 +17,6 @@
 #include <iomanip>
 #include <memory>
 
-namespace {
-  // one mutex to serialize ALL solenoid‐logging
-  G4Mutex solenoidMutex = G4MUTEX_INITIALIZER;
-
-  // open once, before any threads start
-  std::ofstream solenoidFile("all_23_solenoids.csv");
-  bool solenoidHeaderWritten = false;
-}
 
 SteppingAction::SteppingAction(EventAction* eventAction)
 : G4UserSteppingAction(),
@@ -108,6 +100,7 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     G4cout << "Detector 3 position: " << detectorConstruction->GetDetector3Position()/cm << " cm" << G4endl;
     G4cout << "Detector 4 position: " << detectorConstruction->GetDetector4Position()/cm << " cm" << G4endl;
     */
+    
   }
 
   // Get the RunAction - using const_cast to handle the constness issue
@@ -171,9 +164,34 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     if (particleName == "mu+" || particleName == "mu-") {
       // Count muons
       fDetector1Particles[particleName]++;
-      runAction->RecordParticleToExcel(particleName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(1, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 1;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+        
+        // Also record particle data to Excel
+        runAct->RecordParticleToExcel(particleName, track->GetKineticEnergy());
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddMuonAtDetector1();
@@ -187,9 +205,34 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     else if (particleName == "pi+" || particleName == "pi-") {
       // Count charged pions
       fDetector1Particles[particleName]++;
-      runAction->RecordParticleToExcel(particleName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(1, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 1;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+        
+        // Also record particle data to Excel
+        runAct->RecordParticleToExcel(particleName, track->GetKineticEnergy());
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddPionAtDetector1();
@@ -212,9 +255,34 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       // Count muons at Detector 2
       fDetector2Particles[particleName]++;
       G4String recordName = "2" + particleName;
-      runAction->RecordParticleToExcel(recordName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(2, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 2;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+        
+        // Also record particle data to Excel
+        runAct->RecordParticleToExcel(particleName, track->GetKineticEnergy());
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddMuonAtDetector2();
@@ -229,9 +297,31 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       // Count charged pions at Detector 2
       fDetector2Particles[particleName]++;
       G4String recordName = "2" + particleName;
-      runAction->RecordParticleToExcel(recordName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(2, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 2;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddPionAtDetector2();
@@ -254,9 +344,31 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       // Count muons at Detector 3
       fDetector3Particles[particleName]++;
       G4String recordName = "3" + particleName;
-      runAction->RecordParticleToExcel(recordName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(3, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 3;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddMuonAtDetector3();
@@ -271,9 +383,31 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       // Count charged pions at Detector 3
       fDetector3Particles[particleName]++;
       G4String recordName = "3" + particleName;
-      runAction->RecordParticleToExcel(recordName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(3, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 3;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddPionAtDetector3();
@@ -305,7 +439,29 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       // Record 6D vector for cavity entrance
       G4String recordName = "RF_in_" + particleName;
-      runAction->Record6DVector(5, recordName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 5;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+      }
 
       G4cout << "\n!!! PARTICLE ENTERING RF CAVITY !!!" << G4endl;
       G4cout << "Type: " << particleName << G4endl;
@@ -328,7 +484,28 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
 
       // Record 6D vector for cavity exit
       G4String recordName = "RF_out_" + particleName;
-      runAction->Record6DVector(6, recordName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 6;
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+      }
 
       // Calculate energy gain if we tracked this particle at entrance
       if (fRFCavityEntranceEnergy.find(trackID) != fRFCavityEntranceEnergy.end()) {
@@ -362,9 +539,31 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       // Count muons at Detector 4
       fDetector4Particles[particleName]++;
       G4String recordName = "4" + particleName;
-      runAction->RecordParticleToExcel(recordName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(4, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 4;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddMuonAtDetector4();
@@ -379,9 +578,31 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       // Count charged pions at Detector 4
       fDetector4Particles[particleName]++;
       G4String recordName = "4" + particleName;
-      runAction->RecordParticleToExcel(recordName, energy);
+      //
       // Add 6D vector recording
-      runAction->Record6DVector(4, particleName, position, momentum, totalEnergy);
+      const auto* baseRun =
+        G4RunManager::GetRunManager()->GetUserRunAction();
+      
+      // Try to down‐cast to *your* RunAction type
+      const RunAction* constRun =
+        dynamic_cast<const RunAction*>(baseRun);
+      
+      if ( constRun ) {
+        // Cast away constness so we can call the non‐const member
+        RunAction* runAct = const_cast<RunAction*>(constRun);
+      
+        // Now call with the correct detector ID, for example:
+        //   1 for Detector 1, 2 for Detector 2, etc.
+        constexpr G4int myDetID = 4;
+      
+        runAct->Record6DVector(
+          myDetID,
+          particleName,
+          position,
+          momentum,
+          totalEnergy
+        );
+      }
       // Add to event counts
       if (fEventAction) {
         fEventAction->AddPionAtDetector4();
@@ -392,169 +613,11 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       G4cout << "Energy: " << track->GetKineticEnergy()/GeV << " GeV" << G4endl;
     }
   }
-
-  // COMPREHENSIVE SOLENOID DETECTION for 23 solenoids
-  static std::set<G4String> allSolenoidVolumes;
-      static bool discoveryPhase = true;
-      static G4int discoverySteps = 0;
-
-      // Discovery phase: find all volumes with magnetic fields
-      if (discoveryPhase) {
-          discoverySteps++;
-
-          // Check if this volume has a magnetic field
-          G4FieldManager* fieldMgr = volume->GetFieldManager();
-          if (!fieldMgr) {
-              fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
-          }
-
-          bool hasField = false;
-          if (fieldMgr) {
-              const G4Field* field = fieldMgr->GetDetectorField();
-              if (field) {
-                  const G4MagneticField* magField = dynamic_cast<const G4MagneticField*>(field);
-                  if (magField) {
-                      // Test if field is non-zero at current position
-                      G4ThreeVector position = step->GetTrack()->GetPosition();
-                      G4double energy = step->GetPreStepPoint()->GetTotalEnergy();
-                      G4double point[4] = {position.x(), position.y(), position.z(), 0.0};
-                      G4double fieldValue[3];
-                      magField->GetFieldValue(point, fieldValue);
-
-                      G4double fieldMagnitude = sqrt(fieldValue[0]*fieldValue[0] +
-                                                   fieldValue[1]*fieldValue[1] +
-                                                   fieldValue[2]*fieldValue[2]);
-
-                          if (allSolenoidVolumes.find(volumeName) == allSolenoidVolumes.end()) {
-                              allSolenoidVolumes.insert(volumeName);
-                              G4cout << "SOLENOID " << allSolenoidVolumes.size()
-                                     << " DISCOVERED: '" << volumeName
-                                     << "' (|B|=" << fieldMagnitude/tesla << "T)" << G4endl;
-                          }
-                          }
-              }
-          }
-
-          // End discovery phase after sufficient steps or when we find 23+ solenoids
-          if (discoverySteps > 5000 || allSolenoidVolumes.size() >= 23) {
-              discoveryPhase = false;
-              G4cout << "\n=== DISCOVERY COMPLETE ===" << G4endl;
-              G4cout << "Found " << allSolenoidVolumes.size() << " magnetic volumes:" << G4endl;
-              G4int counter = 1;
-              for (const auto& vol : allSolenoidVolumes) {
-                  G4cout << "  " << counter << ". " << vol << G4endl;
-                  counter++;
-              }
-              G4cout << "========================\n" << G4endl;
-          }
-      }
-
-      // Check if current volume is one of our discovered solenoids
-      bool inSolenoid = (allSolenoidVolumes.find(volumeName) != allSolenoidVolumes.end());
-
-      // LOGGING PHASE - Log all 23 solenoids
-      static bool csvCreated = false;
-      static std::map<G4String, G4int> volumeCounters;
-      static G4int totalLoggedPoints = 0;
-
-      if (inSolenoid) {
-          // Initialize counter for this volume
-          if (volumeCounters.find(volumeName) == volumeCounters.end()) {
-              volumeCounters[volumeName] = 0;
-          }
-          volumeCounters[volumeName]++;
-
-          // Create CSV header once
-      {
-          // lock for header+line write
-          G4AutoLock lock(&solenoidMutex);
-      
-          // header
-          if (!solenoidHeaderWritten) {
-            solenoidFile << "x,y,z,bx,by,bz,particle,energy,volume\n";
-            solenoidHeaderWritten = true;
-          }
-          }
-
-          // Log every 5th step in each volume independently
-          if (volumeCounters[volumeName] % 5 == 0) {
-              G4Track* track = step->GetTrack();
-              G4String particleName = track->GetDefinition()->GetParticleName();
-              G4double energy = step->GetPreStepPoint()->GetTotalEnergy();
-              if (particleName == "mu+" || particleName == "mu-" || particleName=="pi+" || particleName == "pi-"){
-              // Get field manager
-              G4FieldManager* fieldMgr = volume->GetFieldManager();
-              if (!fieldMgr) {
-                  fieldMgr = G4TransportationManager::GetTransportationManager()->GetFieldManager();
-              }
-
-              if (fieldMgr) {
-                  const G4Field* field = fieldMgr->GetDetectorField();
-                  if (field) {
-                      const G4MagneticField* magField = dynamic_cast<const G4MagneticField*>(field);
-                      if (magField) {
-                          // Get position and field
-                          G4ThreeVector position = track->GetPosition();
-                          G4double point[4] = {position.x(), position.y(), position.z(), 0.0};
-                          G4double fieldValue[3];
-                          magField->GetFieldValue(point, fieldValue);
-
-                          // Convert to mm and Tesla
-                          G4double x = position.x() / mm;
-                          G4double y = position.y() / mm;
-                          G4double z = position.z() / mm;
-                          G4double bx = fieldValue[0] / tesla;
-                          G4double by = fieldValue[1] / tesla;
-                          G4double bz = fieldValue[2] / tesla;
-
-                          // Write to CSV
-                      {
-                          G4AutoLock lock(&solenoidMutex);
-                          solenoidFile << x << "," << y << "," << z << "," 
-                          << bx << "," << by << "," << bz << "," 
-                          << particleName << "," << energy / GeV << "," << volumeName << "\n";
-                      }
-                       totalLoggedPoints++;
-                      }
-                  }
-              }
-          }
-        }
-      }
-
-      // Periodic status report showing all 23 solenoids
-      static G4int lastReportStep = 0;
-      static G4int globalStepCounter = 0;
-      globalStepCounter++;
-
-      if (globalStepCounter % 1000 == 0 && globalStepCounter != lastReportStep) {
-          lastReportStep = globalStepCounter;
-
-          if (!discoveryPhase && allSolenoidVolumes.size() > 0) {
-              G4cout << "\n=== STATUS: All " << allSolenoidVolumes.size()
-                     << " Solenoids (Step " << globalStepCounter << ") ===" << G4endl;
-
-              G4int activeVolumes = 0;
-              for (const auto& vol : allSolenoidVolumes) {
-                  if (volumeCounters.find(vol) != volumeCounters.end() && volumeCounters[vol] > 0) {
-                      G4cout << "  " << vol << ": " << volumeCounters[vol] << " steps" << G4endl;
-                      activeVolumes++;
-                  } else {
-                      G4cout << "  " << vol << ": not yet visited" << G4endl;
-                  }
-              }
-              G4cout << "Active volumes: " << activeVolumes << "/" << allSolenoidVolumes.size() << G4endl;
-              G4cout << "Total logged points: " << totalLoggedPoints << G4endl;
-              G4cout << "==========================================\n" << G4endl;
-          }
-      }
-
-
   // Check if we are in scoring volume for energy deposition
   if (volume == fScoringVolume) {
     // Collect energy deposited in this step
     G4double edepStep = step->GetTotalEnergyDeposit();
     fEventAction->AddEdep(edepStep);
   }
-
 }
+

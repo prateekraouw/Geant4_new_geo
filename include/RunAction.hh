@@ -28,7 +28,6 @@ class RunAction : public G4UserRunAction
                     const G4ThreeVector& position);
                     
     // New functions for 6D vector file
-    void Open6DVectorFile();
     void Record6DVector(G4int detectorID, 
                        const G4String& particleName, 
                        const G4ThreeVector& position, 
