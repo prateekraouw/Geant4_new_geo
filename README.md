@@ -65,7 +65,7 @@ tail -q -n +2 6D_vector_run0_t*.csv >> merged.csv
 📂 Project Structure
 
 .
-├── build
+├── build/
 │   ├── 6D_vector.csv
 │   ├── 6D_vector_run0_t0.csv
 │   ├── 6D_vector_run0_t-1.csv
@@ -79,7 +79,6 @@ tail -q -n +2 6D_vector_run0_t*.csv >> merged.csv
 │   ├── init_vis.mac
 │   ├── Makefile
 │   ├── merged.csv
-│   ├── particle_data_run0_t*.csv
 │   ├── plot.ipynb
 │   ├── run.mac
 │   ├── tungsten_sim
@@ -115,18 +114,18 @@ tail -q -n +2 6D_vector_run0_t*.csv >> merged.csv
 ├── run.mac
 ├── tungsten_sim.cc
 └── vis.mac
----
 
-## 📖 Usage Tips
+📖 Usage Tips
 
-- Use `/gun/sigma` to tune beam spot size.
-- Adjust detector positions in `DetectorConstruction`.
-- Enable ntuple merging via Geant4 analysis manager as an alternative to manual CSV merge.
+Use /gun/sigma to tune beam spot size.
 
----
+Adjust detector positions in DetectorConstruction.
 
-## 👤 Author & License
+Enable ntuple merging via Geant4 analysis manager as an alternative to manual CSV merge.
 
-**Prateek Rao** – University of Wisconsin–Madison
+👤 Author & License
 
-Licensed under the MIT License. See [LICENSE](LICENSE) for details.
+Prateek Rao – University of Wisconsin–Madison
+
+Licensed under the MIT License. See LICENSE for details.
+
