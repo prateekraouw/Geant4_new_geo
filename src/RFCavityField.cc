@@ -9,12 +9,12 @@
 #include "G4PhysicalConstants.hh"
 
 namespace {
-    constexpr G4double kRadius         = 20*cm;
-    constexpr G4double kOuterRadius    = 90*cm;
-    constexpr G4double kLength         = 30*cm;
-    constexpr G4double kAmplitudeConst = 11.3*1e6*(volt);
-    constexpr G4double kWinThickness   = 2*mm;
-    constexpr G4double kWinRadius      = 60*cm;
+    constexpr G4double kRadius         = 0*cm;
+    constexpr G4double kOuterRadius    = 20*cm;
+    constexpr G4double kLength         = 1*m;
+    constexpr G4double kAmplitudeConst = 9.7*1e6*(volt);
+    constexpr G4double kWinThickness   = 1*mm;
+    constexpr G4double kWinRadius      = 20*cm;
     constexpr G4double kMinStep        = 0.01*mm;
 }
 
@@ -64,15 +64,15 @@ void RFCavityField::BuildGeometry()
                                    G4NistManager::Instance()->FindOrBuildMaterial("G4_Cu"),
                                    "RFShell");
     new G4PVPlacement(nullptr, G4ThreeVector(0,0,fZ0), fShellLV,
-                      "RFShell", fMother, false, 0, true);
+                      "RFShell", fMother, false, 0, false);
 
     // Vacuum bore
-    auto innerSolid = new G4Tubs("RFInner", 0, kRadius, halfLen, 0, 360*deg);
+    auto innerSolid = new G4Tubs("RFInner", 0, kOuterRadius, halfLen, 0, 360*deg);
     fInnerLV = new G4LogicalVolume(innerSolid,
                                    G4NistManager::Instance()->FindOrBuildMaterial("G4_Galactic"),
                                    "RFInner");
     new G4PVPlacement(nullptr, G4ThreeVector(0,0,fZ0), fInnerLV,
-                      "RFInner", fMother, false, 0, true);
+                      "RFInner", fMother, false, 0, false);
 
     // Beryllium windows
     auto winSolid = new G4Tubs("RFWindow", 0, kWinRadius, halfWin, 0, 360*deg);
@@ -83,9 +83,9 @@ void RFCavityField::BuildGeometry()
                                    G4NistManager::Instance()->FindOrBuildMaterial("G4_Be"),
                                    "RFWindow2");
     new G4PVPlacement(nullptr, G4ThreeVector(0,0,fZ0 - (halfLen + halfWin)),
-                      fWin1LV, "RFWindow1", fMother, false, 0, true);
+                      fWin1LV, "RFWindow1", fMother, false, 0, false);
     new G4PVPlacement(nullptr, G4ThreeVector(0,0,fZ0 + (halfLen + halfWin)),
-                      fWin2LV, "RFWindow2", fMother, false, 0, true);
+                      fWin2LV, "RFWindow2", fMother, false, 0, false);
 
     // Visualization
     auto visShell = new G4VisAttributes(G4Colour(1,0.5,0,0.7));

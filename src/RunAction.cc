@@ -126,13 +126,6 @@ void RunAction::Record6DVector(G4int detectorID,
                               const G4ThreeVector& momentum,
                               G4double totalEnergy)
 {
-    G4int tid = G4Threading::G4GetThreadId();
-    
-    // Debug output
-    G4cout << "[Thread " << tid << "] Record6DVector called for detector " 
-           << detectorID << ", particle " << particleName << G4endl;
-    G4cout << "[Thread " << tid << "] File open: " << (file6DVector.is_open() ? "YES" : "NO") << G4endl;
-    
     // Make sure the file is open - no mutex needed since each thread has its own file
     if (file6DVector.is_open()) {
         file6DVector << detectorID << ","
@@ -144,8 +137,8 @@ void RunAction::Record6DVector(G4int detectorID,
                   << position.z()/cm << ","
                   << momentum.z()/MeV << ","
                   << totalEnergy/MeV << std::endl;
-        G4cout << "[Thread " << tid << "] Data written successfully" << G4endl;
     } else {
+        G4int tid = G4Threading::G4GetThreadId();
         G4cerr << "[Thread " << tid << "] ERROR: File not open for writing!" << G4endl;
     }
   }

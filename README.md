@@ -1,174 +1,132 @@
-# Geant4 Solenoid Beamline Simulation
+Geant4 Beamline Simulation
 
-This project simulates a realistic particle beamline using **Geant4**, designed with a series of magnetic solenoids that guide and focus a charged particle beam. The simulation incorporates:
-- Tapering solenoids
-- Adjustable solenoid geometry
-- Realistic magnetic fringe fields (using `tanh` transitions)
-- Customizable gaps between solenoids
+A multi-threaded Geant4 application for simulating a proton beamline with magnetic solenoids, RF cavities, and detector planes. Records 6D phase-space vectors for muons, pions, and protons as they cross detector volumes.
 
-It is intended for use in high-energy physics simulations, especially muon or proton beam transport systems.
+✨ Features
 
----
+Gaussian Proton Beam: Configurable transverse sigma via /gun/sigma UI command.
 
-## 📁 Project Structure
-```
-├── **build**
-│   ├── 6D_vector.csv
-│   ├── all_23_solenoids.csv
-│   ├── CMakeCache.txt
-│   ├── CMakeFiles
-│   │   ├── 3.28.3
-│   │   │   ├── CMakeCCompiler.cmake
-│   │   │   ├── CMakeCXXCompiler.cmake
-│   │   │   ├── CMakeDetermineCompilerABI_C.bin
-│   │   │   ├── CMakeDetermineCompilerABI_CXX.bin
-│   │   │   ├── CMakeSystem.cmake
-│   │   │   ├── CompilerIdC
-│   │   │   │   ├── a.out
-│   │   │   │   ├── CMakeCCompilerId.c
-│   │   │   │   └── tmp
-│   │   │   └── CompilerIdCXX
-│   │   │       ├── a.out
-│   │   │       ├── CMakeCXXCompilerId.cpp
-│   │   │       └── tmp
-│   │   ├── cmake.check_cache
-│   │   ├── CMakeConfigureLog.yaml
-│   │   ├── CMakeDirectoryInformation.cmake
-│   │   ├── Makefile2
-│   │   ├── Makefile.cmake
-│   │   ├── pkgRedirects
-│   │   ├── progress.marks
-│   │   ├── TargetDirectories.txt
-│   │   └── tungsten_sim.dir
-│   │       ├── build.make
-│   │       ├── cmake_clean.cmake
-│   │       ├── compiler_depend.internal
-│   │       ├── compiler_depend.make
-│   │       ├── compiler_depend.ts
-│   │       ├── DependInfo.cmake
-│   │       ├── depend.make
-│   │       ├── flags.make
-│   │       ├── link.txt
-│   │       ├── progress.make
-│   │       ├── src
-│   │       │   ├── ActionInitialization.cc.o
-│   │       │   ├── ActionInitialization.cc.o.d
-│   │       │   ├── ChicaneConstruction.cc.o
-│   │       │   ├── ChicaneConstruction.cc.o.d
-│   │       │   ├── DetectorConstruction.cc.o
-│   │       │   ├── DetectorConstruction.cc.o.d
-│   │       │   ├── ElectricFieldSetup.cc.o
-│   │       │   ├── ElectricFieldSetup.cc.o.d
-│   │       │   ├── EventAction.cc.o
-│   │       │   ├── EventAction.cc.o.d
-│   │       │   ├── MomentumChicane.cc.o
-│   │       │   ├── MomentumChicane.cc.o.d
-│   │       │   ├── PhysicsList.cc.o
-│   │       │   ├── PhysicsList.cc.o.d
-│   │       │   ├── PrimaryGeneratorAction.cc.o
-│   │       │   ├── PrimaryGeneratorAction.cc.o.d
-│   │       │   ├── RFCavityField.cc.o
-│   │       │   ├── RFCavityField.cc.o.d
-│   │       │   ├── RunAction.cc.o
-│   │       │   ├── RunAction.cc.o.d
-│   │       │   ├── SolenoidSegment.cc.o
-│   │       │   ├── SolenoidSegment.cc.o.d
-│   │       │   ├── SolenoidSystem.cc.o
-│   │       │   ├── SolenoidSystem.cc.o.d
-│   │       │   ├── SteppingAction.cc.o
-│   │       │   └── SteppingAction.cc.o.d
-│   │       ├── tungsten_sim.cc.o
-│   │       └── tungsten_sim.cc.o.d
-│   ├── cmake_install.cmake
-│   ├── init_vis.mac
-│   ├── Makefile
-│   ├── optimizer.py
-│   ├── particle_data0.csv
-│   ├── plot.ipynb
-│   ├── run.mac
-│   ├── tungsten_sim
-│   └── vis.mac
+Multi-Threaded Output: Per-thread CSV logging of 6D vectors (x, px, y, py, z, pz, E) for each particle crossing detectors.
+
+Detector Planes: Four detector volumes with entry recording; RF cavity entry/exit monitoring.
+
+Particle Filters: Record only mu+, mu-, pi+, pi-, and proton crossings.
+
+Flexible Logging: Merge per-thread CSVs easily using provided shell commands.
+
+Energy Scoring: Collect and summarize energy deposition in a scoring volume.
+
+Decay Monitoring: Prints pion→muon decay events with kinematic details.
+
+🚀 Prerequisites
+
+C++17 compiler
+
+Geant4 v10.7 or newer
+
+CLHEP library (for RandGauss)
+
+CMake (v3.10+)
+
+Make or Ninja build system
+
+🛠️ Build Instructions
+
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX=./install ../
+make -j$(nproc)
+make install
+
+▶️ Running the Simulation
+
+Create a macro file (run.mac):
+
+# Set up beam energy and sigma
+/gun/energy 10 GeV
+/gun/sigma 2.5 mm
+# Set number of threads and events
+/run/initialize
+/run/numberOfThreads 4
+/run/beamOn 10000
+
+Launch:
+
+./bin/YourApp run.mac
+
+Output CSVs appear as:
+
+6D_vector_run<runID>_t<threadID>.csv
+
+Merge with:
+
+head -n1 6D_vector_run0_t0.csv > merged.csv
+tail -q -n +2 6D_vector_run0_t*.csv >> merged.csv
+
+📂 Project Structure
+
+.
+├── build
+│   ├── 6D_vector.csv
+│   ├── 6D_vector_run0_t0.csv
+│   ├── 6D_vector_run0_t-1.csv
+│   ├── 6D_vector_run0_t1.csv
+│   ├── 6D_vector_run0_t2.csv
+│   ├── 6D_vector_run0_t3.csv
+│   ├── 6D_vector_run0_t4.csv
+│   ├── CMakeCache.txt
+│   ├── CMakeFiles/
+│   ├── cmake_install.cmake
+│   ├── init_vis.mac
+│   ├── Makefile
+│   ├── merged.csv
+│   ├── particle_data_run0_t*.csv
+│   ├── plot.ipynb
+│   ├── run.mac
+│   ├── tungsten_sim
+│   └── vis.mac
 ├── CMakeLists.txt
-├── **include**
-│   ├── ActionInitialization.hh
-│   ├── ChicaneConstruction.hh
-│   ├── DetectorConstruction.hh
-│   ├── EventAction.hh
-│   ├── MomentumChicane.hh
-│   ├── PhysicsList.hh
-│   ├── PrimaryGeneratorAction.hh
-│   ├── RFCavityField.hh
-│   ├── RunAction.hh
-│   ├── SolenoidSegment.hh
-│   ├── SolenoidSystem.hh
-│   └── SteppingAction.hh
-├── init_vis.mac
+├── include/
+│   ├── ActionInitialization.hh
+│   ├── DetectorConstruction.hh
+│   ├── EventAction.hh
+│   ├── MomentumChicane.hh
+│   ├── PhysicsList.hh
+│   ├── PrimaryGeneratorAction.hh
+│   ├── RFCavityField.hh
+│   ├── RunAction.hh
+│   ├── SolenoidSystem.hh
+│   └── SteppingAction.hh
+├── src/
+│   ├── ActionInitialization.cc
+│   ├── DetectorConstruction.cc
+│   ├── EventAction.cc
+│   ├── MomentumChicane.cc
+│   ├── PhysicsList.cc
+│   ├── PrimaryGeneratorAction.cc
+│   ├── RFCavityField.cc
+│   ├── RunAction.cc
+│   ├── SolenoidSystem.cc
+│   ├── SteppingAction.cc
+│   └── temp.txt
 ├── main
 ├── particle_data0.csv
 ├── particle_data_run1.csv
 ├── README.md
-├── **run.mac**
-├── **src**
-│   ├── ActionInitialization.cc
-│   ├── ChicaneConstruction.cc
-│   ├── DetectorConstruction.cc
-│   ├── EventAction.cc
-│   ├── MomentumChicane.cc
-│   ├── PhysicsList.cc
-│   ├── PrimaryGeneratorAction.cc
-│   ├── RFCavityField.cc
-│   ├── RunAction.cc
-│   ├── SolenoidSegment.cc
-│   ├── SolenoidSystem.cc
-│   └── SteppingAction.cc
-├── **tungsten_sim.cc**
-└── **vis.mac**
-```
+├── run.mac
+├── tungsten_sim.cc
+└── vis.mac
 ---
 
-## ⚙️ Prerequisites
+## 📖 Usage Tips
 
-- [Geant4 (v11+)](https://geant4.web.cern.ch/support/download) built with visualization and multithreading
-- CMake (>= 3.16)
-- C++17-compatible compiler (e.g., g++, clang++)
-- Linux or macOS (tested on AlmaLinux and Ubuntu)
+- Use `/gun/sigma` to tune beam spot size.
+- Adjust detector positions in `DetectorConstruction`.
+- Enable ntuple merging via Geant4 analysis manager as an alternative to manual CSV merge.
 
 ---
 
-## 🔧 Building the Project
+## 👤 Author & License
 
-1. Source Geant4 environment:
-   ```bash
-    source /path/to/geant4-install/bin/geant4make.sh
-   ```
-   ```bash
-   mkdir build
-   ```
-   ```bash
-   cd build
-   ```
-   ```bash
-   cmake ..
-    ```
-   ```bash
-   make -j$(nproc)
-   ```
-## run in GUI mode
-  ```bash
-  ./tungstem_sim 
-  ```
-## run in command line mode
-  ```bash
-  ./tungstem_sim run.mac 
-  ```
-  
-## Analysis
-I. A Jupyter-Notebook plot.ipynb exists in the `build` directory.
-- i. It has all the code build in for field and space-phase analysis
- 
-## Data for Analysis ( in `build` Directory)
-1.6D_vector.csv 
-- i. for space-phase Analysis
-## 
-2. all_23_solenoids.csv 
-- ii. for solenoid field analysis
+**Prateek Rao** – University of Wisconsin–Madison
+
+Licensed under the MIT License. See [LICENSE](LICENSE) for details.

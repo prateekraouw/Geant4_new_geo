@@ -182,15 +182,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     // ============ Tungsten transport bore =========== 
     G4double startPos = -1.1*m;
     G4double endPos = 17.58*m;
-    G4double R_start = 10*cm;
-    G4double R_end = 30*cm;
+    G4double R_start = 7.5*cm;
+    G4double R_end = 14.0*cm;
     G4double length = 0.001*m;
     G4double bore_length = endPos - startPos;
     G4double boreCenter = (startPos + endPos) / 2;
     G4double k = std::log(R_end/R_start);
     int bore_number = 0;
     
-    int nPlanes = 200;
+    int nPlanes = 1500;
     G4double dz = bore_length/(nPlanes-1);
     std::vector<G4double> zPlanes, rInner, rOuter;
     zPlanes.reserve(nPlanes);
@@ -574,8 +574,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     
     // ========== RF CAVITY  ==========
    /* 
-    new RFCavityField(logicWorld, 4.35*m, 150*hertz); // frequency passed as hertz, but caluulated as MHz
-    new RFCavityField(logicWorld, 10.77*m, 150*hertz);
+    new RFCavityField(logicWorld, 4.9*m, 90*hertz); // frequency passed as hertz, but caluulated as MHz
+    new RFCavityField(logicWorld, 11.33*m, 90*hertz);
     */
     // ========== DETECTORS ==========
     G4double detector_thickness = 0.1*cm;

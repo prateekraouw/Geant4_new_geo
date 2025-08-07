@@ -22,6 +22,7 @@ set(SOURCES
     src/SteppingAction.cc
     src/SolenoidSystem.cc
     src/MomentumChicane.cc
+    src/RFCavityField.cc
 )
 
 # Add the executable with explicit source files
