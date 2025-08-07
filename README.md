@@ -32,6 +32,7 @@ Make or Ninja build system
 
 🛠️ Build Instructions
 
+```
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=./install ../
 make -j$(nproc)
@@ -41,6 +42,7 @@ make install
 
 Create a macro file (run.mac):
 
+```
 # Set up beam energy and sigma
 /gun/energy 10 GeV
 /gun/sigma 2.5 mm
@@ -49,22 +51,22 @@ Create a macro file (run.mac):
 /run/numberOfThreads 4
 /run/beamOn 10000
 
+```
 Launch:
 
 ./bin/YourApp run.mac
 
+```
 Output CSVs appear as:
-
 6D_vector_run<runID>_t<threadID>.csv
 
 Merge with:
 
+```
 head -n1 6D_vector_run0_t0.csv > merged.csv
 tail -q -n +2 6D_vector_run0_t*.csv >> merged.csv
 
-📂 Project Structure
-```
-.
+```.
 ├── build/
 │   ├── 6D_vector.csv
 │   ├── 6D_vector_run0_t0.csv
@@ -114,7 +116,7 @@ tail -q -n +2 6D_vector_run0_t*.csv >> merged.csv
 ├── run.mac
 ├── tungsten_sim.cc
 └── vis.mac
-
+```
 📖 Usage Tips
 
 Use /gun/sigma to tune beam spot size.
@@ -123,6 +125,7 @@ Adjust detector positions in DetectorConstruction.
 
 Enable ntuple merging via Geant4 analysis manager as an alternative to manual CSV merge.
 
+```
 👤 Author & License
 
 Prateek Rao – University of Wisconsin–Madison
