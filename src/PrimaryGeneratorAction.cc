@@ -29,7 +29,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-      const G4int    nPerEvent    = 100;      // particles per event (the bunch size)
+      const G4int    nPerEvent    = 1;      // particles per event (the bunch size)
       const G4double sigmaX       = 5.0*mm;   // transverse spot size (rms) in x
       const G4double sigmaY       = 5.0*mm;   // transverse spot size (rms) in y
       const G4double sigmaThetaX  = 0.0*mrad; // angular divergence (rms) about x
