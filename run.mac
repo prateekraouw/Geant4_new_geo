@@ -12,8 +12,8 @@
 
 # Set beam parameters
 /gun/particle proton
-/gun/sigma 5mm
 /gun/energy 8 GeV  # Higher energy for better muon production
 
+/run/initialize
 # Run events
-/run/beamOn 50000
+/run/beamOn 1000

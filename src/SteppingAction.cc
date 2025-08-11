@@ -109,12 +109,12 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
       
         // only muons, pions & protons:
         if (name=="mu+"   || name=="mu-"   ||
-            name=="pi+"   || name=="pi-" )
+            name=="pi+"   || name=="pi-")
         {
           auto pos = step->GetPreStepPoint()->GetPosition();
-          auto mom = step->GetPreStepPoint()->GetMomentum() / GeV;
-          G4double E = track->GetKineticEnergy() / MeV;
-      
+          auto mom = step->GetPreStepPoint()->GetMomentum();
+          G4double E = track->GetKineticEnergy();
+        
           if (auto* runAct = dynamic_cast<RunAction*>(
                 const_cast<G4UserRunAction*>(
                   G4RunManager::GetRunManager()->GetUserRunAction())))

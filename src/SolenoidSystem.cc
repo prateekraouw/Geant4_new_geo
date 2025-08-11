@@ -406,7 +406,7 @@ void SolenoidSystem::CreateFieldManagers()
 
     // Create and track field manager
     G4FieldManager* fieldManager = new G4FieldManager(magField);
-    fieldManager->SetMinimumEpsilonStep(0.01*mm);
+    fieldManager->SetMinimumEpsilonStep(0.001*mm);
     fFieldManagers.push_back(fieldManager);
 
     // Create and track equation of motion
@@ -418,7 +418,7 @@ void SolenoidSystem::CreateFieldManagers()
     fSteppers.push_back(stepper);
 
     // Optimized precision for fringe field tracking
-    G4double minStep = 0.05*mm; // Smaller step for fringe field accuracy
+    G4double minStep = 0.01*mm; // Smaller step for fringe field accuracy
     G4MagInt_Driver* driver = new G4MagInt_Driver(minStep, stepper, stepper->GetNumberOfVariables());
     fDrivers.push_back(driver);
 

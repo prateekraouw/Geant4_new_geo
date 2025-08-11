@@ -29,77 +29,43 @@ RunAction::~RunAction()
 
 void RunAction::BeginOfRunAction(const G4Run* run)
 {
-  G4int runID = run->GetRunID();
-  G4int tid   = G4Threading::G4GetThreadId();    // 0 = master, >0 = worker
+  const G4int runID = run->GetRunID();
 
-  // Debug output
-  G4cout << "=== DEBUG: BeginOfRunAction ===" << G4endl;
-  G4cout << "Run ID: " << runID << G4endl;
-  G4cout << "Thread ID: " << tid << G4endl;
-  G4cout << "Is Master Thread: " << (tid == 0 ? "YES" : "NO") << G4endl;
-  G4cout << "===============================" << G4endl;
-
-  //
-  //——— particle data file ———
-  //
-  std::string pfile = "particle_data_run"
-                    + std::to_string(runID)
-                    + "_t" + std::to_string(tid)
-                    + ".csv";
-  fOutputFile.open(pfile);
-  if (fOutputFile.is_open()) {
-    fOutputFile << "ParticleType,Energy[MeV]\n";
-    G4cout << "Thread " << tid
-           << " writing particle data to " << pfile << G4endl;
-  } else {
-    G4cerr << "ERROR: Thread " << tid << " could not open file: " << pfile << G4endl;
+  if (G4Threading::IsMasterThread()) {
+    G4cout << "[MASTER] BeginOfRunAction for run " << runID << G4endl;
+    return; // Master doesn't generate events — don't open data files here.
   }
 
-  //
-  //——— 6D vector file ———
+  const G4int tid = G4Threading::G4GetThreadId();
+  // particle_data_...
+  std::string pfile = "particle_data_run" + std::to_string(runID) +
+                      "_t" + std::to_string(tid) + ".csv";
+  fOutputFile.open(pfile, std::ios::out);
+  if (fOutputFile) {
+    fOutputFile << "ParticleType,Energy[MeV]\n";
+    G4cout << "[T" << tid << "] writing particle data to " << pfile << G4endl;
+  }
+
+  // 6D_vector_...
   std::ostringstream vfn;
-   vfn << "6D_vector_run" << runID << "_t" << tid << ".csv";
-   file6DVector.open(vfn.str(), std::ios::out);
-   if (file6DVector.is_open()) {
-     // write header for this thread's file
-     file6DVector << "Detector,ParticleType,"
-                  << "x[cm],px[MeV/c],"
-                  << "y[cm],py[MeV/c],"
-                  << "z[cm],pz[MeV/c],"
-                  << "TotalEnergy[MeV]\n";
-     G4cout << "[Thread " << tid << "] Opened 6D vector file: " 
-            << vfn.str() << G4endl;
-   } else {
-     G4cerr << "[Thread " << tid << "] ERROR: Could not open 6D vector file: "
-            << vfn.str() << G4endl;
-   }
+  vfn << "6D_vector_run" << runID << "_t" << tid << ".csv";
+  file6DVector.open(vfn.str(), std::ios::out);
+  if (file6DVector) {
+    file6DVector << "Detector,ParticleType,"
+                 << "x[mm],px[GeV/c],"
+                 << "y[mm],py[GeV/c],"
+                 << "z[mm],pz[GeV/c],"
+                 << "TotalEnergy[GeV]\n";
+    G4cout << "[T" << tid << "] Opened 6D vector file: " << vfn.str() << G4endl;
+  }
 }
 
 void RunAction::EndOfRunAction(const G4Run* run)
 {
-  G4int nofEvents = run->GetNumberOfEvent();
-  if (nofEvents == 0) return;
-  
-  // Print simple particle summary
-  G4cout << "\n=== PARTICLE SUMMARY ===" << G4endl;
-  for (const auto& pair : fParticleCounts) {
-    G4cout << pair.first << ": " << pair.second << G4endl;
-  }
-  G4cout << "=========================" << G4endl;
-  
-  // Close Excel file
-  if (fOutputFile.is_open()) {
-    fOutputFile.close();
-    G4cout << "Particle data saved to Excel file" << G4endl;
-  }
-  
-  // Ensure 6D vector data is flushed to disk
-  if (file6DVector.is_open()) {
-    file6DVector.flush();
-    G4cout << "6D vector data flushed to disk" << G4endl;
-  }
+  if (G4Threading::IsMasterThread()) return;
 
-  //SaveMagneticFieldAlongZ();
+  if (fOutputFile.is_open()) fOutputFile.close();
+  if (file6DVector.is_open()) file6DVector.close(); // actually close here
 }
 
 void RunAction::RecordParticleToExcel(const G4String& name, 
@@ -131,12 +97,12 @@ void RunAction::Record6DVector(G4int detectorID,
         file6DVector << detectorID << ","
                   << particleName << ","
                   << position.x()/cm << ","
-                  << momentum.x()/MeV << ","
+                  << momentum.x()/GeV << ","
                   << position.y()/cm << ","
-                  << momentum.y()/MeV << ","
+                  << momentum.y()/GeV << ","
                   << position.z()/cm << ","
-                  << momentum.z()/MeV << ","
-                  << totalEnergy/MeV << std::endl;
+                  << momentum.z()/GeV << ","
+                  << totalEnergy/GeV << std::endl;
     } else {
         G4int tid = G4Threading::G4GetThreadId();
         G4cerr << "[Thread " << tid << "] ERROR: File not open for writing!" << G4endl;

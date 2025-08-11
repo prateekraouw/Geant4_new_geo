@@ -158,8 +158,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     
     
     // ========== TUNGSTEN TARGET ==========
-    G4double block_x = 10*cm;
-    G4double block_y = 10*cm;
+    G4double block_x = 12*cm;
+    G4double block_y = 12*cm;
     G4double block_z = 40*cm;
 
     G4Box* solidGraphite = new G4Box("Graphite", 0.5*block_x, 0.5*block_y, 0.5*block_z);
@@ -168,22 +168,23 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4RotationMatrix* rotation = new G4RotationMatrix();
     rotation->rotateX(0*rad);
 
-    new G4PVPlacement(rotation, G4ThreeVector(0, 0, -1.2*m), logicTungsten, "Tungsten",
+    new G4PVPlacement(rotation, G4ThreeVector(0, 0, -1.1*m), logicTungsten, "Tungsten",
                      logicWorld, false, 0, true);
 
     // ========== PARTICLE GUN VISUALIZATION ==========
+    /* 
     G4Box* gunBox = new G4Box("GunBox", 2*cm, 2*cm, 40*cm);
     G4LogicalVolume* gunLog = new G4LogicalVolume(gunBox, graphite_mat, "GunLogical");
     G4RotationMatrix* gunRot = new G4RotationMatrix();
     gunRot->rotateX(0.*deg);
     G4ThreeVector gunPos = G4ThreeVector(0, 0.*m, -2.0*m);
     new G4PVPlacement(gunRot, gunPos, gunLog, "GunBlock", logicWorld, false, 0, true);
-
+    */
     // ============ Tungsten transport bore =========== 
     G4double startPos = -1.1*m;
     G4double endPos = 17.58*m;
     G4double R_start = 7.5*cm;
-    G4double R_end = 14.0*cm;
+    G4double R_end = 30.0*cm;
     G4double length = 0.001*m;
     G4double bore_length = endPos - startPos;
     G4double boreCenter = (startPos + endPos) / 2;
@@ -581,7 +582,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4double detector_thickness = 0.1*cm;
 
     // Detector 1: Before momentum chicane
-    G4double detector1_position = 4.6*meter;
+    G4double detector1_position = 4.5*m;
     G4Tubs* solidDetector1 = new G4Tubs("Detector1", 0*cm, 70*cm, 0.5*detector_thickness, 0*deg, 360*deg);
     G4LogicalVolume* logicDetector1 = new G4LogicalVolume(solidDetector1, scintillator_mat, "Detector1");
     fDetector1Volume = logicDetector1;
@@ -631,12 +632,14 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4VisAttributes* detector4_vis_att = new G4VisAttributes(G4Colour::Blue());
     detector4_vis_att->SetVisibility(true);
     logicDetector4->SetVisAttributes(detector4_vis_att);
-
+    
+    /* 
     G4VisAttributes* gunVis = new G4VisAttributes(G4Colour::Red());
     gunVis->SetVisibility(true);
     gunVis->SetForceSolid(true);
     gunLog->SetVisAttributes(gunVis);
-
+    */
+    
     G4VisAttributes* world_vis_att = new G4VisAttributes(G4Colour(1.0, 1.0, 1.0, 0.1));
     world_vis_att->SetVisibility(true);
     world_vis_att->SetForceWireframe(true);

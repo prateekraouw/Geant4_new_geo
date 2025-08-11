@@ -23,7 +23,7 @@ int main(int argc, char** argv){
   
   // Construct the default run manager
   auto* runManager = new G4MTRunManager;
-  runManager->SetNumberOfThreads(5);
+  runManager->SetNumberOfThreads(7);
   
   
   // Set mandatory initialization classes

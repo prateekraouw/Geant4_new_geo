@@ -29,20 +29,33 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  // Set beam direction along the z-axis (towards the tungsten block)
-  G4double angle = 0.0*rad;
-  G4ThreeVector dir(0., std::sin(angle), std::cos(angle));
-  fParticleGun->SetParticleMomentumDirection(dir);
-  
-  
-  // Gaussian beam defination
-  G4double fSigma = 5*mm;
-  G4double x0 = CLHEP::RandGauss::shoot(0.0, fSigma);
-  G4double y0 = CLHEP::RandGauss::shoot(0.0, fSigma);
-  G4double z0 = -1.8*m;
-  // Position the beam 1 cm before the tungsten block
-  fParticleGun->SetParticlePosition(G4ThreeVector(x0, y0,z0));
-
-  // Generate the primary vertex
-  fParticleGun->GeneratePrimaryVertex(anEvent);
+      const G4int    nPerEvent    = 100;      // particles per event (the bunch size)
+      const G4double sigmaX       = 5.0*mm;   // transverse spot size (rms) in x
+      const G4double sigmaY       = 5.0*mm;   // transverse spot size (rms) in y
+      const G4double sigmaThetaX  = 0.0*mrad; // angular divergence (rms) about x
+      const G4double sigmaThetaY  = 0.0*mrad; // angular divergence (rms) about y
+      const G4double z            = -1.5*m;   // source plane
+    
+      // Ensure we shoot ONE particle per GeneratePrimaryVertex call.
+      fParticleGun->SetNumberOfParticles(1);
+    
+      for (G4int i = 0; i < nPerEvent; ++i) {
+        // Gaussian transverse position
+        const G4double x = CLHEP::RandGauss::shoot(0.0, sigmaX);
+        const G4double y = CLHEP::RandGauss::shoot(0.0, sigmaY);
+    
+        // Gaussian small-angle slopes (theta_x, theta_y) relative to +z
+        const G4double tx = CLHEP::RandGauss::shoot(0.0, sigmaThetaX);
+        const G4double ty = CLHEP::RandGauss::shoot(0.0, sigmaThetaY);
+    
+        // Build direction vector; for small angles, (tx, ty, 1) is a good approximation
+        G4ThreeVector dir(tx, ty, 1.0);
+        dir = dir.unit();
+    
+        fParticleGun->SetParticlePosition(G4ThreeVector(x, y, z));
+        fParticleGun->SetParticleMomentumDirection(dir);
+    
+        // Energy was set in the constructor (8 GeV)
+        fParticleGun->GeneratePrimaryVertex(anEvent);
+      }
 }
