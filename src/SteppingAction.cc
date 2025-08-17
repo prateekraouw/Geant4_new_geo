@@ -10,6 +10,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4FieldManager.hh"
 #include "G4MagneticField.hh"
+#include "G4ElectroMagneticField.hh"
 #include "G4TransportationManager.hh"
 #include "G4AutoLock.hh"
 #include "G4Threading.hh" 
@@ -105,23 +106,28 @@ void SteppingAction::UserSteppingAction(const G4Step* step)
     
       if (detID > 0) {
         auto* track = step->GetTrack();
-        G4String name = track->GetDefinition()->GetParticleName();
+        const G4String name = track->GetDefinition()->GetParticleName();
       
-        // only muons, pions & protons:
-        if (name=="mu+"   || name=="mu-"   ||
-            name=="pi+"   || name=="pi-")
-        {
-          auto pos = step->GetPreStepPoint()->GetPosition();
-          auto mom = step->GetPreStepPoint()->GetMomentum();
-          G4double E = track->GetKineticEnergy();
-        
-          if (auto* runAct = dynamic_cast<RunAction*>(
-                const_cast<G4UserRunAction*>(
-                  G4RunManager::GetRunManager()->GetUserRunAction())))
-          {
-            runAct->Record6DVector(detID, name, pos, mom, E);
-          }
+        // only muons & pions (as you had)
+              if (name=="mu+" || name=="mu-" || name=="pi+" || name=="pi-") {
+                const auto* pre = step->GetPreStepPoint();
+                const G4ThreeVector pos = pre->GetPosition();
+                const G4ThreeVector mom = pre->GetMomentum();
+                const G4double E = track->GetKineticEnergy();
+                const G4double t = pre->GetGlobalTime(); // ns
+      
+                // log (B is in internal Geant4 units; divide by 'tesla' when writing CSV)
+                if (auto* runAct = dynamic_cast<RunAction*>(
+                      const_cast<G4UserRunAction*>(G4RunManager::GetRunManager()->GetUserRunAction())))
+                {
+                  runAct->Record6DVector(detID, name,
+                                         pre->GetPosition(),
+                                         pre->GetMomentum(),
+                                         track->GetTrackID(),
+                                         step->GetTrack()->GetCurrentStepNumber());
+                }
+
         }
-      }
     }
+}
 }

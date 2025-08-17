@@ -90,7 +90,7 @@ private:
     void CleanupFieldObjects();
     
     // Complete solenoid implementation methods
-    G4double CalculateMagneticField(G4double Rc, G4double DZ, G4int NR, G4int NZ, G4double current);
+    G4double CalculateMagneticField(G4double Rc, G4double DZ, G4int NR, G4int NZ, G4double current, G4double DR);
     G4double CalculateRequiredCurrent(G4double Rc, G4double DZ, G4int NR, G4int NZ, G4double targetField);
     
     G4LogicalVolume* CreateAirSolenoid(const SolenoidParameters& params,

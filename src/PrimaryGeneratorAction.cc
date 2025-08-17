@@ -34,7 +34,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
       const G4double sigmaY       = 5.0*mm;   // transverse spot size (rms) in y
       const G4double sigmaThetaX  = 0.0*mrad; // angular divergence (rms) about x
       const G4double sigmaThetaY  = 0.0*mrad; // angular divergence (rms) about y
-      const G4double z            = -1.5*m;   // source plane
+      const G4double z            = -1.8*m;   // source plane
     
       // Ensure we shoot ONE particle per GeneratePrimaryVertex call.
       fParticleGun->SetNumberOfParticles(1);

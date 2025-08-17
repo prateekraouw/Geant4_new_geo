@@ -9,6 +9,7 @@
 #include "G4Threading.hh"    // defines G4Mutex, G4MUTEX_INITIALIZER     // still needed for G4AutoLock
 #include <fstream>
 #include <string>
+#include <sstream>
 
 
 // Remove global mutex and header flag - each thread will have its own file
@@ -55,7 +56,7 @@ void RunAction::BeginOfRunAction(const G4Run* run)
                  << "x[mm],px[GeV/c],"
                  << "y[mm],py[GeV/c],"
                  << "z[mm],pz[GeV/c],"
-                 << "TotalEnergy[GeV]\n";
+                 << "Bx[T],By[T],Bz[T],"<<"track,step"<<"\n";
     G4cout << "[T" << tid << "] Opened 6D vector file: " << vfn.str() << G4endl;
   }
 }
@@ -86,28 +87,28 @@ void RunAction::RecordParticleToExcel(const G4String& name,
 
 
 // Function to write 6D vector data for each particle
-void RunAction::Record6DVector(G4int detectorID, 
-                              const G4String& particleName, 
-                              const G4ThreeVector& position, 
-                              const G4ThreeVector& momentum,
-                              G4double totalEnergy)
+void RunAction::Record6DVector(G4int detectorID, const G4String& particleName,
+                             const G4ThreeVector& pos, const G4ThreeVector& mom,
+                             G4int trackID, G4int stepNum)
 {
     // Make sure the file is open - no mutex needed since each thread has its own file
     if (file6DVector.is_open()) {
         file6DVector << detectorID << ","
                   << particleName << ","
-                  << position.x()/cm << ","
-                  << momentum.x()/GeV << ","
-                  << position.y()/cm << ","
-                  << momentum.y()/GeV << ","
-                  << position.z()/cm << ","
-                  << momentum.z()/GeV << ","
-                  << totalEnergy/GeV << std::endl;
+                  << pos.x()/cm << ","
+                  << mom.x()/GeV << ","
+                  << pos.y()/cm << ","
+                  << mom.y()/GeV << ","
+                  << pos.z()/cm << ","
+                  << mom.z()/GeV << ","
+                  << trackID << ","
+                  << stepNum << std::endl;
     } else {
         G4int tid = G4Threading::G4GetThreadId();
         G4cerr << "[Thread " << tid << "] ERROR: File not open for writing!" << G4endl;
     }
   }
+
 
 // Function to close 6D vector file
 void RunAction::Close6DVectorFile()

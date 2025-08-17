@@ -8,6 +8,7 @@
 #include "G4Tubs.hh"
 #include "G4Cons.hh"
 #include "G4Box.hh"
+#include <algorithm>
 #include <cmath>
 
 SolenoidSystem::SolenoidSystem()
@@ -103,30 +104,37 @@ void SolenoidFringeField::GetFieldValue(const G4double point[4], G4double* field
 }
 
 // Calculate magnetic field from physical solenoid parameters
-G4double SolenoidSystem::CalculateMagneticField(G4double Rc, G4double DZ, G4int NR, G4int NZ, G4double current)
+G4double SolenoidSystem::CalculateMagneticField(G4double Rc, G4double DZ, G4int NR, G4int NZ, G4double current, G4double DR)
 {
     // Total number of turns
     G4int totalTurns = NR * NZ;
-
     // Magnetic permeability of free space
     const G4double mu0 = 4.0 * M_PI * 1e-7 * tesla * m / ampere;
+    DZ = DZ/m;
+    Rc = Rc/m;
+    
+    const G4double a = 0.5 * DZ;
 
     // For a finite solenoid at the center:
-    // B = (μ₀ * n * I) * [L / sqrt(L² + 4R²)]
+    // B = ((μ₀ * n * I)/Dz) * [a / sqrt(a² + R²)]
     // where n = N/L (turns per unit length)
     G4double turnsPerLength = totalTurns / DZ;
-    G4double kiloFactor = 1000;
+    G4double factor = 1000; // conversion factor for A->kA, cm->m
 
     // Calculate field strength
-    G4double magneticField = mu0 * turnsPerLength * current * kiloFactor;
+    const G4double Rin = Rc - 0.5*DR;
+    const G4double Rout= Rc + 0.5*DR;
+    const G4double T   = Rout - Rin;
+    const G4double thickness_factor = std::asinh(Rout/a) - std::asinh(Rin/a);
+    G4double magneticField = mu0 * turnsPerLength * current* factor;
 
     G4cout << "  Magnetic field calculation:" << G4endl;
-    G4cout << "    Rc = " << Rc/cm << " cm, DZ = " << DZ/cm << " cm" << G4endl;
+    G4cout << "    Rc = " << Rc << " m, DZ = " << DZ << " m" << G4endl;
     G4cout << "    Total turns (NR×NZ) = " << NR << "×" << NZ << " = " << totalTurns << G4endl;
-    G4cout << "    Turns per length = " << turnsPerLength*m << " turns/m" << G4endl;
+    G4cout << "    Turns per length = " << turnsPerLength << " turns/m" << G4endl;
     G4cout << "    Current = " << current/ampere << " A" << G4endl;
-    G4cout << "    Length factor = " << kiloFactor << G4endl;
-    G4cout << "    Calculated B-field = " << magneticField/tesla << " T" << G4endl;
+    G4cout << "    Length factor = " << DZ << G4endl;
+    G4cout << "    Calculated B-field = " << magneticField << " T" << G4endl;
 
     return magneticField;
 }
@@ -152,17 +160,17 @@ void SolenoidSystem::CreateRampUpSolenoids(G4double Rc, G4double Zc, G4double DR
     params.current = current;
 
     // Calculate magnetic field from the given parameters
-    G4double calculatedField = CalculateMagneticField(Rc, DZ, NR, NZ, current);
+    G4double calculatedField = CalculateMagneticField(Rc, DZ, NR, NZ, current,DR) ;
 
     G4cout << "\n--- Creating Physical Solenoid ---" << G4endl;
     G4cout << "Input Parameters:" << G4endl;
     G4cout << "  Rc (coil radius): " << Rc/m << " m" << G4endl;
     G4cout << "  Zc (center position): " << Zc/m << " m" << G4endl;
-    G4cout << "  DR (radial extent): " << DR/m << " m" << G4endl;
+    G4cout << "  DR (radial extent): " << DR/meter << " m" << G4endl;
     G4cout << "  DZ (axial extent): " << DZ/m << " m" << G4endl;
     G4cout << "  NR × NZ (turns): " << NR << " × " << NZ << " = " << (NR * NZ) << G4endl;
     G4cout << "  Current: " << current/ampere << " A" << G4endl;
-    G4cout << "  Calculated B-field: " << calculatedField/tesla << " T" << G4endl;
+    G4cout << "  Calculated B-field: " << calculatedField << " T" << G4endl;
 
     // Create the complete solenoid (coil + field volume)
     G4LogicalVolume* fieldVolume = CreateAirSolenoid(params, motherVolume);
@@ -177,7 +185,7 @@ void SolenoidSystem::CreateRampUpSolenoids(G4double Rc, G4double Zc, G4double DR
     G4cout << "Solenoid specifications:" << G4endl;
     G4cout << "  Coil geometry: Rc=" << Rc/m << "m, DR=" << DR/m << "m, DZ=" << DZ/m << "m" << G4endl;
     G4cout << "  Electrical: " << (NR*NZ) << " turns, " << current/ampere << "A" << G4endl;
-    G4cout << "  Magnetic field: " << calculatedField/tesla << "T" << G4endl;
+    G4cout << "  Magnetic field: " << calculatedField<< "T" << G4endl;
 }
 
 
@@ -247,7 +255,7 @@ void SolenoidSystem::CreateCoilStructure(G4int solenoidID, const SolenoidParamet
     coilLogical->SetVisAttributes(coilVis);
 
     G4cout << "  Created coil structure: " << coilName << G4endl;
-    G4cout << "    Inner/Outer radius: " << innerCoilRadius/cm << "/" << outerCoilRadius/cm << " cm" << G4endl;
+    G4cout << "    Inner/Outer radius: " << innerCoilRadius/m << "/" << outerCoilRadius/m << " m" << G4endl;
     G4cout << "    Material: " << coilMaterial->GetName() << G4endl;
 }
 
@@ -301,7 +309,7 @@ void SolenoidSystem::SetAirSolenoidVisualization(G4LogicalVolume* solenoidLogica
     fieldVis->SetForceWireframe(false);
     solenoidLogical->SetVisAttributes(fieldVis);
 
-    G4cout << "  Field visualization: radius " << radius/cm
+    G4cout << "  Field visualization: radius " << radius
            << " cm → RGB(" << red << ", " << green << ", " << blue << ")" << G4endl;
 }
 
@@ -334,44 +342,34 @@ G4double SolenoidFringeField::FringeFieldFactor(G4double z) const
 void SolenoidFringeField::CalculateFringeField(G4double rho, G4double z, G4double* field) const
 {
 
-    //Aperture definition
-    G4double systemLength = 18.79*m;
-    G4double systemCenter = 8.095*m;
-    G4double zPoint = z - systemCenter;
-    G4double endradius = 0.30*m;
-    G4double startRadius = 0.075*m;
-    G4double halfLength = systemLength / 2;
-    G4double fraction = (zPoint + halfLength) / systemLength;
-
-    fraction = std::max(0.0, std::min(1.0, fraction));
-
-    G4double Rz = startRadius + (endradius - startRadius) * fraction;
-
-    // Get the fringe factor for axial position
-    G4double fringeFactor = FringeFieldFactor(z);
-
-    if (fringeFactor <= 0.0) {
-        return; // No field
-    }
-
-    /*if(rho > Rz){
-        field[0]=field[1]=field[2]= 0.0;
+    const G4double Rz = fRadius;
+    
+      // axial fringe factor (smooth, finite-length)
+      const G4double fringeFactor = FringeFieldFactor(z);
+      if (fringeFactor <= 0.0){
+        field[0] = field[1] = field[2] = 0.0;
         return;
-        }*/
-
-    field[2] = fBz0*fringeFactor;
-
-    // Radial field component from fringe effects
-    // Br = -(rho/2) * dBz/dz
-    if (rho > 0) {
-        G4double deltaZ = 0.001 * Rz; // Small step for numerical derivative
-        G4double fringeFactorPlus = FringeFieldFactor(z + deltaZ);
-        G4double fringeFactorMinus = FringeFieldFactor(z - deltaZ);
-
-        G4double dBz_dz = fBz0 * (fringeFactorPlus - fringeFactorMinus) / (2.0 * deltaZ);
-        field[0] = -0.5 * rho * dBz_dz; // Radial component magnitude
-
-        }
+      } 
+    
+      // optional hard aperture; prefer a smooth edge (see §3)
+      // if (rho > Rz) return;
+    
+      // axial field
+      field[2] = fBz0 * fringeFactor;
+    
+      // Br ≈ -(ρ/2) dBz/dz   (from ∇·B=0 for near-axis)
+      if (rho > 0.0) {
+        const G4double dz = 0.01*mm;  // finite-difference step; small but not tiny
+        const G4double fp = FringeFieldFactor(z + dz);
+        const G4double fm = FringeFieldFactor(z - dz);
+        const G4double dBz_dz = fBz0 * (fp - fm) / (2.0*dz);
+        field[0] = -0.5 * rho * dBz_dz; // store Br magnitude temporarily
+      }
+    const G4double delta = std::max(1.0*mm, 0.05*Rz);                   // smoothing width
+    const G4double s = (rho - Rz)/delta;
+    const G4double w = 0.5*(1.0 - std::tanh(s));     // ~1 inside, ~0 outside
+    field[2] *= w;
+    field[0] *= w;  // Br magnitude
 }
 
 void SolenoidSystem::CreateFieldManagers()
@@ -384,7 +382,7 @@ void SolenoidSystem::CreateFieldManagers()
     const SolenoidParameters& params = fSolenoidParameters[index];
 
     G4cout << "Volume: " << solenoidVolume->GetName() << G4endl;
-    G4cout << "Field: " << fieldStrength/tesla << " T" << G4endl;
+    G4cout << "Field: " << fieldStrength << " T" << G4endl;
     G4cout << "Current: " << params.current/ampere << " A" << G4endl;
     G4cout << "Turns: " << params.NR << "×" << params.NZ << " = " << (params.NR*params.NZ) << G4endl;
 
@@ -399,46 +397,53 @@ void SolenoidSystem::CreateFieldManagers()
     fMagneticFields.push_back(magField);
 
     G4cout << "Created fringe field with parameters:" << G4endl;
-    G4cout << "  Central field: " << fieldStrength/tesla << " T" << G4endl;
-    G4cout << "  Field radius: " << solenoidRadius/cm << " cm" << G4endl;
-    G4cout << "  Solenoid length: " << params.DZ/cm << " cm" << G4endl;
-    G4cout << "  Center position: " << params.Zc/cm << " cm" << G4endl;
+    G4cout << "  Central field: " << fieldStrength << " T" << G4endl;
+    G4cout << "  Field radius: " << solenoidRadius/m << " cm" << G4endl;
+    G4cout << "  Solenoid length: " << params.DZ/m << " cm" << G4endl;
+    G4cout << "  Center position: " << params.Zc/m << " cm" << G4endl;
 
     // Create and track field manager
-    G4FieldManager* fieldManager = new G4FieldManager(magField);
-    fieldManager->SetMinimumEpsilonStep(0.001*mm);
+    auto* fieldManager = new G4FieldManager(magField);
     fFieldManagers.push_back(fieldManager);
-
-    // Create and track equation of motion
-    G4Mag_UsualEqRhs* equation = new G4Mag_UsualEqRhs(magField);
+    
+    // Equation of motion
+    auto* equation = new G4Mag_UsualEqRhs(magField);
     fEquations.push_back(equation);
-
-    // Create and track stepper
-    G4ClassicalRK4* stepper = new G4ClassicalRK4(equation, 8);
+    
+    // Prefer helix in solenoids; fall back to RK4 if you like
+    // auto* stepper = new G4HelixMixedStepper(equation, 8);
+    auto* stepper = new G4ClassicalRK4(equation, 8);
     fSteppers.push_back(stepper);
-
-    // Optimized precision for fringe field tracking
-    G4double minStep = 0.01*mm; // Smaller step for fringe field accuracy
-    G4MagInt_Driver* driver = new G4MagInt_Driver(minStep, stepper, stepper->GetNumberOfVariables());
+    
+    // --- Key changes ---
+    // 1) Raise the driver's minimum step (hmin). Start with 0.1–0.5 mm.
+    G4double hmin = 1*mm;
+    
+    // 2) Build the driver & chord finder
+    auto* driver = new G4MagInt_Driver(hmin, stepper, stepper->GetNumberOfVariables());
     fDrivers.push_back(driver);
-
-    // Create and track chord finder
-    G4ChordFinder* chordFinder = new G4ChordFinder(driver);
+    
+    auto* chordFinder = new G4ChordFinder(driver);
     fChordFinders.push_back(chordFinder);
-
-    // Configure field manager with tighter tolerances for fringe fields
+    
+    // 3) Set tolerances (slightly relaxed to avoid micro-steps in fringe/edges)
     fieldManager->SetChordFinder(chordFinder);
     fieldManager->SetDetectorField(magField);
-    fieldManager->SetDeltaOneStep(0.001*mm);
-    fieldManager->SetDeltaIntersection(0.001*mm);
-
-    // Apply field manager to field volume
+    
+    fieldManager->SetDeltaOneStep(0.01*mm);        // per-step intersection tolerance
+    fieldManager->SetDeltaIntersection(0.001*mm);   // boundary intersection tolerance
+    
+    // 4) Epsilon controls accuracy vs. sub-stepping; keep reasonable bounds
+    fieldManager->SetMinimumEpsilonStep(1e-5);     // dimensionless
+    fieldManager->SetMaximumEpsilonStep(1e-3);     // dimensionless
+    
+    // Apply field manager to the field volume
     solenoidVolume->SetFieldManager(fieldManager, true);
 
     // Verify field application
     G4FieldManager* appliedManager = solenoidVolume->GetFieldManager();
     if (appliedManager) {
-        G4cout << "Fringe field " << fieldStrength/tesla << " T applied to volume" << G4endl;
+        G4cout << "Fringe field " << fieldStrength << " T applied to volume" << G4endl;
     } else {
         G4cout << "WARNING: Field manager not applied!" << G4endl;
     }

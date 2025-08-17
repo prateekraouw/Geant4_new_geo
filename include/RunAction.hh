@@ -28,11 +28,9 @@ class RunAction : public G4UserRunAction
                     const G4ThreeVector& position);
                     
     // New functions for 6D vector file
-    void Record6DVector(G4int detectorID, 
-                       const G4String& particleName, 
-                       const G4ThreeVector& position, 
-                       const G4ThreeVector& momentum,
-                       G4double totalEnergy);
+    void Record6DVector(G4int detectorID, const G4String& particleName,
+                                 const G4ThreeVector& pos, const G4ThreeVector& mom,
+                                 G4int trackID, G4int stepNum);
     void Close6DVectorFile();
 
     void SaveMagneticFieldAlongZ();

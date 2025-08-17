@@ -158,8 +158,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     
     
     // ========== TUNGSTEN TARGET ==========
-    G4double block_x = 12*cm;
-    G4double block_y = 12*cm;
+    G4double block_x = 10*cm;
+    G4double block_y = 10*cm;
     G4double block_z = 40*cm;
 
     G4Box* solidGraphite = new G4Box("Graphite", 0.5*block_x, 0.5*block_y, 0.5*block_z);
@@ -168,7 +168,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     G4RotationMatrix* rotation = new G4RotationMatrix();
     rotation->rotateX(0*rad);
 
-    new G4PVPlacement(rotation, G4ThreeVector(0, 0, -1.1*m), logicTungsten, "Tungsten",
+    new G4PVPlacement(rotation, G4ThreeVector(0, 0, -1.3*m), logicTungsten, "Tungsten",
                      logicWorld, false, 0, true);
 
     // ========== PARTICLE GUN VISUALIZATION ==========
@@ -182,7 +182,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     */
     // ============ Tungsten transport bore =========== 
     G4double startPos = -1.1*m;
-    G4double endPos = 17.58*m;
+    G4double endPos = 17.6*m;
     G4double R_start = 7.5*cm;
     G4double R_end = 30.0*cm;
     G4double length = 0.001*m;
